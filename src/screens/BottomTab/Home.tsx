@@ -9,6 +9,8 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
+import ItemProductPopular from '../../components/items/ItemProductSale';
+import ItemPopular from '../../components/items/ItemPopular';
 const Home = () => {
   return (
     <ScrollView>
@@ -31,35 +33,19 @@ const Home = () => {
           </ImageBackground>
         </View>
         <View style={styles.titlefield}>
-          <Text style={styles.contentitle}>Just Dropped</Text>
+          <Text style={styles.contentitle}>Product Popular</Text>
+
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={{marginTop: 5, flexDirection: 'row', marginBottom:50}}>
-            <View style={{width:150, height:218, marginHorizontal:10, alignItems:"center", justifyContent:"center"}}>
-              <Image
-                source={require('../../assets/justDropped/img.png')}
-                style={{width: 150, height: 150}}
-              />
-              <Text style={{alignItems:"center", justifyContent:"center"}}>Dose Media</Text>
-              <Text>$92.99 USD</Text>
-            </View>
-            <View style={{width:150, height:218, marginHorizontal:10 ,alignItems:"center", justifyContent:"center"}}>
-              <Image
-                source={require('../../assets/justDropped/img1.png')}
-                style={{width: 150, height: 150}}
-              />
-              <Text>Dose Media</Text>
-              <Text>$92.99 USD</Text>
-            </View>
-            <View style={{width:150, height:218, marginHorizontal:10,alignItems:"center", justifyContent:"center"}}>
-              <Image
-                source={require('../../assets/justDropped/img2.png')}
-                style={{width: 150, height: 150}}
-              />
-              <Text>Dose Media</Text>
-              <Text>$92.99 USD</Text>
-            </View>
-          </View>
+           <ItemPopular/>
           </ScrollView>
+        </View>
+        <View style={styles.titlefield}>
+          <Text style={styles.contentitle}>Product Sale</Text>
+          <View style={styles.popularproduct}>
+            <ItemProductPopular/>
+            <ItemProductPopular/>
+            <ItemProductPopular/>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -108,5 +94,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
+  },
+  popularproduct: {
+    marginTop: 5,
+    marginBottom: 50,
   },
 });

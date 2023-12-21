@@ -14,7 +14,7 @@ const generateTabBarButtonStyle = (focused: boolean) => ({
   height: '100%',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: focused ? 'green' : 'white',
+  backgroundColor: focused ? '#0D986A' : 'white',
   borderRadius: 10,
 });
 
@@ -52,7 +52,7 @@ const BottomTabs = () => {
           shadowRadius: 4.65,
         },
         headerStyle: {
-          backgroundColor: 'green',
+          backgroundColor: 'white',
         },
         headerTitleStyle: {
           paddingHorizontal: '40%',

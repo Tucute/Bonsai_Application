@@ -1,26 +1,7 @@
-import * as React from 'react';
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import BottomTabs from './src/screens/BottomTab/BottomTabs';
-const Stack = createNativeStackNavigator();
+import React from 'react';
+import Navigate from './src/navigations/Navigate';
 
-function App() {
-  return (
-    
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="BottomTabs"
-          component={BottomTabs}></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+export default function App() {
+  return <Navigate />;
 }
 
-const styles = StyleSheet.create({
-  
-});
-
-export default App;

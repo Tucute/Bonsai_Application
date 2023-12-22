@@ -1,12 +1,12 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import Home from './Home';
 import HealthTab from './HealthTab';
 import NotificationTab from './NotificationTab';
 import E_commerTab from './E_commerTab';
 import SettingTab from './SettingTab';
-
+import WishList from './WishList';
 const Tab = createBottomTabNavigator();
 
 const generateTabBarButtonStyle = (focused: boolean) => ({
@@ -78,15 +78,18 @@ const BottomTabs = () => {
             />
           ),
           headerRight: () => (
-            <Image
-              source={require('../../assets/img_detail/brings.png')}
-              style={{
-                width: 20,
-                height: 28,
-                marginRight: 10,
-              }}
-            />
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
           ),
+
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -102,6 +105,33 @@ const BottomTabs = () => {
         name="Health"
         component={HealthTab}
         options={{
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -116,6 +146,33 @@ const BottomTabs = () => {
         name="Notification"
         component={NotificationTab}
         options={{
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -134,6 +191,33 @@ const BottomTabs = () => {
         name="E_commer"
         component={E_commerTab}
         options={{
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -148,10 +232,78 @@ const BottomTabs = () => {
         name="Setting"
         component={SettingTab}
         options={{
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
                 source={require('../../assets/img_bottomTab/Recommendations.png')}
+                style={generateTabBarIconStyle(focused)}
+              />
+            </View>
+          ),
+        }}
+      />
+           <Tab.Screen
+        name="WishList"
+        component={WishList}
+        options={{
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({focused}) => (
+            <View style={generateTabBarButtonStyle(focused)}>
+              <Image
+                source={require('../../assets/img_bottomTab/tym.png')}
                 style={generateTabBarIconStyle(focused)}
               />
             </View>

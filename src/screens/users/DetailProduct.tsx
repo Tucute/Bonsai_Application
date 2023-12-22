@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import BottomTabs from '../BottomTab/BottomTabs';
 const DetailProduct = () => {
@@ -66,8 +66,8 @@ const DetailProduct = () => {
           </View>
           <View>
             <Image
-              source={require('../../assets/img_detail/Intersect.png')}
-              style={{width: 212, height: 190}}
+              source={require('../../assets/img_detail/Intersectss.png')}
+              style={{width: 252, height: 220}}
             />
           </View>
         </View>
@@ -113,7 +113,7 @@ const DetailProduct = () => {
             justifyContent: 'center',
             marginVertical: 10,
           }}>
-          <View
+          <TouchableOpacity
             style={{
               width: '90%',
               height: 48,
@@ -147,7 +147,7 @@ const DetailProduct = () => {
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <BottomTabs/>

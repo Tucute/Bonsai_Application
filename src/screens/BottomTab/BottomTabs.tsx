@@ -32,8 +32,7 @@ const BottomTabs = () => {
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: true,
-        
-        
+
         tabBarStyle: {
           position: 'absolute',
           bottom: 0,
@@ -63,7 +62,31 @@ const BottomTabs = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: '',
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <Image
+              source={require('../../assets/img_detail/brings.png')}
+              style={{
+                width: 20,
+                height: 28,
+                marginRight: 10,
+              }}
+            />
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -74,6 +97,7 @@ const BottomTabs = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="Health"
         component={HealthTab}

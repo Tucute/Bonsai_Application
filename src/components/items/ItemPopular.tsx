@@ -1,17 +1,19 @@
-import { StyleSheet, Text, View , Image} from 'react-native'
+import { StyleSheet, Text, View , Image, TouchableOpacity} from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 const ItemPopular = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.dropped}>
-    <View style={styles.droppedTree}>
+    <TouchableOpacity style={styles.droppedTree} onPress={()=>navigation.navigate("DetailProduct")}>
       <Image
         source={require('../../assets/justDropped/img.png')}
         style={styles.droppedImg}
       />
       <Text style={styles.nameTree}>Dose Media</Text>
       <Text>$92.99 USD</Text>
-    </View>
+    </TouchableOpacity>
     <View style={styles.droppedTree}>
       <Image
         source={require('../../assets/justDropped/img1.png')}

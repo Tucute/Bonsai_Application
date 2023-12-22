@@ -11,7 +11,8 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
+const navigation = useNavigation();
 export default function SignIn({navigation}: any) {
   const passwordRef: any = useRef();
   return (
@@ -54,7 +55,7 @@ export default function SignIn({navigation}: any) {
             />
           </View>
           <Text style={styles.forgetPass}>Forget Password?</Text>
-          <TouchableOpacity style={styles.buttonLogin}>
+          <TouchableOpacity style={styles.buttonLogin} onPress={()=>navigation.navigate("Home")}>
             <Text style={styles.textLgoin}>Log In</Text>
           </TouchableOpacity>
           <View style={styles.signupNav}>

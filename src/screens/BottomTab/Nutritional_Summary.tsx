@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
 import React from 'react';
-const NotificationTab = () => {
+const Nutritional_Summary = () => {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black'}}>
@@ -12,7 +12,7 @@ const NotificationTab = () => {
     );
   };
   
-  export default NotificationTab;
+  export default Nutritional_Summary;
   
   const styles = StyleSheet.create({});
   

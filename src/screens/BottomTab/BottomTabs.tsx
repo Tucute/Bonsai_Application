@@ -180,7 +180,7 @@ const BottomTabs = () => {
                 style={{
                   width: 40,
                   height: 30,
-                  tintColor: focused ? 'white' : 'yellow',
+                  tintColor: focused ? 'white' : '#F0D64D',
                 }}
               />
             </View>
@@ -269,7 +269,7 @@ const BottomTabs = () => {
           ),
         }}
       />
-           <Tab.Screen
+           {/* <Tab.Screen
         name="WishList"
         component={WishList}
         options={{
@@ -309,7 +309,7 @@ const BottomTabs = () => {
             </View>
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

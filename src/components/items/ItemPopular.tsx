@@ -18,7 +18,7 @@ interface CarouselItem {
   promotion_price: string;
 }
 const ItemPopular = () => {
-  function shuffleArray(array:any) {
+  function shuffleArray(array: any) {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -33,9 +33,9 @@ const ItemPopular = () => {
   return (
     <View style={styles.dropped}>
       <FlatList
-         data={shuffledData.slice(0, 3)} 
-         keyExtractor={(item) => item.id.toString()}
-         renderItem={({ item }) => (
+        data={shuffledData.slice(0, 3)}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => (
           <TouchableOpacity
             style={styles.droppedTree}
             onPress={() => navigation.navigate('DetailProduct')}>
@@ -48,7 +48,16 @@ const ItemPopular = () => {
               style={styles.droppedImg}
             />
             <Text style={styles.nameTree}>{item.name}</Text>
-            <Text>${item.promotion_price}</Text>
+            <Text>
+            {item.promotion_price === 0
+        ? <Text style={styles.price}>${item.price}</Text>
+        : <Text style={styles.price}>${item.promotion_price}</Text>
+      }
+
+      {item.promotion_price !== 0 && (
+        <Text style={styles.originalPrice}>${item.price}</Text>
+      )}
+            </Text>
           </TouchableOpacity>
         )}
         horizontal
@@ -67,7 +76,7 @@ const styles = StyleSheet.create({
   },
   droppedTree: {
     width: 150,
-    height: "auto",
+    height: 'auto',
     marginHorizontal: 10,
     alignItems: 'center',
     borderRadius: 10,
@@ -95,6 +104,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     fontSize: 15,
-    marginHorizontal:5
+    marginHorizontal: 5,
+  },
+  originalPrice: {
+    textDecorationLine: 'line-through',
+    color: 'red',
+  },
+  price: {
+    color: '#002140',
+    fontSize: 12,
   },
 });

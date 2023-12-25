@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const E_commerTab = () => {
+const Recommendations = () => {
   return (
     <View>
-      <Text>E-commerTab</Text>
+      <Text> Setting</Text>
     </View>
   )
 }
 
-export default E_commerTab
+export default Recommendations
 
 const styles = StyleSheet.create({})

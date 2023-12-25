@@ -3,9 +3,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import Home from './Home';
 import HealthTab from './HealthTab';
-import NotificationTab from './NotificationTab';
-import E_commerTab from './E_commerTab';
-import SettingTab from './SettingTab';
+import Nutritional_Summary from './Nutritional_Summary';
+import Plant_Store from './Plant_Store';
+import Recommendations from './Recommendations';
 import WishList from './WishList';
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +31,7 @@ const BottomTabs = () => {
       initialRouteName="Home"
       screenOptions={{
         tabBarShowLabel: false,
-        headerShown: true,
+        headerShown: false,
 
         tabBarStyle: {
           position: 'absolute',
@@ -143,8 +143,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Notification"
-        component={NotificationTab}
+        name="Nutritional_Summary"
+        component={Nutritional_Summary}
         options={{
           headerTitleStyle: {
             display: 'none',
@@ -188,8 +188,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="E_commer"
-        component={E_commerTab}
+        name="Plant_Store"
+        component={Plant_Store}
         options={{
           headerTitleStyle: {
             display: 'none',
@@ -229,8 +229,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Setting"
-        component={SettingTab}
+        name="Recommendations"
+        component={Recommendations}
         options={{
           headerTitleStyle: {
             display: 'none',

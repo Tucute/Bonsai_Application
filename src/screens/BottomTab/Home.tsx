@@ -13,6 +13,7 @@ import ItemProductPopular from '../../components/items/ItemProductSale';
 import ItemPopular from '../../components/items/ItemPopular';
 import useAutoplay from '../../hooks/useAutoplay';
 import useFetchData from '../../hooks/useFetchData';
+
 const {width} = Dimensions.get('window');
 interface CarouselItem {
   id: number;
@@ -20,7 +21,7 @@ interface CarouselItem {
   description: string;
   price: string;
   image: number | string;
-  promotion_price:string;
+  promotion_price: string;
 }
 const Home = () => {
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
@@ -29,7 +30,7 @@ const Home = () => {
 
   useAutoplay(carouselData.length, currentIndex, setCurrentIndex);
   useFetchData(setCarouselData);
- 
+
   return (
     <ScrollView>
       <View style={styles.containerHome}>
@@ -53,7 +54,7 @@ const Home = () => {
                   <Text style={styles.contentdescription}>
                     {item.description}
                   </Text>
-                  <Text style={styles.content}>{item.price}</Text>
+                  {/* <Text style={styles.content}>{item.price}</Text> */}
                 </View>
               </ImageBackground>
             </View>
@@ -68,7 +69,7 @@ const Home = () => {
           autoplay={true}
         />
         <View style={styles.titlefield}>
-          <Text style={styles.contentitle}>Product Popular</Text>
+          <Text style={styles.contentitle}>Just Dropped</Text>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <ItemPopular />
@@ -78,7 +79,6 @@ const Home = () => {
           <Text style={styles.contentitle}>Product Sale</Text>
           <View style={styles.popularproduct}>
             <ItemProductPopular />
-            
           </View>
         </View>
       </View>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   img: {
     width: 345,
     height: 308,
-    borderRadius:20
+    borderRadius: 20,
   },
   content: {
     color: 'white',

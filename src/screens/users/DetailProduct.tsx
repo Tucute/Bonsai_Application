@@ -1,9 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View, ScrollView} from 'react-native';
 import React from 'react';
 import BottomTabs from '../BottomTab/BottomTabs';
-const DetailProduct = () => {
+
+const DetailProduct = ({route}:any) => {
+  const {product}= route.params;
   return (
-    <View style={styles.DetailContainer}>
+    <ScrollView style={styles.DetailContainer}>
       <View style={styles.InfoDetail}>
         <View>
           <View style={styles.contextDetail}>
@@ -31,7 +33,7 @@ const DetailProduct = () => {
                 color: '#435B71',
                 marginHorizontal: 20,
               }}>
-              Monstera Adansonii
+              {product.name}
             </Text>
           </View>
         </View>
@@ -47,7 +49,7 @@ const DetailProduct = () => {
               <Text style={{fontSize: 17, color: '#002140'}}>$ 14</Text>
             </View>
             <View style={{marginVertical: 20}}>
-              <Text style={{fontSize: 12, color: '#435B71'}}>size</Text>
+              <Text style={{fontSize: 12, color: '#435B71'}}>SIZE</Text>
               <Text style={{fontSize: 17, color: '#002140'}}>5' h</Text>
             </View>
             <View>
@@ -66,8 +68,12 @@ const DetailProduct = () => {
           </View>
           <View>
             <Image
-              source={require('../../assets/img_detail/Intersectss.png')}
-              style={{width: 252, height: 220}}
+               source={
+                typeof product.image === 'number'
+                  ? product.image
+                  : {uri: product.image as string}
+              }
+              style={{width: 152, height: 160}}
             />
           </View>
         </View>
@@ -102,9 +108,7 @@ const DetailProduct = () => {
         <View style={{marginHorizontal: 20}}>
           <Text style={{fontSize: 16, color: '#002140'}}>About</Text>
           <Text style={{fontSize: 11, color: '#002140', marginVertical: 10}}>
-            The Monstera Adansonii grows best in a well-draining Aroid mix using
-            bark, perlite, peat moss, and charcoal. Keep your plant in bright
-            indirect light and humidity .
+            {product.description}
           </Text>
         </View>
         <View
@@ -143,15 +147,15 @@ const DetailProduct = () => {
               <View>
                 <Text
                   style={{fontSize: 17, fontWeight: 'bold', color: 'white'}}>
-                  $ 15
+                  {product.promotion_price !== product.price ? `$${product.promotion_price}` : `$${product.price}`}
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
         </View>
       </View>
-      <BottomTabs/>
-    </View>
+     
+    </ScrollView>
     
   );
 };

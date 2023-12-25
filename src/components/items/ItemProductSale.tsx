@@ -5,9 +5,11 @@ import {
   Image,
   ImageBackground,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import useFetchData from '../../hooks/useFetchData';
+import {useNavigation} from '@react-navigation/native';
 interface CarouselItem {
   id: number;
   name: string;
@@ -16,14 +18,18 @@ interface CarouselItem {
   image: number | string;
   promotion_price: string;
 }
+
 const ItemProductSale = () => {
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
   useFetchData(setCarouselData);
+  const navigation = useNavigation();
   return (
     <FlatList
       data={carouselData}
       renderItem={({item}) => (
-        <View style={styles.popularTree}>
+        <TouchableOpacity
+          style={styles.popularTree}
+          onPress={() => navigation.navigate('DetailProduct', {product: item})}>
           <Image
             source={
               typeof item.image === 'number'
@@ -38,10 +44,10 @@ const ItemProductSale = () => {
               <Text style={styles.slogan}>Monstera family</Text>
             </View>
             <Text style={styles.prices}>
-              {item.promotion_price === 0
+              {item.promotion_price === item.price
                 ? `$${item.price}`
                 : `$${item.promotion_price}`}
-              {item.promotion_price !== 0 && (
+              {item.promotion_price !== item.price && (
                 <Text style={styles.originalPrice}>${item.price}</Text>
               )}
             </Text>
@@ -53,7 +59,7 @@ const ItemProductSale = () => {
                 style={styles.plusImg}></Image>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       )}
     />
   );

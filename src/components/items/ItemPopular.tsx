@@ -38,7 +38,9 @@ const ItemPopular = () => {
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.droppedTree}
-            onPress={() => navigation.navigate('DetailProduct')}>
+            onPress={() =>
+              navigation.navigate('DetailProduct', {product: item})
+            }>
             <Image
               source={
                 typeof item.image === 'number'
@@ -49,14 +51,15 @@ const ItemPopular = () => {
             />
             <Text style={styles.nameTree}>{item.name}</Text>
             <Text>
-            {item.promotion_price === 0
-        ? <Text style={styles.price}>${item.price}</Text>
-        : <Text style={styles.price}>${item.promotion_price}</Text>
-      }
+              {item.promotion_price === item.price ? (
+                <Text style={styles.price}>${item.price}</Text>
+              ) : (
+                <Text style={styles.price}>${item.promotion_price}</Text>
+              )}
 
-      {item.promotion_price !== 0 && (
-        <Text style={styles.originalPrice}>${item.price}</Text>
-      )}
+              {item.promotion_price !== item.price && (
+                <Text style={styles.originalPrice}>${item.price}</Text>
+              )}
             </Text>
           </TouchableOpacity>
         )}

@@ -1,7 +1,6 @@
 import React from 'react';
-import BonsaiList from './src/screens/sellers/products';
-//import ManagementOrder from './src/screens/sellers/products/ManagementOrder';
+import Navigate from './src/navigations/Navigate';
 
 export default function App() {
-  return <BonsaiList />;
+  return <Navigate />;
 }

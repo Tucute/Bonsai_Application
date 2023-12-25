@@ -265,7 +265,7 @@ function Root() {
           options={{
             drawerIcon: ({color, size}) => (
               <Image
-                source={require('../assets/img_bottomTab/Recommendations.png')}
+                source={require('../assets/images/Vector.png')}
                 style={{width: size, height: size, tintColor: color}}
               />
             ),

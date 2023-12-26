@@ -1,40 +1,75 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  Button,
-  TouchableOpacity,
   Image,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  Dimensions,
 } from 'react-native';
-
+import Carousel from 'react-native-snap-carousel';
 import ItemProductPopular from '../../components/items/ItemProductSale';
 import ItemPopular from '../../components/items/ItemPopular';
+import useAutoplay from '../../hooks/useAutoplay';
+import useFetchData from '../../hooks/useFetchInfoTrees';
+
+const {width} = Dimensions.get('window');
+interface CarouselItem {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  image: number | string;
+  promotion_price: string;
+}
 const Home = () => {
-  return(
+  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
+  const carouselRef = useRef<Carousel<CarouselItem>>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useAutoplay(carouselData.length, currentIndex, setCurrentIndex);
+  useFetchData(setCarouselData);
+
+  return (
     <ScrollView>
       <View style={styles.containerHome}>
         <View style={styles.titlefield}>
           <Text style={styles.title}>Today</Text>
           <Text style={styles.contentitle}>New & Popular</Text>
         </View>
-        <View style={styles.imgTitle}>
-          <ImageBackground
-            source={require('../../assets/img_home/img.png')}
-            style={styles.img}>
-            <View style={styles.imgContent}>
-              <Text style={styles.content}>NEW IN</Text>
-              <Text style={styles.contentdescription}>
-                Nike SB Janoski QS Turbo Green Tie Dye Skate Shoes
-              </Text>
-              <Text style={styles.content}>$89.00 USD</Text>
+        <Carousel
+          data={carouselData}
+          renderItem={({item}) => (
+            <View style={styles.imgTitle}>
+              <ImageBackground
+                source={
+                  typeof item.image === 'number'
+                    ? item.image
+                    : {uri: item.image as string}
+                }
+                style={styles.img}>
+                <View style={styles.imgContent}>
+                  <Text style={styles.content}>{item.name}</Text>
+                  <Text style={styles.contentdescription}>
+                    {item.description}
+                  </Text>
+                  {/* <Text style={styles.content}>{item.price}</Text> */}
+                </View>
+              </ImageBackground>
             </View>
-          </ImageBackground>
-        </View>
+          )}
+          ref={carouselRef}
+          sliderWidth={width}
+          itemWidth={width - 30}
+          loop
+          autoplayInterval={3000}
+          enableSnap
+          onSnapToItem={index => setCurrentIndex(index)}
+          autoplay={true}
+        />
         <View style={styles.titlefield}>
-          <Text style={styles.contentitle}>Product Popular</Text>
+          <Text style={styles.contentitle}>Just Dropped</Text>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <ItemPopular />
@@ -43,8 +78,6 @@ const Home = () => {
         <View style={styles.titlefield}>
           <Text style={styles.contentitle}>Product Sale</Text>
           <View style={styles.popularproduct}>
-            <ItemProductPopular />
-            <ItemProductPopular />
             <ItemProductPopular />
           </View>
         </View>
@@ -77,8 +110,8 @@ const styles = StyleSheet.create({
   img: {
     width: 345,
     height: 308,
+    borderRadius: 20,
   },
-
   content: {
     color: 'white',
     fontWeight: 'bold',
@@ -92,12 +125,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
+    height: 80,
   },
   popularproduct: {
     marginTop: 5,
     marginBottom: 50,
   },
 });
-
 export default Home;
-

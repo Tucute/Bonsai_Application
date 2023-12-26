@@ -1,10 +1,12 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import Home from './Home';
-import HealthTab from './HealthTab';
-import NotificationTab from './NotificationTab';
-import SettingTab from './SettingTab';
+import HealthMonitor from './HealthMonitor';
+import Nutritional_Summary from './Nutritional_Summary';
+import Plant_Store from './Plant_Store';
+import Recommendations from './Recommendations';
+import WishList from './WishList';
 import CartScreen from '../users/Cart';
 
 const Tab = createBottomTabNavigator();
@@ -31,7 +33,7 @@ const BottomTabs: () => React.JSX.Element = () => {
       initialRouteName="Home"
       screenOptions={{
         tabBarShowLabel: false,
-        headerShown: true,
+        headerShown: false,
         tabBarStyle: {
           position: 'absolute',
           bottom: 0,
@@ -62,8 +64,33 @@ const BottomTabs: () => React.JSX.Element = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: '',
-          // eslint-disable-next-line react/no-unstable-nested-components
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -74,11 +101,38 @@ const BottomTabs: () => React.JSX.Element = () => {
           ),
         }}
       />
+
       <Tab.Screen
-        name="Health"
-        component={HealthTab}
+        name="HealthMonitor"
+        component={HealthMonitor}
         options={{
-          // eslint-disable-next-line react/no-unstable-nested-components
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -90,10 +144,36 @@ const BottomTabs: () => React.JSX.Element = () => {
         }}
       />
       <Tab.Screen
-        name="Notification"
-        component={NotificationTab}
+        name="Nutritional_Summary"
+        component={Nutritional_Summary}
         options={{
-          // eslint-disable-next-line react/no-unstable-nested-components
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -102,7 +182,7 @@ const BottomTabs: () => React.JSX.Element = () => {
                 style={{
                   width: 40,
                   height: 30,
-                  tintColor: focused ? 'white' : 'yellow',
+                  tintColor: focused ? 'white' : '#F0D64D',
                 }}
               />
             </View>
@@ -113,7 +193,33 @@ const BottomTabs: () => React.JSX.Element = () => {
         name="Cart"
         component={CartScreen}
         options={{
-          // eslint-disable-next-line react/no-unstable-nested-components
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -125,10 +231,36 @@ const BottomTabs: () => React.JSX.Element = () => {
         }}
       />
       <Tab.Screen
-        name="Setting"
-        component={SettingTab}
+        name="Recommendations"
+        component={Recommendations}
         options={{
-          // eslint-disable-next-line react/no-unstable-nested-components
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -139,11 +271,51 @@ const BottomTabs: () => React.JSX.Element = () => {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="WishList"
+        component={WishList}
+        options={{
+          headerTitleStyle: {
+            display: 'none',
+          },
+          headerTitle: props => (
+            <Image
+              source={require('../../assets/img_detail/Header.png')}
+              style={{
+                width: 150,
+                height: 50,
+                justifyContent: 'center', // Align vertically centered
+                marginHorizontal: 90,
+                alignItems: 'center',
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity>
+              <Image
+                source={require('../../assets/img_detail/brings.png')}
+                style={{
+                  width: 20,
+                  height: 28,
+                  marginRight: 10,
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({focused}) => (
+            <View style={generateTabBarButtonStyle(focused)}>
+              <Image
+                source={require('../../assets/img_bottomTab/tym.png')}
+                style={generateTabBarIconStyle(focused)}
+              />
+            </View>
+          ),
+        }}
+      /> */}
     </Tab.Navigator>
   );
 };
 
 export default BottomTabs;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const styles = StyleSheet.create({});

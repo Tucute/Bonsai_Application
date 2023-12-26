@@ -37,10 +37,11 @@ export default ItemPopularRecommendations;
 const styles = StyleSheet.create({
   pros: {
     height: 80,
-    width: '100%',
+    width: '90%',
     backgroundColor: '#F2F7FF',
     borderRadius: 10,
     marginVertical: 10,
+    marginHorizontal:20
   },
   Content: {
     flexDirection: 'row',

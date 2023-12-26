@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import useFetchData from '../../hooks/useFetchData';
+import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
 interface CarouselItem {
   id: number;
   name: string;
@@ -28,7 +28,7 @@ const ItemPopular = () => {
   }
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
   const shuffledData = shuffleArray(carouselData);
-  useFetchData(setCarouselData);
+  useFetchInfoTrees(setCarouselData);
   const navigation = useNavigation();
   return (
     <View style={styles.dropped}>

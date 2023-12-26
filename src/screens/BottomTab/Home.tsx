@@ -12,7 +12,7 @@ import Carousel from 'react-native-snap-carousel';
 import ItemProductPopular from '../../components/items/ItemProductSale';
 import ItemPopular from '../../components/items/ItemPopular';
 import useAutoplay from '../../hooks/useAutoplay';
-import useFetchData from '../../hooks/useFetchData';
+import useFetchData from '../../hooks/useFetchInfoTrees';
 
 const {width} = Dimensions.get('window');
 interface CarouselItem {

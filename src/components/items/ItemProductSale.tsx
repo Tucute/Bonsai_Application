@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import useFetchData from '../../hooks/useFetchData';
+import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
 import {useNavigation} from '@react-navigation/native';
 interface CarouselItem {
   id: number;
@@ -21,7 +21,7 @@ interface CarouselItem {
 
 const ItemProductSale = () => {
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  useFetchData(setCarouselData);
+  useFetchInfoTrees(setCarouselData);
   const navigation = useNavigation();
   return (
     <FlatList

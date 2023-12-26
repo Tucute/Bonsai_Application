@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 // import LandingPage from '../screens/LandingPage';
@@ -18,7 +12,7 @@ import {Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../screens/BottomTab/Home';
-import HealthTab from '../screens/BottomTab/HealthTab';
+import HealthMonitor from '../screens/BottomTab/HealthMonitor';
 import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
 import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
@@ -32,7 +26,6 @@ function Root() {
           name="Main"
           component={BottomTabs}
           options={{
-            
             headerStyle: {
               backgroundColor: 'white',
             },
@@ -101,10 +94,10 @@ function Root() {
             ),
           }}
         />
-   
+
         <Drawer.Screen
-          name="HealthTab"
-          component={HealthTab}
+          name="HealthMonitor"
+          component={HealthMonitor}
           options={{
             drawerIcon: ({color, size}) => (
               <Image
@@ -148,7 +141,7 @@ function Root() {
             drawerIcon: ({color, size}) => (
               <Image
                 source={require('../assets/img_bottomTab/subcription.png')}
-                style={{width: 25, height: 20, tintColor: "green"}}
+                style={{width: 25, height: 20, tintColor: 'green'}}
               />
             ),
             headerStyle: {
@@ -184,7 +177,6 @@ function Root() {
           name="Plant_Store"
           component={Plant_Store}
           options={{
-           
             drawerIcon: ({color, size}) => (
               <Image
                 source={require('../assets/img_bottomTab/Ecommerce.png')}

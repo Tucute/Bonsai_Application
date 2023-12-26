@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import Home from './Home';
-import HealthTab from './HealthTab';
+import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
 import Plant_Store from './Plant_Store';
 import Recommendations from './Recommendations';
@@ -102,8 +102,8 @@ const BottomTabs = () => {
       />
 
       <Tab.Screen
-        name="Health"
-        component={HealthTab}
+        name="HealthMonitor"
+        component={HealthMonitor}
         options={{
           headerTitleStyle: {
             display: 'none',
@@ -269,7 +269,7 @@ const BottomTabs = () => {
           ),
         }}
       />
-           {/* <Tab.Screen
+      {/* <Tab.Screen
         name="WishList"
         component={WishList}
         options={{

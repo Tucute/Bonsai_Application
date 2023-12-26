@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,13 +7,13 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
-  ScrollView,
+  ScrollView
 } from 'react-native';
-import React from 'react';
+
 import ItemProductPopular from '../../components/items/ItemProductSale';
 import ItemPopular from '../../components/items/ItemPopular';
 const Home = () => {
-  return (
+  return(
     <ScrollView>
       <View style={styles.containerHome}>
         <View style={styles.titlefield}>
@@ -36,24 +37,21 @@ const Home = () => {
           <Text style={styles.contentitle}>Product Popular</Text>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-           <ItemPopular/>
+            <ItemPopular />
           </ScrollView>
         </View>
         <View style={styles.titlefield}>
           <Text style={styles.contentitle}>Product Sale</Text>
           <View style={styles.popularproduct}>
-            <ItemProductPopular/>
-            <ItemProductPopular/>
-            <ItemProductPopular/>
+            <ItemProductPopular />
+            <ItemProductPopular />
+            <ItemProductPopular />
           </View>
         </View>
       </View>
     </ScrollView>
   );
 };
-
-export default Home;
-
 const styles = StyleSheet.create({
   containerHome: {
     flex: 1,
@@ -100,3 +98,6 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
 });
+
+export default Home;
+

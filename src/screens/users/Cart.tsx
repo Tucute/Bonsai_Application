@@ -1,78 +1,91 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-
-const CartScreen = () => {
+import ItemProductCart from '../../components/items/ItemProductCart';
+const CartScreen = ({navigation}: any) => {
+  const [quantity, setQuantity] = useState(1);
+  const plusQuantity = () => setQuantity(prev => prev + 1);
+  const minusQuantity = () => setQuantity(prev => prev - 1);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Shopping Bag</Text>
       <View style={styles.sectionItem}>
-        <View style={styles.item}>
-          <Image
-            style={styles.imageProduct}
-            source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsKgkKoRe3tc_HKjRlEpdP1bjDueprBn6GdxDHuGbwP2HFQIDucLM7BwqeNZ9754zvMc&usqp=CAU',
-            }}
-          />
-          <View style={styles.middleSection}>
-            <View>
-              <Text style={styles.name}>Name</Text>
-              <Text style={styles.subname}>SubName</Text>
-            </View>
-            <View style={styles.updateQuantity}>
-              <TouchableOpacity style={styles.plus}>
-                <Text>+</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantity}>2</Text>
-              <TouchableOpacity style={styles.plus}>
-                <Text>-</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.lastSection}>
-            <Text style={styles.price}>2000000 VND</Text>
+        <ItemProductCart />
+        <ItemProductCart />
+      </View>
+      <View style={styles.applyCouponSection}>
+        <View style={styles.applyCoupon}>
+          <View style={styles.viewIcon}>
             <Image
-              style={styles.iconRemove}
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/3405/3405244.png',
-              }}
+              style={styles.imgIcon}
+              source={require('../../assets/img_cart/ApplyCoupon.png')}
             />
           </View>
+          <Text style={styles.titleCoupon}>Apply Coupon</Text>
+          <Text style={styles.textCoupon}>coupon code</Text>
         </View>
-        <View style={styles.item}>
-          <Image
-            style={styles.imageProduct}
-            source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsKgkKoRe3tc_HKjRlEpdP1bjDueprBn6GdxDHuGbwP2HFQIDucLM7BwqeNZ9754zvMc&usqp=CAU',
-            }}
-          />
-          <View style={styles.middleSection}>
-            <View>
-              <Text style={styles.name}>Name</Text>
-              <Text style={styles.subname}>SubName</Text>
-            </View>
-            <View style={styles.updateQuantity}>
-              <TouchableOpacity style={styles.plus}>
-                <Text>+</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantity}>2</Text>
-              <TouchableOpacity style={styles.plus}>
-                <Text>-</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.lastSection}>
-            <Text style={styles.price}>2000000 VND</Text>
+        <View style={styles.applyDelivery}>
+          <View style={styles.viewIcon}>
             <Image
-              style={styles.iconRemove}
+              style={styles.imgIcon}
+              source={require('../../assets/img_cart/Delivery.png')}
+            />
+          </View>
+          <View style={styles.viewTextCoupon}>
+            <Text style={styles.titleCoupon}>Delivery</Text>
+            <Text>Order above $50 to get </Text>
+            <Text>
+              Free Delivery
+              <Text style={styles.subTextDelivery}> Shop for more $20 </Text>
+            </Text>
+          </View>
+          <Text style={styles.priceCoupon}>$ 15</Text>
+        </View>
+      </View>
+      <View style={styles.lastSection}>
+        <View style={styles.viewItem}>
+          <View style={styles.viewTitle}>
+            <Text style={styles.textViewTitle}>Saved for later</Text>
+            <Text style={styles.textViewTitle}>3 items</Text>
+          </View>
+          <View style={styles.viewItemInfo}>
+            <Image
+              style={styles.imgItemInfo}
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/3405/3405244.png',
+                uri: 'https://i.pinimg.com/originals/f3/b5/a3/f3b5a307b7a7080f7bbcde7ec3a5fbb5.jpg',
               }}
             />
+            <View style={styles.viewMiddleSection}>
+              <Text style={styles.titleItem}>Large Snake Zylanica</Text>
+              <View style={styles.updateQuantity}>
+                <TouchableOpacity style={styles.plus} onPress={plusQuantity}>
+                  <Text style={styles.icon}>+</Text>
+                </TouchableOpacity>
+                <Text style={styles.quantity}>{quantity}</Text>
+                <TouchableOpacity style={styles.plus} onPress={minusQuantity}>
+                  <Text style={styles.icon}>-</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.viewLastSection}>
+              <Text style={styles.titleItem}>$ 60</Text>
+              <Text>Move to cart</Text>
+            </View>
           </View>
         </View>
       </View>
-      <View style={styles.applyCoupon}>
-        <Text>fdfds</Text>
+      <View style={styles.viewCheckout}>
+        <TouchableOpacity
+          style={styles.btnCheckout}
+          onPress={() => navigation.navigate('checkout')}>
+          <View style={styles.viewbtnCheckout}>
+            <Image
+              style={styles.imgCheckout}
+              source={require('../../assets/img_cart/IconCheckout.png')}
+            />
+            <Text style={styles.titleCheckout}>Checkout</Text>
+          </View>
+          <Text style={styles.priceCheckout}>$ 60</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -80,49 +93,122 @@ const CartScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     color: '#000',
   },
   sectionItem: {
-    paddingVertical: 10,
+    flex: 3,
+    marginTop: 10,
+    marginBottom: 10,
   },
-  item: {
-    borderRadius: 15,
-    marginTop: 15,
+  applyCouponSection: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  applyCoupon: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  viewIcon: {
+    backgroundColor: '#DCE8D6',
+    padding: 10,
+    borderRadius: 100,
+  },
+  imgIcon: {
+    width: 40,
+    height: 40,
+  },
+  titleCoupon: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+    width: 160,
+  },
+  textCoupon: {
+    color: '#6A6A6A8F',
+    borderBottomWidth: 1,
+  },
+  applyDelivery: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  viewTextCoupon: {
+    flexDirection: 'column',
+  },
+  subTextDelivery: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  priceCoupon: {
+    top: -18,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  lastSection: {
+    flex: 2,
+  },
+  viewItem: {
+    backgroundColor: '#FFEDCA',
+    marginVertical: 20,
+    justifyContent: 'space-between',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  viewTitle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#DCE8D6',
-    width: 349,
-    height: 103,
+    marginBottom: 15,
   },
-  imageProduct: {
-    borderRadius: 15,
-    width: 100,
-    height: 100,
+  textViewTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#0D986A',
+  },
+  viewItemInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  imgItemInfo: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
     objectFit: 'cover',
   },
-  middleSection: {
-    justifyContent: 'space-around',
-    height: '100%',
+  viewMiddleSection: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 50,
+    marginLeft: -10,
   },
-  name: {
-    color: '#002140',
-    fontSize: 14,
-    fontWeight: '600',
+  titleItem: {
+    fontWeight: 'bold',
+    color: '#000',
+    fontSize: 15,
   },
-  subname: {
-    color: '#002140',
-    fontWeight: '400',
-    fontSize: 12,
+  viewLastSection: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 50,
   },
   updateQuantity: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   quantity: {
     fontWeight: 'bold',
@@ -136,23 +222,39 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center',
   },
-  lastSection: {
-    height: '100%',
-    justifyContent: 'space-around',
-    alignItems: 'flex-end',
-    marginRight: 10,
+  icon: {
+    color: '#000',
+    fontWeight: 'bold',
   },
-  iconRemove: {
-    width: 20,
-    height: 20,
-    // fontWeight: 'bold',
+  viewCheckout: {
+    flex: 1.7,
   },
-  price: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  applyCoupon: {
+  btnCheckout: {
+    backgroundColor: '#0D986A',
     flexDirection: 'row',
+    borderRadius: 100,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+  },
+  viewbtnCheckout: {
+    marginLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  imgCheckout: {
+    width: 30,
+    height: 30,
+  },
+  titleCheckout: {
+    color: '#fff',
+    fontSize: 18,
+    paddingLeft: 20,
+  },
+  priceCheckout: {
+    fontSize: 20,
+    color: '#fff',
+    marginRight: 10,
   },
 });
 export default CartScreen;

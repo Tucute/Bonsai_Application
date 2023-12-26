@@ -1,11 +1,11 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import Home from './Home';
 import HealthTab from './HealthTab';
 import NotificationTab from './NotificationTab';
-import E_commerTab from './E_commerTab';
 import SettingTab from './SettingTab';
+import CartScreen from '../users/Cart';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ const generateTabBarButtonStyle = (focused: boolean) => ({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: focused ? '#0D986A' : 'white',
-  borderRadius: 10,
+  borderRadius: 15,
 });
 
 const generateTabBarIconStyle = (focused: boolean) => ({
@@ -25,15 +25,13 @@ const generateTabBarIconStyle = (focused: boolean) => ({
   tintColor: focused ? 'white' : 'gray',
 });
 
-const BottomTabs = () => {
+const BottomTabs: () => React.JSX.Element = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: true,
-        
-        
         tabBarStyle: {
           position: 'absolute',
           bottom: 0,
@@ -58,12 +56,14 @@ const BottomTabs = () => {
           paddingHorizontal: '40%',
         },
       }}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{position: 'absolute', backgroundColor: 'black'}}>
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
           tabBarLabel: '',
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -78,6 +78,7 @@ const BottomTabs = () => {
         name="Health"
         component={HealthTab}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -92,10 +93,12 @@ const BottomTabs = () => {
         name="Notification"
         component={NotificationTab}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
                 source={require('../../assets/img_bottomTab/subcription.png')}
+                // eslint-disable-next-line react-native/no-inline-styles
                 style={{
                   width: 40,
                   height: 30,
@@ -107,9 +110,10 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="E_commer"
-        component={E_commerTab}
+        name="Cart"
+        component={CartScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -124,6 +128,7 @@ const BottomTabs = () => {
         name="Setting"
         component={SettingTab}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -140,4 +145,5 @@ const BottomTabs = () => {
 
 export default BottomTabs;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const styles = StyleSheet.create({});

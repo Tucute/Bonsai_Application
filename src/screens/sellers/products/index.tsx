@@ -1,8 +1,16 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import useBonsai, {BonsaiType} from '../../../hooks/useBonsai';
 
-const BonsaiList: React.FC = () => {
+const BonsaiList: React.FC = ({navigation}: any) => {
   const {dataBonsai, deleteBonsai} = useBonsai();
   const delelteItem = (id: string) => () => {
     deleteBonsai(id);
@@ -14,13 +22,20 @@ const BonsaiList: React.FC = () => {
         <Image style={styles.itemImage} source={{uri: item.image}} />
         <View style={styles.detailItem}>
           <Text style={styles.itemName}>{item.name}</Text>
-          <Text style={styles.itemPrice}>Price: {item.price},000 vnd</Text>
+          <Text style={styles.itemPrice}>Price: {item.price}</Text>
           <Text style={styles.itemPromotionPrice}>
             Promotion price: {item.promotion_price}
           </Text>
         </View>
         <View style={styles.listAction}>
-          <Pressable style={styles.buttonAction}>
+          <Pressable
+            style={styles.buttonAction}
+            onPress={() =>
+              navigation.navigate('ManageBonsai', {
+                mode: 'update',
+                bonsaiId: item.id,
+              })
+            }>
             <Image
               style={styles.imageEdit}
               source={require('../../../assets/images/edit.png')}
@@ -40,13 +55,15 @@ const BonsaiList: React.FC = () => {
   return (
     <>
       <View style={styles.button}>
-        <Pressable style={styles.actionAdd}>
+        <TouchableOpacity
+          style={styles.actionAdd}
+          onPress={() => navigation.navigate('ManageBonsai', {mode: 'add'})}>
           <Image
             style={styles.imageAdd}
             source={require('../../../assets/images/add.png')}
           />
           <Text style={styles.textAdd}>Add new</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={dataBonsai}
@@ -60,9 +77,9 @@ const BonsaiList: React.FC = () => {
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    //backgroundColor: 'red',
+    padding: 10,
+    backgroundColor: '#0D986A',
+    marginBottom: 20,
   },
   itemImage: {
     width: 100,
@@ -89,18 +106,19 @@ const styles = StyleSheet.create({
     tintColor: 'tomato',
   },
   imageDelete: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
     tintColor: 'red',
   },
   imageEdit: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
     tintColor: 'blue',
   },
   listAction: {
-    gap: 15,
+    gap: 20,
     flexDirection: 'column',
+    justifyContent: 'center',
   },
   actionAdd: {
     flexDirection: 'row',
@@ -118,8 +136,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'flex-end',
-    paddingRight: 20,
-    paddingTop: 20,
+    padding: 20,
   },
 });
 

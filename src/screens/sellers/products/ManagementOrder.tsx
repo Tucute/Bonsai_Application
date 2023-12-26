@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 import useBonsai, {BonsaiType} from '../../../hooks/useBonsai';
-import SelectDropdown from 'react-native-select-dropdown';
+import {useRoute} from '@react-navigation/native';
+import DropdownSelect from './catalog';
 
 interface BonsaiFormProps {
   onSubmitProduct: (product: Partial<BonsaiType>) => void;
@@ -13,6 +14,13 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
   initialProduct,
 }) => {
   const {addBonsai, updateBonsai} = useBonsai();
+  const route = useRoute();
+  const routeParams = route.params || {mode: 'add'};
+  const mode =
+    typeof routeParams === 'object' && 'mode' in routeParams
+      ? routeParams.mode
+      : 'add';
+  const safeMode: string = typeof mode === 'string' ? mode : 'add';
 
   const [name, setName] = useState(initialProduct?.name || '');
   const [image, setImage] = useState(initialProduct?.image?.toString() || '');
@@ -26,14 +34,14 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
 
   useEffect(() => {
     setName(initialProduct?.name || '');
-    setPrice(initialProduct?.image?.toString() || '');
-    setPrice(initialProduct?.description?.toString() || '');
+    setImage(initialProduct?.image?.toString() || '');
+    setDescription(initialProduct?.description?.toString() || '');
     setPrice(initialProduct?.price?.toString() || '');
-    setPrice(initialProduct?.promotion_price?.toString() || '');
+    setPromotionPrice(initialProduct?.promotion_price?.toString() || '');
   }, [initialProduct]);
 
   const handleSubmitProduct = async () => {
-    const newBonsai: Omit<BonsaiType, 'id'> = {
+    const productData: Partial<BonsaiType> = {
       name: name,
       image: image,
       description: description,
@@ -42,12 +50,16 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
     };
 
     try {
-      await addBonsai(newBonsai);
+      if (safeMode === 'update' && initialProduct) {
+        await updateBonsai(initialProduct.id, productData);
+      } else {
+        await addBonsai(productData as Omit<BonsaiType, 'id'>);
+      }
     } catch (error) {
       console.error(error);
     }
 
-    onSubmitProduct(newBonsai);
+    onSubmitProduct(productData);
 
     setName('');
     setImage('');
@@ -56,7 +68,7 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
     setPromotionPrice('');
   };
 
-  const data = ['app', 'orange', 'banana', 'mango', 'avocado', 'fruitstart'];
+  const data = ['app', 'orange', 'banana'];
 
   const formatMoney = (value: string): string => {
     const numberValue = parseFloat(value.replace(/[^\d]/g, '')) || 0;
@@ -108,29 +120,10 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
         keyboardType="numeric"
       />
       <Text style={styles.label}>Catalog</Text>
-      <SelectDropdown
-        data={data}
-        onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
-        }}
-        defaultButtonText="Select catalog"
-        buttonTextAfterSelection={selectedItem => {
-          return selectedItem;
-        }}
-        buttonStyle={styles.buttonDropdown}
-        buttonTextStyle={styles.buttonTextDropdown}
-        //renderDropdownIcon={}
-        dropdownIconPosition={'right'}
-        rowTextForSelection={item => {
-          return item;
-        }}
-        rowStyle={styles.rowDropdown}
-        rowTextStyle={styles.rowTextDropdown}
-      />
-
+      <DropdownSelect data={data} />
       <Pressable style={styles.addButton} onPress={handleSubmitProduct}>
         <Text style={styles.buttonText}>
-          {initialProduct ? 'Update' : 'Add'} Bonsai
+          {safeMode === 'update' ? 'Update' : 'Add'} Bonsai
         </Text>
       </Pressable>
     </View>
@@ -175,27 +168,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-  },
-  buttonDropdown: {
-    width: '100%',
-    height: 40,
-    backgroundColor: '#FFF',
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  buttonTextDropdown: {
-    color: 'red',
-    textAlign: 'left',
-  },
-  rowDropdown: {
-    backgroundColor: 'blue',
-    borderBottomColor: 'green',
-  },
-  rowTextDropdown: {
-    color: 'black',
-    textAlign: 'left',
   },
   textPlacehoder: {
     color: 'red',

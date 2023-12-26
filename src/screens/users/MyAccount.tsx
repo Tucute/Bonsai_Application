@@ -22,108 +22,52 @@ const MyAccount = () => {
         </View>
         <View>
           <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
+            <View style={styles.namecontain}>
               <Image source={require('../../assets/img_profile/balance.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>Balance</Text>
+              <Text style={styles.name}>Balance</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
+            <View style={styles.namecontain}>
               <Image source={require('../../assets/img_profile/data.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>Sync</Text>
+              <Text style={styles.name}>Sync</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
           </View>
-          <View
-            style={{
-              width: '100%',
-              height: 1,
-              backgroundColor: 'black',
-              marginVertical: 10,
-            }}></View>
+          <View style={styles.line}></View>
           <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
-              <Image source={require('../../assets/img_profile/language.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>Language</Text>
+            <View style={styles.namecontain}>
+              <Image
+                source={require('../../assets/img_profile/language.png')}
+              />
+              <Text style={styles.name}>Language</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
+            <View style={styles.namecontain}>
               <Image source={require('../../assets/img_profile/sync.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>Security</Text>
+              <Text style={styles.name}>Security</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
           </View>
-          <View
-            style={{
-              width: '100%',
-              height: 1,
-              backgroundColor: 'black',
-              marginVertical: 10,
-            }}></View>
+          <View style={styles.line}></View>
           <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
+            <View style={styles.namecontain}>
               <Image source={require('../../assets/img_profile/any.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>About</Text>
+              <Text style={styles.name}>About</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
-              <Image source={require('../../assets/img_profile/feedback.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>Feedback</Text>
+            <View style={styles.namecontain}>
+              <Image
+                source={require('../../assets/img_profile/feedback.png')}
+              />
+              <Text style={styles.name}>Feedback</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
           </View>
-          <View
-            style={{
-              width: '100%',
-              height: 1,
-              backgroundColor: 'black',
-              marginVertical: 10,
-            }}></View>
+          <View style={styles.line}></View>
           <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 10,
-              }}>
+            <View style={styles.namecontain}>
               <Image source={require('../../assets/img_profile/logout.png')} />
-              <Text style={{fontSize: 14, color: '#000000'}}>Log out</Text>
+              <Text style={styles.name}>Log out</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
             </View>
           </View>
@@ -175,5 +119,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#ffffff',
     fontWeight: 'bold',
+  },
+  name: {
+    fontSize: 14,
+    color: '#000000',
+  },
+  line: {
+    width: '100%',
+    height: 1,
+    backgroundColor: 'black',
+    marginVertical: 10,
+  },
+  namecontain: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
   },
 });

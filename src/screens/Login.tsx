@@ -14,15 +14,11 @@ import {
 } from 'react-native';
 import {Formik} from 'formik';
 import {SignupSchema} from './Validation';
-import useLogin, {Account} from '../hooks/useLogin';
+import useLogin from '../hooks/useLogin';
 
 export const Login = ({navigation}: any) => {
   const passwordRef: any = useRef();
-  const {mutation} = useLogin({navigation});
-
-  const handleLogin = (data: Account) => {
-    mutation.mutate(data);
-  };
+  const {handleLogin} = useLogin({navigation});
 
   return (
     <Formik

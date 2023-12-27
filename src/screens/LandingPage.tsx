@@ -5,7 +5,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function LandingPage({navigation}: any) {
+  const handleGetStart = async () => {
+    try {
+      const getToken = await AsyncStorage.getItem('token');
+      if (getToken !== null) {
+        console.log(getToken);
+        navigation.navigate('HomePage');
+      } else {
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ImageBackground
       source={require('../assets/images/Landing.png')}
@@ -13,9 +27,7 @@ export default function LandingPage({navigation}: any) {
       style={styles.image}>
       <Text style={styles.title}>BonSai Application</Text>
       <Text style={styles.text}>Farm at your fingertips</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('SignIn')}>
+      <TouchableOpacity style={styles.button} onPress={handleGetStart}>
         <Text style={styles.buttonStart}>Get Started </Text>
       </TouchableOpacity>
     </ImageBackground>

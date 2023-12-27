@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     width: 450,
     height:50,
     marginHorizontal: 20,
+    marginRight:60
   },
   titlemenu: {
     height: 33,

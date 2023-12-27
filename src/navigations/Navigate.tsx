@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 // import LandingPage from '../screens/LandingPage';
 // import SignIn from '../screens/SignIn';
 // import SignUp from '../screens/SignUp';
@@ -17,8 +18,10 @@ import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
 import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
+import SearchScreen from '../screens/users/SearchScreen';
 const Drawer = createDrawerNavigator();
 function Root() {
+  const navigation = useNavigation();
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Drawer.Navigator initialRouteName="Main">
@@ -44,14 +47,30 @@ function Root() {
               display: 'none',
             },
             headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
+              <View style={{flexDirection: 'row', marginRight: 10}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("SearchScreen");
+                  }}>
+                  <Image
+                    source={require('../assets/img_detail/search.png')}
+                    style={{
+                      width: 20,
+                      height: 18,
+                      marginRight: 10,
+                      marginHorizontal: 20,
+                    }}
+                  />
+                </TouchableOpacity>
+                <Image
+                  source={require('../assets/img_detail/Shoppingcart.png')}
+                  style={{
+                    width: 20,
+                    height: 18,
+                    marginRight: 10,
+                  }}
+                />
+              </View>
             ),
           }}
         />
@@ -307,6 +326,39 @@ export default function Navigate() {
         <Stack.Screen
           name="DetailProduct"
           component={DetailProduct}
+          options={{
+            headerStyle: {
+              backgroundColor: 'white',
+            },
+            headerTitle: props => (
+              <Image
+                source={require('../assets/img_detail/Header.png')}
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: 'center',
+                  marginHorizontal: 40,
+                }}
+              />
+            ),
+            headerTitleStyle: {
+              display: 'none', // Ẩn tiêu đề của màn hình
+            },
+            headerRight: () => (
+              <Image
+                source={require('../assets/img_detail/Shoppingcart.png')}
+                style={{
+                  width: 20,
+                  height: 18,
+                  marginRight: 10,
+                }}
+              />
+            ),
+          }}
+        />
+         <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
           options={{
             headerStyle: {
               backgroundColor: 'white',

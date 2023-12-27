@@ -26,6 +26,7 @@ const DetailProduct = ({route}:any) => {
           </View>
           <View>
             <Text
+              numberOfLines={2}
               style={{
                 fontSize: 35,
                 fontWeight: 'bold',
@@ -73,7 +74,7 @@ const DetailProduct = ({route}:any) => {
                   ? product.image
                   : {uri: product.image as string}
               }
-              style={{width: 152, height: 160}}
+              style={{width: 152, height: 160, borderRadius:10}}
             />
           </View>
         </View>

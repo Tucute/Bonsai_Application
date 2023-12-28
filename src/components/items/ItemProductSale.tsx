@@ -20,9 +20,10 @@ interface CarouselItem {
 }
 
 const ItemProductPopular = () => {
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  useFetchInfoTrees(setCarouselData);
   const navigation = useNavigation();
+
+  const carouselData = useFetchInfoTrees();
+
   return (
     <FlatList
       data={carouselData}
@@ -36,9 +37,10 @@ const ItemProductPopular = () => {
                 ? item.image
                 : {uri: item.image as string}
             }
-            style={styles.popularImg}
-          >
-            <TouchableOpacity style={styles.tym} onPress={()=>navigation.navigate('WishList')}>
+            style={styles.popularImg}>
+            <TouchableOpacity
+              style={styles.tym}
+              onPress={() => navigation.navigate('WishList')}>
               <Image
                 source={require('../../assets/img_recommendations/tym.png')}
                 style={styles.imgtym}
@@ -144,8 +146,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft:"70%",
-    marginTop:"70%"
+    marginLeft: '70%',
+    marginTop: '70%',
   },
   imgtym: {
     alignItems: 'center',

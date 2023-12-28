@@ -26,10 +26,11 @@ const ItemPopular = () => {
     }
     return newArray;
   }
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  const shuffledData = shuffleArray(carouselData);
-  useFetchInfoTrees(setCarouselData);
+
+  const shuffledData = shuffleArray(useFetchInfoTrees());
+
   const navigation = useNavigation();
+
   return (
     <View style={styles.dropped}>
       <FlatList

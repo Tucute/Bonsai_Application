@@ -15,14 +15,15 @@ interface CarouselItem {
   name: string;
   description: string;
   price: string;
-  image: number | string;
+  image: string;
   promotion_price: string;
 }
 
-const ItemProductSale = () => {
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  useFetchInfoTrees(setCarouselData);
+const ItemProductPopular = () => {
   const navigation = useNavigation();
+
+  const carouselData = useFetchInfoTrees();
+
   return (
     <FlatList
       data={carouselData}
@@ -30,14 +31,22 @@ const ItemProductSale = () => {
         <TouchableOpacity
           style={styles.popularTree}
           onPress={() => navigation.navigate('DetailProduct', {product: item})}>
-          <Image
+          <ImageBackground
             source={
               typeof item.image === 'number'
                 ? item.image
                 : {uri: item.image as string}
             }
-            style={styles.popularImg}
-          />
+            style={styles.popularImg}>
+            <TouchableOpacity
+              style={styles.tym}
+              onPress={() => navigation.navigate('WishList')}>
+              <Image
+                source={require('../../assets/img_recommendations/tym.png')}
+                style={styles.imgtym}
+              />
+            </TouchableOpacity>
+          </ImageBackground>
           <View style={styles.infotree}>
             <View>
               <Text style={styles.nametree}>{item.name}</Text>
@@ -65,7 +74,7 @@ const ItemProductSale = () => {
   );
 };
 
-export default ItemProductSale;
+export default ItemProductPopular;
 
 const styles = StyleSheet.create({
   popularTree: {
@@ -129,5 +138,19 @@ const styles = StyleSheet.create({
   originalPrice: {
     textDecorationLine: 'line-through',
     color: 'red',
+  },
+  tym: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '70%',
+    marginTop: '70%',
+  },
+  imgtym: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

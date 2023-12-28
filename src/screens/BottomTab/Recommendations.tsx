@@ -1,73 +1,88 @@
-import {ScrollView, StyleSheet, Text, View, Image} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+} from 'react-native';
 import React from 'react';
-import ItemPopularRecommendations from '../../components/items/ItemPopularRecommendations';
+import ItemProductPopular from '../../components/items/ItemProductSale';
+
 const Recommendations = () => {
-  return (
-    <View style={styles.recommendationsContainer}>
-      <View>
-        <Text style={styles.title}>Recommendations</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-          <View style={styles.menu}>
-            <View style={styles.titlemenu}>
-              <Text style={styles.titles}>All</Text>
-            </View>
-            <View style={styles.titlemenu}>
-              <Text style={styles.titles}>Cacti</Text>
-            </View>
-            <View style={styles.titlemenu}>
-              <Text style={styles.titles}>In pots</Text>
-            </View>
-            <View style={styles.titlemenu}>
-              <Text style={styles.titles}>Dried flowers</Text>
-            </View>
-            <View style={styles.titlemenu}>
-              <Text style={styles.titles}>In pots</Text>
-            </View>
-          </View>
-        </ScrollView>
-        <ScrollView>
-          <View>
-            <View style={styles.popular}>
-              <Text style={styles.titlepopular}>Popularity</Text>
-              <Image
-                source={require('../../assets/img_profile/ArrowDown.png')}
-              />
-            </View>
-            <View style={styles.productpopular}>
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-            </View>
-          </View>
-          <View style={styles.free}>
-            <View style={styles.shipping}>
-              <View>
-                <Text style={styles.name}>Free shipping</Text>
-                <View style={styles.order}>
-                  <Text style={styles.when}>When ordering</Text>
-                  <View style={styles.percent}>
-                    <Text style={styles.namepercent}>from 40$</Text>
+  const data = [{key: 'productRecommendation'}];
+  const renderItem = ({item}: any) => {
+    
+    switch (item.key) {
+      case 'productRecommendation':
+        return (
+          <View style={styles.recommendationsContainer}>
+            <View>
+              <Text style={styles.title}>Recommendations</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                <View style={styles.menu}>
+                  <View style={styles.titlemenu}>
+                    <Text style={styles.titles}>All</Text>
+                  </View>
+                  <View style={styles.titlemenu}>
+                    <Text style={styles.titles}>Cacti</Text>
+                  </View>
+                  <View style={styles.titlemenu}>
+                    <Text style={styles.titles}>In pots</Text>
+                  </View>
+                  <View style={styles.titlemenu}>
+                    <Text style={styles.titles}>Dried flowers</Text>
+                  </View>
+                  <View style={styles.titlemenu}>
+                    <Text style={styles.titles}>In pots</Text>
                   </View>
                 </View>
-              </View>
-              <View>
-                <Image source={require('../../assets/img_profile/Saly.png')} />
-              </View>
+              </ScrollView>
+                <View>
+                  <View style={styles.popular}>
+                    <Text style={styles.titlepopular}>Popularity</Text>
+                    <Image
+                      source={require('../../assets/img_profile/ArrowDown.png')}
+                    />
+                  </View>
+                </View>
+                <View style={styles.free}>
+                  <View style={styles.shipping}>
+                    <View>
+                      <Text style={styles.name}>Free shipping</Text>
+                      <View style={styles.order}>
+                        <Text style={styles.when}>When ordering</Text>
+                        <View style={styles.percent}>
+                          <Text style={styles.namepercent}>from 40$</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View>
+                      <Image
+                        source={require('../../assets/img_profile/Saly.png')}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View>
+                  <View style={styles.popularproduct}>
+                    <ItemProductPopular />
+                  </View>
+                </View>
+             
             </View>
           </View>
-          <View>
-            <View style={styles.productpopular}>
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-              <ItemPopularRecommendations />
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    </View>
+        );
+      default:
+        return <View />;
+    }
+  };
+  return (
+    <FlatList
+      data={data}
+      keyExtractor={item => item.key}
+      renderItem={renderItem}
+    />
   );
 };
 
@@ -92,8 +107,9 @@ const styles = StyleSheet.create({
   menu: {
     flexDirection: 'row',
     width: 450,
-    height:50,
+    height: 50,
     marginHorizontal: 20,
+    marginRight: 60,
   },
   titlemenu: {
     height: 33,
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal:10
+    marginHorizontal: 10,
   },
   shipping: {
     flexDirection: 'row',
@@ -157,5 +173,10 @@ const styles = StyleSheet.create({
   namepercent: {
     fontSize: 12,
     color: 'white',
+  },
+  popularproduct: {
+    marginTop: 5,
+    marginBottom: 50,
+    marginHorizontal:20
   },
 });

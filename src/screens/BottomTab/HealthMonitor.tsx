@@ -10,7 +10,7 @@ import {
 import React from 'react';
 const HealthMonitor = () => {
   return (
-    <View style={styles.healthContainer}>
+    <ScrollView style={styles.healthContainer}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <View style={styles.monstera}>
           <View style={styles.monsteracontainer}>
@@ -170,7 +170,7 @@ const HealthMonitor = () => {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFEDCA',
     borderBottomLeftRadius: 40,
     marginVertical: 10,
+    marginBottom:60
   },
   monsteracontainer: {
     flexDirection: 'row',

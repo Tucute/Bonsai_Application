@@ -16,6 +16,7 @@
     "@react-navigation/stack": "^6.3.20",
     "deprecated-react-native-prop-types": "^5.0.0",
     "fbjs": "^3.0.5",
+    "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "0.73.1",
     "react-native-elements": "^3.4.3",

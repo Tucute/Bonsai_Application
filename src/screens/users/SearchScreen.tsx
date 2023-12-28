@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
-import { TextInput, View, StyleSheet, FlatList, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState} from 'react';
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 interface SearchBarProps {
   searchText: string;
-  onSearchChange: (text: string) => void;
+}
+interface NavigationParams {
+  product: TreesData;
 }
 interface TreesData {
   id: string;
@@ -13,26 +23,81 @@ interface TreesData {
   image: number | string;
   promotion_price: string;
 }
-const SearchScreen: React.FC<SearchBarProps> = ({ searchText}) => {
+const SearchScreen = ({searchText}: any) => {
   const navigation = useNavigation();
   const [treesData, setTreesData] = useState<TreesData[]>([]);
   const [searchResults, setSearchResults] = useState<TreesData[]>([]);
   const fetchTreesData = async () => {
     try {
-      const response = await fetch('https://63a571e42a73744b008e23ee.mockapi.io/user24');
+      const response = await fetch(
+        'https://63a571e42a73744b008e23ee.mockapi.io/user24',
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data. Status: ${response.status}`);
+      }
+
+      const contentType = response.headers.get('Content-Type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Invalid content type. Expected JSON.');
+      }
+
       const data = await response.json();
       setTreesData(data);
-    } catch (error) {
-      console.error('Error fetching trees data:', error);
+    } catch (error: any) {
+      console.error('Error fetching trees data:', error.message);
     }
   };
+
   const handleSearchChange = (text: string) => {
-    const filteredResults = treesData.filter((item) =>
-      item.name.toLowerCase().includes(text.toLowerCase())
+    const filteredResults = treesData.filter(item =>
+      item.name.toLowerCase().includes(text.toLowerCase()),
     );
     setSearchResults(filteredResults);
   };
-fetchTreesData();
+  fetchTreesData();
+
+  const renderItem = ({item}: any) => {
+    return (
+      <View>
+        <TouchableOpacity
+          style={styles.popularTree}
+          onPress={() => navigation.navigate('DetailProduct', {product: item})}>
+          <Image
+            source={
+              typeof item.image === 'number'
+                ? item.image
+                : {uri: item.image as string}
+            }
+            style={styles.popularImg}
+          />
+          <View style={styles.infotree}>
+            <View>
+              <Text style={styles.nametree}>{item.name}</Text>
+              <Text style={styles.slogan}>Monstera family</Text>
+            </View>
+            <Text style={styles.prices}>
+              {item.promotion_price === item.price
+                ? `$${item.price}`
+                : `$${item.promotion_price}`}
+              {item.promotion_price !== item.price && (
+                <Text style={styles.originalPrice}>${item.price}</Text>
+              )}
+            </Text>
+          </View>
+          <View style={styles.plus}>
+            <View style={styles.imgPlus}>
+              <Image
+                source={require('../../assets/img_popular/plus.png')}
+                style={styles.plusImg}
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.SearchBarContainer}>
       <View style={styles.SearchInput}>
@@ -45,44 +110,8 @@ fetchTreesData();
       </View>
       <FlatList
         data={searchResults}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.popularTree}
-            onPress={() => navigation.navigate('DetailProduct', { product: item })}
-          >
-            <Image
-              source={
-                typeof item.image === 'number'
-                  ? item.image
-                  : { uri: item.image as string }
-              }
-              style={styles.popularImg}
-            />
-            <View style={styles.infotree}>
-              <View>
-                <Text style={styles.nametree}>{item.name}</Text>
-                <Text style={styles.slogan}>Monstera family</Text>
-              </View>
-              <Text style={styles.prices}>
-                {item.promotion_price === item.price
-                  ? `$${item.price}`
-                  : `$${item.promotion_price}`}
-                {item.promotion_price !== item.price && (
-                  <Text style={styles.originalPrice}>${item.price}</Text>
-                )}
-              </Text>
-            </View>
-            <View style={styles.plus}>
-              <View style={styles.imgPlus}>
-                <Image
-                  source={require('../../assets/img_popular/plus.png')}
-                  style={styles.plusImg}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
+        keyExtractor={item => item.id}
+        renderItem={renderItem}
       />
     </View>
   );
@@ -98,7 +127,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     paddingLeft: 10,
-    width:"100%",
+    width: '100%',
     backgroundColor: '#DCE8D6',
   },
   SearchInput: {
@@ -107,15 +136,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginHorizontal: 10,
     marginVertical: 10,
-    
   },
   popularTree: {
-    width: '100%',
+    width: '90%',
     height: 100,
     backgroundColor: '#DCE8D6',
     borderRadius: 10,
     flexDirection: 'row',
     marginVertical: 5,
+    marginHorizontal: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import React from 'react';
-import ItemProductWishlist from '../../components/items/ItemProductWishlist';
+
 const WishList = () => {
   return (
     <ScrollView>
@@ -79,10 +79,7 @@ const WishList = () => {
         <View style={styles.titlefield}>
           <Text style={styles.contentitle}>Product WishList</Text>
           <View style={styles.popularproduct}>
-            <ItemProductWishlist />
-            <ItemProductWishlist />
-            <ItemProductWishlist />
-            <ItemProductWishlist />
+           
           </View>
         </View>
       </View>

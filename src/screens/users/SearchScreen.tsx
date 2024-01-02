@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TextInput,
   View,
@@ -23,6 +23,7 @@ interface TreesData {
   image: number | string;
   promotion_price: string;
 }
+import { debounce } from 'lodash';
 const SearchScreen = ({searchText}: any) => {
   const navigation = useNavigation();
   const [treesData, setTreesData] = useState<TreesData[]>([]);
@@ -49,13 +50,22 @@ const SearchScreen = ({searchText}: any) => {
     }
   };
 
-  const handleSearchChange = (text: string) => {
-    const filteredResults = treesData.filter(item =>
+  const searchTrees = async (text: string) => {
+    // Tìm kiếm theo text ở đây
+    return treesData.filter(item =>
       item.name.toLowerCase().includes(text.toLowerCase()),
     );
-    setSearchResults(filteredResults);
   };
-  fetchTreesData();
+
+  const handleSearchChange = debounce(async (text: string) => {
+    const filteredResults = await searchTrees(text);
+    setSearchResults(filteredResults);
+  }, 300);
+
+  useEffect(() => {
+    fetchTreesData();
+  }, []);
+
 
   const renderItem = ({item}: any) => {
     return (

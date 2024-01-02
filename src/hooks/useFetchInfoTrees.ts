@@ -4,12 +4,12 @@ interface CarouselItem {
   name: string;
   description: string;
   price: string;
-  image:  string;
+  image: string;
   promotion_price: string;
 }
-const useFetchInfoTrees = (
-  setCarouselData: React.Dispatch<React.SetStateAction<CarouselItem[]>>,
-) => {
+
+const useFetchInfoTrees = () => {
+  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,6 +19,9 @@ const useFetchInfoTrees = (
         const response =await fetch(
           'https://63a571e42a73744b008e23ee.mockapi.io/user24'
         );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         if (Array.isArray(data)) {
           setCarouselData(data);
@@ -31,5 +34,6 @@ const useFetchInfoTrees = (
     };
     fetchData();
   }, []);
+  return carouselData;
 };
 export default useFetchInfoTrees;

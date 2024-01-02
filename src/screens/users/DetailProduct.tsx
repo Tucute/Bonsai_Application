@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View, ScrollView} from 'react-native';
 import React from 'react';
 import BottomTabs from '../BottomTab/BottomTabs';
+import AddToCartButton from '../../components/buttons/AddToCartButton';
 
 const DetailProduct = ({route}:any) => {
   const {product}= route.params;
@@ -117,41 +118,7 @@ const DetailProduct = ({route}:any) => {
             justifyContent: 'center',
             marginVertical: 10,
           }}>
-          <TouchableOpacity
-            style={{
-              width: '90%',
-              height: 48,
-              backgroundColor: '#0D986A',
-              borderRadius: 50,
-              justifyContent:"center"
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-              }}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: "space-between",
-                  flexDirection: 'row',
-                  width:100
-                }}>
-                <Image source={require('../../assets/img_detail/cart.png')} />
-                <Text
-                  style={{fontSize: 13, fontWeight: 'bold', color: 'white'}}>
-                  Add to Cart
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{fontSize: 17, fontWeight: 'bold', color: 'white'}}>
-                  {product.promotion_price !== product.price ? `$${product.promotion_price}` : `$${product.price}`}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <AddToCartButton item={product}/>
         </View>
       </View>
      

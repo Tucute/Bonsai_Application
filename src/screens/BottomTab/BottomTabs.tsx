@@ -6,7 +6,12 @@ import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
 import Plant_Store from './Plant_Store';
 import Recommendations from './Recommendations';
+
 import WishList from '../users/WishList';
+
+
+import CartScreen from '../users/Cart';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +21,7 @@ const generateTabBarButtonStyle = (focused: boolean) => ({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: focused ? '#0D986A' : 'white',
-  borderRadius: 10,
+  borderRadius: 15,
 });
 
 const generateTabBarIconStyle = (focused: boolean) => ({
@@ -26,14 +31,13 @@ const generateTabBarIconStyle = (focused: boolean) => ({
   tintColor: focused ? 'white' : 'gray',
 });
 
-const BottomTabs = () => {
+const BottomTabs: () => React.JSX.Element = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
-
         tabBarStyle: {
           position: 'absolute',
           bottom: 0,
@@ -58,6 +62,7 @@ const BottomTabs = () => {
           paddingHorizontal: '40%',
         },
       }}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{position: 'absolute', backgroundColor: 'black'}}>
       <Tab.Screen
         name="Home"
@@ -90,7 +95,6 @@ const BottomTabs = () => {
               />
             </TouchableOpacity>
           ),
-
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -178,6 +182,7 @@ const BottomTabs = () => {
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
                 source={require('../../assets/img_bottomTab/subcription.png')}
+                // eslint-disable-next-line react-native/no-inline-styles
                 style={{
                   width: 40,
                   height: 30,
@@ -189,8 +194,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Plant_Store"
-        component={Plant_Store}
+        name="Cart"
+        component={CartScreen}
         options={{
           headerTitleStyle: {
             display: 'none',

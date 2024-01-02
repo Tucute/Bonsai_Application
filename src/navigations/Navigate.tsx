@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import BottomTabs from '../screens/BottomTab/BottomTabs';
+import Checkout from '../screens/users/Checkout';
 import DetailProduct from '../screens/users/DetailProduct';
 import {Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -190,6 +191,7 @@ export default function Navigate() {
             ),
           }}
         />
+
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
@@ -289,6 +291,14 @@ export default function Navigate() {
             ),
           }}
         />
+
+        {/* <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SuccessSignup" component={SuccessSignup} /> */}
+        <Stack.Screen name="checkout" component={Checkout} />
+        {/* <Stack.Screen name="Home" component={Home} /> */}
+
       </Stack.Navigator>
     </NavigationContainer>
   );

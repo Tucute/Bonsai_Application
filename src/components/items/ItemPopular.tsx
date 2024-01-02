@@ -14,7 +14,7 @@ interface CarouselItem {
   name: string;
   description: string;
   price: string;
-  image: number | string;
+  image: string;
   promotion_price: string;
 }
 const ItemPopular = () => {

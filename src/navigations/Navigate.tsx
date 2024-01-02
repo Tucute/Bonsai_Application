@@ -5,6 +5,8 @@ import LandingPage from '../screens/LandingPage';
 import SignUp from '../screens/SignUp';
 import SuccessSignup from '../screens/SuccessSignup';
 import {Login} from '../screens/Login';
+import {useNavigation} from '@react-navigation/native';
+
 import BottomTabs from '../screens/BottomTab/BottomTabs';
 import Checkout from '../screens/users/Checkout';
 import DetailProduct from '../screens/users/DetailProduct';
@@ -17,8 +19,13 @@ import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
 import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import SearchScreen from '../screens/users/SearchScreen';
+import WishList from '../screens/BottomTab/WishList';
+
 const Drawer = createDrawerNavigator();
 function Root() {
+  const navigation = useNavigation();
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Drawer.Navigator initialRouteName="Main">
@@ -44,14 +51,30 @@ function Root() {
               display: 'none',
             },
             headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
+              <View style={{flexDirection: 'row', marginRight: 10}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('SearchScreen');
+                  }}>
+                  <Image
+                    source={require('../assets/img_detail/search.png')}
+                    style={{
+                      width: 20,
+                      height: 18,
+                      marginRight: 10,
+                      marginHorizontal: 20,
+                    }}
+                  />
+                </TouchableOpacity>
+                <Image
+                  source={require('../assets/img_detail/Shoppingcart.png')}
+                  style={{
+                    width: 20,
+                    height: 18,
+                    marginRight: 10,
+                  }}
+                />
+              </View>
             ),
           }}
         />
@@ -294,16 +317,20 @@ function Root() {
     </GestureHandlerRootView>
   );
 }
+const queryClient = new QueryClient();
+
 export default function Navigate() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
+      <QueryClientProvider client={queryClient}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
         <Stack.Screen name="HomePage" component={Home} />
         <Stack.Screen name="Login" component={Login} />
+        
         <Stack.Screen
           name="Root"
           component={Root}
@@ -342,7 +369,74 @@ export default function Navigate() {
             ),
           }}
         />
+        <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: 'white',
+            },
+            headerTitle: props => (
+              <Image
+                source={require('../assets/img_detail/Header.png')}
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: 'center',
+                  marginHorizontal: 40,
+                }}
+              />
+            ),
+            headerTitleStyle: {
+              display: 'none', // Ẩn tiêu đề của màn hình
+            },
+            headerRight: () => (
+              <Image
+                source={require('../assets/img_detail/Shoppingcart.png')}
+                style={{
+                  width: 20,
+                  height: 18,
+                  marginRight: 10,
+                }}
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="WishList"
+          component={WishList}
+          options={{
+            headerStyle: {
+              backgroundColor: 'white',
+            },
+            headerTitle: props => (
+              <Image
+                source={require('../assets/img_detail/Header.png')}
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: 'center',
+                  marginHorizontal: 40,
+                }}
+              />
+            ),
+            headerTitleStyle: {
+              display: 'none', // Ẩn tiêu đề của màn hình
+            },
+            headerRight: () => (
+              <Image
+                source={require('../assets/img_detail/Shoppingcart.png')}
+                style={{
+                  width: 20,
+                  height: 18,
+                  marginRight: 10,
+                }}
+              />
+            ),
+          }}
+        />
       </Stack.Navigator>
+      </QueryClientProvider>
     </NavigationContainer>
   );
 }

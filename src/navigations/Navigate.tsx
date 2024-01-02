@@ -19,8 +19,10 @@ import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
 import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SearchScreen from '../screens/users/SearchScreen';
 import WishList from '../screens/BottomTab/WishList';
+
 const Drawer = createDrawerNavigator();
 function Root() {
   const navigation = useNavigation();
@@ -315,10 +317,13 @@ function Root() {
     </GestureHandlerRootView>
   );
 }
+const queryClient = new QueryClient();
+
 export default function Navigate() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
+      <QueryClientProvider client={queryClient}>
       <Stack.Navigator>
         <Stack.Screen
           name="Root"
@@ -433,6 +438,7 @@ export default function Navigate() {
         <Stack.Screen name="checkout" component={Checkout} />
         {/* <Stack.Screen name="Home" component={Home} /> */}
       </Stack.Navigator>
+      </QueryClientProvider>
     </NavigationContainer>
   );
 }

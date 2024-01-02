@@ -70,11 +70,6 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
 
   const data = ['app', 'orange', 'banana'];
 
-  const formatMoney = (value: string): string => {
-    const numberValue = parseFloat(value.replace(/[^\d]/g, '')) || 0;
-    return numberValue.toLocaleString('en-US');
-  };
-
   return (
     <View style={styles.formContainer}>
       <Text style={styles.label}>Name</Text>
@@ -108,7 +103,7 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
       <TextInput
         style={styles.input}
         value={price}
-        onChangeText={text => setPrice(formatMoney(text))}
+        onChangeText={text => setPrice(text)}
         keyboardType="numeric"
       />
 
@@ -116,7 +111,7 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
       <TextInput
         style={styles.input}
         value={promotionPrice}
-        onChangeText={text => setPromotionPrice(formatMoney(text))}
+        onChangeText={text => setPromotionPrice(text)}
         keyboardType="numeric"
       />
       <Text style={styles.label}>Catalog</Text>

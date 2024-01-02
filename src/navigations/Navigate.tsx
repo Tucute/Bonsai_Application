@@ -1,13 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import LandingPage from '../screens/LandingPage';
-import SignIn from '../screens/SignIn';
-import SignUp from '../screens/SignUp';
-import SuccessSignup from '../screens/SuccessSignup';
 import ManagementOrder from '../screens/sellers/products/ManagementOrder';
-import BonsaiList from '../screens/sellers/products';
 import {useNavigation} from '@react-navigation/native';
 import BottomTabs from '../screens/BottomTab/BottomTabs';
 import Checkout from '../screens/users/Checkout';
@@ -23,9 +18,14 @@ import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
 import SearchScreen from '../screens/users/SearchScreen';
 import WishList from '../screens/BottomTab/WishList';
+import BonsaiList from '../screens/sellers/products';
+
 const Drawer = createDrawerNavigator();
+
 function Root() {
+
   const navigation = useNavigation();
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Drawer.Navigator initialRouteName="Main">
@@ -198,7 +198,7 @@ function Root() {
         />
         <Drawer.Screen
           name="Plant_Store"
-          component={Plant_Store}
+          component={BonsaiList}
           options={{
             drawerIcon: ({color, size}) => (
               <Image
@@ -322,8 +322,6 @@ export default function Navigate() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="BonsaiList" component={BonsaiList} />
-        <Stack.Screen name='ManageBonsai' component={ManagementOrder} />
         <Stack.Screen
           name="Root"
           component={Root}
@@ -348,7 +346,7 @@ export default function Navigate() {
               />
             ),
             headerTitleStyle: {
-              display: 'none', // Ẩn tiêu đề của màn hình
+              display: 'none',
             },
             headerRight: () => (
               <Image
@@ -396,46 +394,9 @@ export default function Navigate() {
             ),
           }}
         />
-        <Stack.Screen
-          name="WishList"
-          component={WishList}
-          options={{
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none', // Ẩn tiêu đề của màn hình
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
-        />
-
-        {/* <Stack.Screen name="LandingPage" component={LandingPage} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SuccessSignup" component={SuccessSignup} /> */}
+        <Stack.Screen name="WishList" component={WishList} />
         <Stack.Screen name="checkout" component={Checkout} />
-        {/* <Stack.Screen name="Home" component={Home} /> */}
+        <Stack.Screen name="ManagementOrder" component={ManagementOrder} />
       </Stack.Navigator>
     </NavigationContainer>
   );

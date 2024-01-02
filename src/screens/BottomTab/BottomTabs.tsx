@@ -4,9 +4,7 @@ import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import Home from './Home';
 import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
-import Plant_Store from './Plant_Store';
 import Recommendations from './Recommendations';
-import WishList from './WishList';
 import CartScreen from '../users/Cart';
 
 const Tab = createBottomTabNavigator();
@@ -57,9 +55,7 @@ const BottomTabs: () => React.JSX.Element = () => {
         headerTitleStyle: {
           paddingHorizontal: '40%',
         },
-      }}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{position: 'absolute', backgroundColor: 'black'}}>
+      }}>
       <Tab.Screen
         name="Home"
         component={Home}
@@ -73,7 +69,7 @@ const BottomTabs: () => React.JSX.Element = () => {
               style={{
                 width: 150,
                 height: 50,
-                justifyContent: 'center', // Align vertically centered
+                justifyContent: 'center',
                 marginHorizontal: 90,
                 alignItems: 'center',
               }}
@@ -156,7 +152,7 @@ const BottomTabs: () => React.JSX.Element = () => {
               style={{
                 width: 150,
                 height: 50,
-                justifyContent: 'center', // Align vertically centered
+                justifyContent: 'center',
                 marginHorizontal: 90,
                 alignItems: 'center',
               }}
@@ -202,7 +198,7 @@ const BottomTabs: () => React.JSX.Element = () => {
               style={{
                 width: 150,
                 height: 50,
-                justifyContent: 'center', // Align vertically centered
+                justifyContent: 'center',
                 marginHorizontal: 90,
                 alignItems: 'center',
               }}
@@ -243,7 +239,7 @@ const BottomTabs: () => React.JSX.Element = () => {
               style={{
                 width: 150,
                 height: 50,
-                justifyContent: 'center', // Align vertically centered
+                justifyContent: 'center',
                 marginHorizontal: 90,
                 alignItems: 'center',
               }}
@@ -271,47 +267,6 @@ const BottomTabs: () => React.JSX.Element = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="WishList"
-        component={WishList}
-        options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center', // Align vertically centered
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
-          tabBarIcon: ({focused}) => (
-            <View style={generateTabBarButtonStyle(focused)}>
-              <Image
-                source={require('../../assets/img_bottomTab/tym.png')}
-                style={generateTabBarIconStyle(focused)}
-              />
-            </View>
-          ),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };

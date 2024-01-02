@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const E_commerTab = () => {
+const CarouselItem = () => {
   return (
     <View>
-      <Text>E-commerTab</Text>
+      <Text>CarouselItem</Text>
     </View>
   )
 }
 
-export default E_commerTab
+export default CarouselItem
 
 const styles = StyleSheet.create({})

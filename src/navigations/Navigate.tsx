@@ -1,7 +1,10 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import LandingPage from '../screens/LandingPage';
+import SignUp from '../screens/SignUp';
+import SuccessSignup from '../screens/SuccessSignup';
+import {Login} from '../screens/Login';
 import {useNavigation} from '@react-navigation/native';
 import BottomTabs from '../screens/BottomTab/BottomTabs';
 import Checkout from '../screens/users/Checkout';
@@ -15,6 +18,7 @@ import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
 import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SearchScreen from '../screens/users/SearchScreen';
 import WishList from '../screens/users/WishList';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -24,7 +28,6 @@ interface OptionsScreenProps {
   backgroundColor?: string;
   tintColor?: string;
 }
-
 function Root() {
   const navigation = useNavigation();
   const Drawer = createDrawerNavigator();
@@ -148,11 +151,18 @@ function Root() {
     </GestureHandlerRootView>
   );
 }
+const queryClient = new QueryClient();
 export default function Navigate() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <QueryClientProvider client={queryClient}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
+        <Stack.Screen name="HomePage" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen
           name="Root"
           component={Root}
@@ -191,7 +201,6 @@ export default function Navigate() {
             ),
           }}
         />
-
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
@@ -291,15 +300,8 @@ export default function Navigate() {
             ),
           }}
         />
-
-        {/* <Stack.Screen name="LandingPage" component={LandingPage} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SuccessSignup" component={SuccessSignup} /> */}
-        <Stack.Screen name="checkout" component={Checkout} />
-        {/* <Stack.Screen name="Home" component={Home} /> */}
-
       </Stack.Navigator>
+      </QueryClientProvider>
     </NavigationContainer>
   );
 }

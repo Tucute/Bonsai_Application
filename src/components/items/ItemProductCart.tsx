@@ -1,38 +1,66 @@
 import React from 'react';
 import {View, Image, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import useCartStore from '../../store/useCartStore';
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  quantity: number;
+  price: number;
+  image: string;
+  promotion_price: number;
+}
+interface Item {
+  item: Product;
+}
+const ItemProductCart = ({item}: Item) => {
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const updatePlusQuantity = useCartStore((state) => state.updatePlusQuantity);
+  const updateMinusQuantity = useCartStore((state) => state.updateMinusQuantity);
 
-const ItemProductCart = () => {
+  const handleUpdatePlusQuantity = () => {
+    updatePlusQuantity(item.id);
+  };
+  const handleUpdateMinusQuantity = () => {
+    updateMinusQuantity(item.id);
+  };
+  const handleRemove = () => {
+    removeFromCart(item.id);
+  };
+
   return (
     <View style={styles.item}>
       <Image
         style={styles.imageProduct}
         source={{
-          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsKgkKoRe3tc_HKjRlEpdP1bjDueprBn6GdxDHuGbwP2HFQIDucLM7BwqeNZ9754zvMc&usqp=CAU',
+          uri: item.image,
         }}
       />
       <View style={styles.middleSection}>
         <View>
-          <Text style={styles.name}>Monstera Adansonii</Text>
+          <Text numberOfLines={2} style={styles.name}>{item.name}</Text>
           <Text style={styles.subname}>Monstera family</Text>
         </View>
         <View style={styles.updateQuantity}>
-          <TouchableOpacity style={styles.plus}>
+          <TouchableOpacity style={styles.plus} onPress={handleUpdatePlusQuantity}>
             <Text style={styles.icon}>+</Text>
           </TouchableOpacity>
-          <Text style={styles.quantity}>2</Text>
-          <TouchableOpacity style={styles.plus}>
+          <Text style={styles.quantity}>{item.quantity}</Text>
+          <TouchableOpacity style={styles.plus} onPress={handleUpdateMinusQuantity}>
             <Text style={styles.icon}>-</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.lastSection}>
-        <Text style={styles.price}>$ 3000</Text>
-        <Image
-          style={styles.iconRemove}
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/3405/3405244.png',
-          }}
-        />
+        <Text style={styles.price}>$ {item.price * item.quantity}</Text>
+        <TouchableOpacity onPress={handleRemove}>
+          <Image
+            style={styles.iconRemove}
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/512/3405/3405244.png',
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -57,7 +85,8 @@ const styles = StyleSheet.create({
   middleSection: {
     justifyContent: 'space-around',
     height: '100%',
-    marginLeft: -20,
+    width: 150,
+    paddingHorizontal: 10,
   },
   name: {
     color: '#000',

@@ -9,57 +9,132 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  Alert,
 } from 'react-native';
 import React from 'react';
-
+import {Formik} from 'formik';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Signup_Schema} from './Validation_Signup';
+interface InfoCus {
+  name: string;
+  age: number | null;
+  phone: number | null;
+  address: string;
+}
 export default function SignUp({navigation}: any) {
+  const handleSinup = async (data: InfoCus) => {
+    if (
+      data.name === '' ||
+      data.age === null ||
+      data.phone === null ||
+      data.address === ''
+    ) {
+      Alert.alert('Error', 'Fillout complete information !');
+    } else {
+      try {
+        const jsonValue = JSON.stringify(data);
+        await AsyncStorage.setItem('signUpInfo', jsonValue);
+        navigation.navigate('SuccessSignup');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <Image
-        style={styles.backgroundImage}
-        source={require('../assets/images/headerImage.jpg')}
-      />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.contentLogin}>
-          <View style={styles.itemLogo}>
-            <Image
-              source={require('../assets/images/logo-bonsai-cay-canh-28-1030x1030-removebg-preview.png')}
-              style={styles.logo}
-            />
-            <Text style={styles.textLogo}>BonSai - Provip</Text>
-          </View>
-          <View style={styles.textInput}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter User Name"
-              placeholderTextColor={'black'}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Age"
-              placeholderTextColor={'black'}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Phone Number"
-              placeholderTextColor={'black'}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Address"
-              placeholderTextColor={'black'}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.buttonLogin}
-            onPress={() => navigation.navigate('SuccessSignup')}>
-            <Text style={styles.textLgoin}>Next</Text>
-          </TouchableOpacity>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    <Formik
+      initialValues={{
+        name: '',
+        age: null,
+        phone: null,
+        address: '',
+      }}
+      validationSchema={Signup_Schema}
+      onSubmit={values => {
+        setTimeout(() => {
+          let data = {
+            name: values.name,
+            age: values.age,
+            phone: values.phone,
+            address: values.address,
+          };
+          handleSinup(data);
+        }, 200);
+      }}>
+      {({errors, touched, handleChange, handleBlur, handleSubmit, values}) => (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}>
+          <Image
+            style={styles.backgroundImage}
+            source={require('../assets/images/headerImage.jpg')}
+          />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.contentLogin}>
+              <View style={styles.itemLogo}>
+                <Image
+                  source={require('../assets/images/logo-bonsai-cay-canh-28-1030x1030-removebg-preview.png')}
+                  style={styles.logo}
+                />
+                <Text style={styles.textLogo}>BonSai Application</Text>
+              </View>
+              <View style={styles.textInput}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter User Name"
+                  placeholderTextColor={'black'}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  value={values.name}
+                />
+                {errors.name && touched.name ? (
+                  <Text style={styles.errorText}>* {errors.name}</Text>
+                ) : null}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Age"
+                  keyboardType="numeric"
+                  placeholderTextColor={'black'}
+                  onChangeText={handleChange('age')}
+                  onBlur={handleBlur('age')}
+                  value={values.age}
+                />
+                {errors.age && touched.age ? (
+                  <Text style={styles.errorText}>* {errors.age}</Text>
+                ) : null}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Phone Number"
+                  keyboardType="numeric"
+                  placeholderTextColor={'black'}
+                  onChangeText={handleChange('phone')}
+                  onBlur={handleBlur('phone')}
+                  value={values.phone}
+                />
+                {errors.phone && touched.phone ? (
+                  <Text style={styles.errorText}>* {errors.phone}</Text>
+                ) : null}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Address"
+                  placeholderTextColor={'black'}
+                  onChangeText={handleChange('address')}
+                  onBlur={handleBlur('address')}
+                  value={values.address}
+                />
+                {errors.address && touched.address ? (
+                  <Text style={styles.errorText}>* {errors.address}</Text>
+                ) : null}
+              </View>
+              <TouchableOpacity
+                style={styles.buttonLogin}
+                onPress={handleSubmit}>
+                <Text style={styles.textLgoin}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      )}
+    </Formik>
   );
 }
 
@@ -134,5 +209,11 @@ const styles = StyleSheet.create({
     height: '80%',
     borderBottomLeftRadius: 180,
     borderBottomRightRadius: 180,
+  },
+  errorText: {
+    fontWeight: 'bold',
+    color: 'red',
+    margin: 0,
+    padding: 0,
   },
 });

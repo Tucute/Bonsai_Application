@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -7,82 +8,54 @@ import {
   ImageBackground,
   ScrollView,
   Dimensions,
+  FlatList,
 } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
 import ItemProductPopular from '../../components/items/ItemProductSale';
 import ItemPopular from '../../components/items/ItemPopular';
-import useAutoplay from '../../hooks/useAutoplay';
-import useFetchData from '../../hooks/useFetchInfoTrees';
-
-const {width} = Dimensions.get('window');
-interface CarouselItem {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  image: number | string;
-  promotion_price: string;
-}
+import ItemNewPopular from '../../components/items/ItemNewPopular';
 const Home = () => {
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  const carouselRef = useRef<Carousel<CarouselItem>>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useAutoplay(carouselData.length, currentIndex, setCurrentIndex);
-  useFetchData(setCarouselData);
-
-  return (
-    <ScrollView>
-      <View style={styles.containerHome}>
-        <View style={styles.titlefield}>
-          <Text style={styles.title}>Today</Text>
-          <Text style={styles.contentitle}>New & Popular</Text>
-        </View>
-        <Carousel
-          data={carouselData}
-          renderItem={({item}) => (
-            <View style={styles.imgTitle}>
-              <ImageBackground
-                source={
-                  typeof item.image === 'number'
-                    ? item.image
-                    : {uri: item.image as string}
-                }
-                style={styles.img}>
-                <View style={styles.imgContent}>
-                  <Text style={styles.content}>{item.name}</Text>
-                  <Text style={styles.contentdescription}>
-                    {item.description}
-                  </Text>
-                  {/* <Text style={styles.content}>{item.price}</Text> */}
-                </View>
-              </ImageBackground>
-            </View>
-          )}
-          ref={carouselRef}
-          sliderWidth={width}
-          itemWidth={width - 30}
-          loop
-          autoplayInterval={3000}
-          enableSnap
-          onSnapToItem={index => setCurrentIndex(index)}
-          autoplay={true}
-        />
-        <View style={styles.titlefield}>
-          <Text style={styles.contentitle}>Just Dropped</Text>
-
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <ItemPopular />
-          </ScrollView>
-        </View>
-        <View style={styles.titlefield}>
-          <Text style={styles.contentitle}>Product Sale</Text>
-          <View style={styles.popularproduct}>
-            <ItemProductPopular />
-          </View>
-        </View>
+  const data = [
+    {key: 'productSale'},
+  ];
+  const renderHeader = () => (
+    <View>
+      <View style={styles.titlefield}>
+        <Text style={styles.title}>Today</Text>
+        <Text style={styles.contentitle}>New & Popular</Text>
       </View>
-    </ScrollView>
+
+      <ItemNewPopular />
+      <View style={styles.titlefield}>
+        <Text style={styles.contentitle}>Just Dropped</Text>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <ItemPopular />
+        </ScrollView>
+      </View>
+    </View>
+  );
+  const renderItem = ({item}: any) => {
+    switch (item.key) {
+      case 'productSale':
+        return (
+          <View style={styles.titlefield}>
+            <Text style={styles.contentitle}>Product Sale</Text>
+            <View style={styles.popularproduct}>
+              <ItemProductPopular />
+            </View>
+          </View>
+        );
+      default:
+        return <View />;
+    }
+  };
+  return (
+    <FlatList
+      data={data}
+      keyExtractor={item => item.key}
+      renderItem={renderItem}
+      ListHeaderComponent={renderHeader}
+    />
   );
 };
 const styles = StyleSheet.create({

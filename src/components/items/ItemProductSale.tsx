@@ -7,22 +7,73 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import axios from 'axios';
+import {create} from 'zustand';
 import React, {useState, useEffect} from 'react';
 import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface CarouselItem {
   id: number;
   name: string;
   description: string;
   price: string;
-  image: number | string;
+  image: string;
   promotion_price: string;
+  user_id:number
 }
 
-const ItemProductSale = () => {
+const ItemProductPopular = () => {
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
+  const [wishlist, setWishlist] = useState<CarouselItem[]>([]);
+  const [heartColor, setHeartColor] = useState<string>('black');
+
   useFetchInfoTrees(setCarouselData);
   const navigation = useNavigation();
+  const fetchData = async () => {
+    try {
+      const storedWishlist = await AsyncStorage.getItem('wishlist');
+      // console.log('Stored Wishlist:', storedWishlist);
+      if (storedWishlist) {
+        setWishlist(JSON.parse(storedWishlist));
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const handleAddToWishlist = async (item: CarouselItem) => {
+    const isAlreadyInWishlist = wishlist.some(
+      wishlistItem => wishlistItem.id === item.id,
+    );
+    if (!isAlreadyInWishlist) {
+      const userWishlist = wishlist.filter(
+        wishlistItem => wishlistItem.user_id === 3,
+      );
+      if (userWishlist.some(wishlistItem => wishlistItem.id === item.id)) {
+        setHeartColor('green');
+      } else {
+        setHeartColor('black');
+      }
+      const updatedWishlist = [...wishlist, item];
+      try {
+        await AsyncStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+        await axios.put(
+          'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlish/1',
+          {
+            user_id: 3,
+            itemWishList: updatedWishlist,
+            id: '1',
+          },
+        );
+        console.log('The data has been successfully updated to the API');
+      } catch (error) {
+        console.error('Error saving data to AsyncStorage:', error);
+      }
+    }
+  };
   return (
     <FlatList
       data={carouselData}
@@ -30,14 +81,31 @@ const ItemProductSale = () => {
         <TouchableOpacity
           style={styles.popularTree}
           onPress={() => navigation.navigate('DetailProduct', {product: item})}>
-          <Image
+          <ImageBackground
             source={
               typeof item.image === 'number'
                 ? item.image
                 : {uri: item.image as string}
             }
-            style={styles.popularImg}
-          />
+            style={styles.popularImg}>
+            <TouchableOpacity
+              style={styles.tym}
+              onPress={() => handleAddToWishlist(item)}>
+              <Image
+                source={require('../../assets/img_recommendations/tym.png')}
+                style={[
+                  styles.imgtym,
+                  {
+                    tintColor: wishlist.some(
+                      wishlistItem => wishlistItem.id === item.id,
+                    )
+                      ? 'green'
+                      : 'black',
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          </ImageBackground>
           <View style={styles.infotree}>
             <View>
               <Text style={styles.nametree}>{item.name}</Text>
@@ -65,7 +133,7 @@ const ItemProductSale = () => {
   );
 };
 
-export default ItemProductSale;
+export default ItemProductPopular;
 
 const styles = StyleSheet.create({
   popularTree: {
@@ -129,5 +197,20 @@ const styles = StyleSheet.create({
   originalPrice: {
     textDecorationLine: 'line-through',
     color: 'red',
+  },
+  tym: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '70%',
+    marginTop: '70%',
+  },
+  imgtym: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    
   },
 });

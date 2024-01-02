@@ -58,7 +58,6 @@ const BottomTabs: () => React.JSX.Element = () => {
           paddingHorizontal: '40%',
         },
       }}
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{position: 'absolute', backgroundColor: 'black'}}>
       <Tab.Screen
         name="Home"

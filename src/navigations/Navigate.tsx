@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import LandingPage from '../screens/LandingPage';
+import SignUp from '../screens/SignUp';
+import SuccessSignup from '../screens/SuccessSignup';
+import {Login} from '../screens/Login';
 import {useNavigation} from '@react-navigation/native';
-// import LandingPage from '../screens/LandingPage';
-// import SignIn from '../screens/SignIn';
-// import SignUp from '../screens/SignUp';
-// import SuccessSignup from '../screens/SuccessSignup';
+
 import BottomTabs from '../screens/BottomTab/BottomTabs';
 import Checkout from '../screens/users/Checkout';
 import DetailProduct from '../screens/users/DetailProduct';
@@ -82,7 +82,7 @@ function Root() {
           name="Home"
           component={Home}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({color, size}: any) => (
               <Image
                 source={require('../assets/img_bottomTab/Vector.png')}
                 style={{width: size, height: size, tintColor: color}}
@@ -122,7 +122,7 @@ function Root() {
           name="HealthMonitor"
           component={HealthMonitor}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({color, size}: any) => (
               <Image
                 source={require('../assets/img_bottomTab/health.png')}
                 style={{width: size, height: size, tintColor: color}}
@@ -161,7 +161,7 @@ function Root() {
           name="Nutritional_Summary"
           component={Nutritional_Summary}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({color, size}: any) => (
               <Image
                 source={require('../assets/img_bottomTab/subcription.png')}
                 style={{width: 25, height: 20, tintColor: 'green'}}
@@ -200,7 +200,7 @@ function Root() {
           name="Plant_Store"
           component={Plant_Store}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({color, size}: any) => (
               <Image
                 source={require('../assets/img_bottomTab/Ecommerce.png')}
                 style={{width: size, height: size, tintColor: color}}
@@ -239,7 +239,7 @@ function Root() {
           name="Recommendations"
           component={Recommendations}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({color, size}: any) => (
               <Image
                 source={require('../assets/img_bottomTab/Recommendations.png')}
                 style={{width: size, height: size, tintColor: color}}
@@ -278,7 +278,7 @@ function Root() {
           name="Profile"
           component={MyAccount}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({color, size}: any) => (
               <Image
                 source={require('../assets/images/Vector.png')}
                 style={{width: size, height: size, tintColor: color}}
@@ -324,7 +324,13 @@ export default function Navigate() {
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
+        <Stack.Screen name="HomePage" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
+        
         <Stack.Screen
           name="Root"
           component={Root}
@@ -363,7 +369,6 @@ export default function Navigate() {
             ),
           }}
         />
-
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
@@ -430,13 +435,6 @@ export default function Navigate() {
             ),
           }}
         />
-
-        {/* <Stack.Screen name="LandingPage" component={LandingPage} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SuccessSignup" component={SuccessSignup} /> */}
-        <Stack.Screen name="checkout" component={Checkout} />
-        {/* <Stack.Screen name="Home" component={Home} /> */}
       </Stack.Navigator>
       </QueryClientProvider>
     </NavigationContainer>

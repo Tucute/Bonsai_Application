@@ -18,6 +18,8 @@ const useLogin = ({navigation}: any) => {
           if (res.status === 200) {
             const token = res.data.token;
             await AsyncStorage.setItem('token', token);
+            const user = JSON.stringify(res.data.user);
+            await AsyncStorage.setItem('user', user);
             Alert.alert('Success', 'Login successfully', [
               {text: 'OK', onPress: () => navigation.navigate('Root')},
             ]);

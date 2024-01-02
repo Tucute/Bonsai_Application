@@ -26,9 +26,7 @@ const ItemPopular = () => {
     }
     return newArray;
   }
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  const shuffledData = shuffleArray(carouselData);
-  useFetchInfoTrees(setCarouselData);
+  const shuffledData = shuffleArray(useFetchInfoTrees());
   const navigation = useNavigation();
   return (
     <View style={styles.dropped}>
@@ -56,7 +54,6 @@ const ItemPopular = () => {
               ) : (
                 <Text style={styles.price}>${item.promotion_price}</Text>
               )}
-
               {item.promotion_price !== item.price && (
                 <Text style={styles.originalPrice}>${item.price}</Text>
               )}
@@ -69,9 +66,7 @@ const ItemPopular = () => {
     </View>
   );
 };
-
 export default ItemPopular;
-
 const styles = StyleSheet.create({
   dropped: {
     marginTop: 5,

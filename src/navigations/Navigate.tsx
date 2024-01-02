@@ -3,10 +3,6 @@ import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-// import LandingPage from '../screens/LandingPage';
-// import SignIn from '../screens/SignIn';
-// import SignUp from '../screens/SignUp';
-// import SuccessSignup from '../screens/SuccessSignup';
 import BottomTabs from '../screens/BottomTab/BottomTabs';
 import DetailProduct from '../screens/users/DetailProduct';
 import {Image} from 'react-native';
@@ -19,297 +15,134 @@ import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
 import SearchScreen from '../screens/users/SearchScreen';
-import WishList from '../screens/BottomTab/WishList';
-const Drawer = createDrawerNavigator();
+import WishList from '../screens/users/WishList';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import UploadImage from '../screens/users/UploadImage';
+interface OptionsScreenProps {
+  drawerIcon: any;
+  backgroundColor?: string;
+  tintColor?: string;
+}
+
 function Root() {
   const navigation = useNavigation();
+  const Drawer = createDrawerNavigator();
+
+  const headerOptions = {
+    headerStyle: {
+      backgroundColor: 'white',
+    },
+    headerTitle: (
+      <Image
+        source={require('../assets/img_detail/Header.png')}
+        style={{
+          width: 150,
+          height: 50,
+          alignItems: 'center',
+          marginHorizontal: 40,
+        }}
+      />
+    ),
+    headerTitleStyle: {
+      display: 'none',
+    },
+    headerRight: () => (
+      <View style={{flexDirection: 'row', marginRight: 10, justifyContent:"space-around", width:100}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('WishList');
+          }}>
+          <AntDesign name="hearto" color="black" size= {24}  />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SearchScreen');
+          }}>
+           <AntDesign name="search1" color="black" size= {24}  />
+        </TouchableOpacity>
+        <AntDesign name="shoppingcart" color="black" size= {24}  />
+      </View>
+    ),
+  };
+
+  const optionsScreen: React.FC<OptionsScreenProps> = ({
+    drawerIcon,
+    backgroundColor = 'white',
+    tintColor,
+  }) => {
+    return {
+      drawerIcon: ({color, size}: {color: string; size: string}) => (
+        <Image
+          source={drawerIcon}
+          style={{width: size, height: size, tintColor: color}}
+        />
+      ),
+      headerStyle: {
+        backgroundColor,
+      },
+      ...headerOptions,
+    };
+  };
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Drawer.Navigator initialRouteName="Main">
         <Drawer.Screen
           name="Main"
           component={BottomTabs}
-          options={{
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <View style={{flexDirection: 'row', marginRight: 10}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('SearchScreen');
-                  }}>
-                  <Image
-                    source={require('../assets/img_detail/search.png')}
-                    style={{
-                      width: 20,
-                      height: 18,
-                      marginRight: 10,
-                      marginHorizontal: 20,
-                    }}
-                  />
-                </TouchableOpacity>
-                <Image
-                  source={require('../assets/img_detail/Shoppingcart.png')}
-                  style={{
-                    width: 20,
-                    height: 18,
-                    marginRight: 10,
-                  }}
-                />
-              </View>
-            ),
-          }}
+          options={headerOptions}
         />
         <Drawer.Screen
           name="Home"
           component={Home}
-          options={{
-            drawerIcon: ({color, size}) => (
-              <Image
-                source={require('../assets/img_bottomTab/Vector.png')}
-                style={{width: size, height: size, tintColor: color}}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
+          options={optionsScreen({
+            drawerIcon: require('../assets/img_bottomTab/Vector.png'),
+            backgroundColor: 'white',
+          })}
         />
 
         <Drawer.Screen
           name="HealthMonitor"
           component={HealthMonitor}
-          options={{
-            drawerIcon: ({color, size}) => (
-              <Image
-                source={require('../assets/img_bottomTab/health.png')}
-                style={{width: size, height: size, tintColor: color}}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
+          options={optionsScreen({
+            drawerIcon: require('../assets/img_bottomTab/health.png'),
+            backgroundColor: 'white',
+          })}
         />
         <Drawer.Screen
           name="Nutritional_Summary"
           component={Nutritional_Summary}
-          options={{
-            drawerIcon: ({color, size}) => (
-              <Image
-                source={require('../assets/img_bottomTab/subcription.png')}
-                style={{width: 25, height: 20, tintColor: 'green'}}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
+          options={optionsScreen({
+            drawerIcon: require('../assets/img_bottomTab/subcription.png'),
+            backgroundColor: 'white',
+            backgroundColor: 'green',
+          })}
         />
         <Drawer.Screen
           name="Plant_Store"
           component={Plant_Store}
-          options={{
-            drawerIcon: ({color, size}) => (
-              <Image
-                source={require('../assets/img_bottomTab/Ecommerce.png')}
-                style={{width: size, height: size, tintColor: color}}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
+          options={optionsScreen({
+            drawerIcon: require('../assets/img_bottomTab/Ecommerce.png'),
+            backgroundColor: 'white',
+          })}
         />
         <Drawer.Screen
           name="Recommendations"
           component={Recommendations}
-          options={{
-            drawerIcon: ({color, size}) => (
-              <Image
-                source={require('../assets/img_bottomTab/Recommendations.png')}
-                style={{width: size, height: size, tintColor: color}}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
+          options={optionsScreen({
+            drawerIcon: require('../assets/img_bottomTab/Recommendations.png'),
+            backgroundColor: 'white',
+          })}
         />
         <Drawer.Screen
           name="Profile"
           component={MyAccount}
-          options={{
-            drawerIcon: ({color, size}) => (
-              <Image
-                source={require('../assets/images/Vector.png')}
-                style={{width: size, height: size, tintColor: color}}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: 'white',
-            },
-            headerTitle: props => (
-              <Image
-                source={require('../assets/img_detail/Header.png')}
-                style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: 'center',
-                  marginHorizontal: 40,
-                }}
-              />
-            ),
-            headerTitleStyle: {
-              display: 'none',
-            },
-            headerRight: () => (
-              <Image
-                source={require('../assets/img_detail/Shoppingcart.png')}
-                style={{
-                  width: 20,
-                  height: 18,
-                  marginRight: 10,
-                }}
-              />
-            ),
-          }}
+          options={optionsScreen({
+            drawerIcon: require('../assets/images/Vector.png'),
+            backgroundColor: 'white',
+          })}
         />
+        <Drawer.Screen name="WishList" component={WishList} />
       </Drawer.Navigator>
     </GestureHandlerRootView>
   );
@@ -423,11 +256,39 @@ export default function Navigate() {
             ),
           }}
         />
-        {/* <Stack.Screen name="LandingPage" component={LandingPage} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SuccessSignup" component={SuccessSignup} /> */}
-        {/* <Stack.Screen name="Home" component={Home} /> */}
+          <Stack.Screen
+          name="UploadImage"
+          component={UploadImage}
+          options={{
+            headerStyle: {
+              backgroundColor: 'white',
+            },
+            headerTitle: props => (
+              <Image
+                source={require('../assets/img_detail/Header.png')}
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: 'center',
+                  marginHorizontal: 40,
+                }}
+              />
+            ),
+            headerTitleStyle: {
+              display: 'none', // Ẩn tiêu đề của màn hình
+            },
+            headerRight: () => (
+              <Image
+                source={require('../assets/img_detail/Shoppingcart.png')}
+                style={{
+                  width: 20,
+                  height: 18,
+                  marginRight: 10,
+                }}
+              />
+            ),
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

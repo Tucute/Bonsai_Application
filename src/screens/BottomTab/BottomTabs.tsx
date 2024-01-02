@@ -6,7 +6,8 @@ import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
 import Plant_Store from './Plant_Store';
 import Recommendations from './Recommendations';
-import WishList from './WishList';
+import WishList from '../users/WishList';
+
 const Tab = createBottomTabNavigator();
 
 const generateTabBarButtonStyle = (focused: boolean) => ({
@@ -155,7 +156,7 @@ const BottomTabs = () => {
               style={{
                 width: 150,
                 height: 50,
-                justifyContent: 'center', // Align vertically centered
+                justifyContent: 'center',
                 marginHorizontal: 90,
                 alignItems: 'center',
               }}

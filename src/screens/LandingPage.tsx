@@ -12,7 +12,7 @@ export default function LandingPage({navigation}: any) {
       const getToken = await AsyncStorage.getItem('token');
       if (getToken !== null) {
         console.log(getToken);
-        navigation.navigate('HomePage');
+        navigation.navigate('Root');
       } else {
         navigation.navigate('Login');
       }

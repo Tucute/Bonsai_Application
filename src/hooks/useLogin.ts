@@ -11,21 +11,18 @@ const useLogin = ({navigation}: any) => {
     mutationFn: async (data: Account) => {
       axios
         .post(
-          'https://rise.api-uat.kindicare.com/api/v1/client/auth/login',
+          'https://ec71-14-176-231-248.ngrok-free.app/api/login',
           data,
         )
         .then(async res => {
-          console.log(res.data.token);
           if (res.status === 200) {
             const token = res.data.token;
             await AsyncStorage.setItem('token', token);
-            // const jsonValue = JSON.stringify(res.data.user);
-            // AsyncStorage.setItem('account', jsonValue);
             Alert.alert('Success', 'Login successfully', [
-              {text: 'OK', onPress: () => navigation.navigate('HomePage')},
+              {text: 'OK', onPress: () => navigation.navigate('Root')},
             ]);
           } else {
-            Alert.alert('Email hoặc mật khẩu không đúng');
+            Alert.alert('Email or password is invalid');
           }
         })
         .catch(e => {

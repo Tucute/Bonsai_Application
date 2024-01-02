@@ -31,21 +31,18 @@ const useSigup = ({navigation}: any) => {
   const mutation = useMutation({
     mutationFn: async (data: InfoSignUp) => {
       axios
-        .post('http://127.0.0.1:8000/api/register', data)
+        .post('https://ec71-14-176-231-248.ngrok-free.app/api/register', data)
         .then(res => {
-          if (
-            res.data.status === 200 &&
-            data.confirmPassword === data.password
-          ) {
+          if (res.status === 200) {
             const jsonValue = JSON.stringify(res.data.user);
             console.log(jsonValue);
-            Alert.alert('Success', 'Login successfully', [
+            Alert.alert('Success', 'Register successfully', [
               {text: 'OK', onPress: () => navigation.navigate('Login')},
             ]);
           } else {
             Alert.alert('Invalid information!');
           }
-          console.log(res.data);
+          console.log('dataa--------->>>>>', res.status);
         })
         .catch(e => {
           console.log(e);
@@ -54,7 +51,7 @@ const useSigup = ({navigation}: any) => {
   });
   const handleSignUp = (data: InfoSignUp) => {
     if (data && data.confirmPassword === data.password) {
-      console.log(data);
+      console.log('dataaaaa---=====-------', data);
       mutation.mutate(data);
     } else {
       Alert.alert('Error', 'Fillout complete information !');

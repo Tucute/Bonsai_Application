@@ -5,7 +5,8 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  TouchableOpacity,Alert
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
@@ -20,7 +21,7 @@ interface CarouselItem {
   promotion_price: string;
 }
 interface WishlistItem {
-  id: number; 
+  id: number;
 }
 const ItemProductPopular = () => {
   const navigation = useNavigation();
@@ -37,17 +38,23 @@ const ItemProductPopular = () => {
         const wishlist = wishlistResponse.data[0];
 
         const isProductInWishlist = wishlist.itemWishList.some(
-          (item:CarouselItem) => item.id === product.id,
+          (item: CarouselItem) => item.id === product.id,
         );
-       
+
         if (!isProductInWishlist) {
-          wishlist.itemWishList.push(product);
+          wishlist.itemWishList.unshift(product);
 
           await axios.put(
             `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist/${wishlist.id}`,
             wishlist,
           );
-
+          const response = await axios.get(
+            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userId}`,
+          );
+          if (response.data.length > 0) {
+            const userWishlist = response.data[0];
+            setWishlist(userWishlist.itemWishList);
+          }
           Alert.alert(
             'Success',
             'The product has been successfully added to your favorites list!',
@@ -91,20 +98,18 @@ const ItemProductPopular = () => {
         const response = await axios.get(
           `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20`,
         );
-        console.log(response);
         if (response.data.length > 0) {
           const userWishlist = response.data[0];
           setWishlist(userWishlist.itemWishList);
-          
         }
       } catch (error) {
         console.error('Error fetching wishlist:', error);
       }
     };
-  
+
     fetchWishlist();
   }, []);
-  
+
   return (
     <FlatList
       data={carouselData}
@@ -122,12 +127,16 @@ const ItemProductPopular = () => {
             <TouchableOpacity
               style={styles.tym}
               onPress={() => addToWishlist(20, item)}>
-                
               <Image
                 source={require('../../assets/img_recommendations/tym.png')}
-                style={[styles.imgtym ,   wishlist.some((wishlistItem:WishlistItem) => wishlistItem.id === item.id)
-                  ? styles.imgtymActive
-                  : null,]}
+                style={[
+                  styles.imgtym,
+                  wishlist.some(
+                    (wishlistItem: WishlistItem) => wishlistItem.id === item.id,
+                  )
+                    ? styles.imgtymActive
+                    : null,
+                ]}
               />
             </TouchableOpacity>
           </ImageBackground>
@@ -160,7 +169,7 @@ const ItemProductPopular = () => {
 export default ItemProductPopular;
 const styles = StyleSheet.create({
   imgtymActive: {
-    tintColor: 'green', 
+    tintColor: 'green',
   },
   popularTree: {
     width: '100%',

@@ -76,7 +76,7 @@ const useWishlistActions = () => {
             const response = await axios.get(
               `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20`,
             );
-            console.log(response);
+           
             if (response.data.length > 0) {
               const userWishlist = response.data[0];
               setWishlist(userWishlist.itemWishList);

@@ -2,75 +2,53 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 interface getProfile {
-  email:string;
-  name:string;
-  userId:any;
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
 }
 const MyAccount = ({navigation}: any) => {
   const [userData, setUserData] = useState<getProfile>();
   const getUserData = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      console.log('0000000000000000000000', token);
-      if (token) {
-        const response = await fetch(
-          `https://ec71-14-176-231-248.ngrok-free.app/api/get-users?id=${userId}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        if (response.ok) {
-          const data = await response.json();
-          console.log('show data ',data );  
-            setUserData(data);
-        } else {
-          console.error('Error fetching user data');
-        }
-      }
-    } catch (error) {
-      console.error('Error getting token from AsyncStorage', error);
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
     }
   };
-
   useEffect(() => {
     getUserData();
   }, []);
-  console.log('userData', userData);
-  
+
+
   const handleLogout = async () => {
-    console.log('Before removing token');
     await AsyncStorage.removeItem('token');
-    console.log('After removing token');
     const getToken = await AsyncStorage.getItem('token');
-    console.log('Token after removal:', getToken);
     if (getToken === null) {
-      console.log('Navigating to SignUp');
       navigation.navigate('LandingPage');
     }
   };
-
   return (
     <View style={styles.profileContainer}>
       <View style={styles.profile}>
         <View style={styles.img}>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-              <View style={styles.bgImg}>
-                <Image
-                  source={require('../../assets/img_profile/people.png')}
-                />
-              </View>
-              <Text style={styles.contentImg}>hello</Text>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={styles.bgImg}>
+            {userData?.avatar ? (
+                <Image style={styles.avatar} source={{uri: userData.avatar}} />
+              ):null}
             </View>
-            <View style={{marginHorizontal: 10}}>
-              <Text style={styles.contentImg}>{userData?.email}</Text>
-              <Text style={styles.contentImg}>{userData?.name}</Text>
-              <View style={styles.preventProfile}>
-                <Text style={styles.contentPrevent}>Edit Profile</Text>
-              </View>
+            <Text style={styles.contentImg}>{userData?.name}</Text>
+          </View>
+          <View style={{marginHorizontal: 10}}>
+            <Text style={styles.contentImg}>{userData?.email}</Text>
+            <Text style={styles.contentImg}>{userData?.phone}</Text>
+            <View style={styles.preventProfile}>
+              <Text style={styles.contentPrevent}>Edit Profile</Text>
             </View>
+          </View>
         </View>
         <View>
           <View>
@@ -187,5 +165,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 10,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
   },
 });

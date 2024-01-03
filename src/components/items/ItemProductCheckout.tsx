@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   middleSection: {
     justifyContent: 'space-around',
     height: '100%',
-    width: 180,
+    width: 160,
     paddingHorizontal: 10,
   },
   name: {
@@ -214,9 +214,11 @@ const styles = StyleSheet.create({
     height: 20,
   },
   price: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#000',
+    textAlign: 'center',
+    
   },
 });
 export default ItemProductCheckout;

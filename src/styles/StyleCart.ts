@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
       color: '#000',
     },
     viewListItem: {
-      flex: 3,
+      flex: 4,
     },
     sectionItem: {
       paddingHorizontal: 20,
@@ -142,7 +142,7 @@ export const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     viewCheckout: {
-      flex: 2.5,
+      flex: 2,
       paddingHorizontal: 20,
     },
     btnCheckout: {

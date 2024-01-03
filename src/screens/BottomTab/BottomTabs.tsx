@@ -193,8 +193,8 @@ const BottomTabs: () => React.JSX.Element = () => {
         }}
       />
       <Tab.Screen
-        name="Cart"
-        component={CartScreen}
+        name="Plant_Store"
+        component={Plant_Store}
         options={{
           headerTitleStyle: {
             display: 'none',

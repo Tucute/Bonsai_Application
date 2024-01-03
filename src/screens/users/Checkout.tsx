@@ -11,6 +11,7 @@ import {
 import {styles} from '../../styles/styleCheckout';
 import {useState, useEffect} from 'react';
 import ItemProductCheckout from '../../components/items/ItemProductCheckout';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface Product {
   id: number;
   name: string;
@@ -20,13 +21,34 @@ interface Product {
   image: string;
   promotion_price: number;
 }
+
+interface getProfile {
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
+  address: string;
+}
 const viewHeader = () => {
+  const [userData, setUserData] = useState<getProfile>();
+  const getUserData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
     <View style={styles.viewAddress}>
-      <Text style={styles.nameUser}>A Ân Tứ</Text>
-      <Text style={styles.phoneUser}>(+84) 366702225</Text>
+      <Text style={styles.nameUser}>{userData?.name}</Text>
+      <Text style={styles.phoneUser}>(+84) {userData?.phone}</Text>
       <Text style={styles.AddressUser}>
-        101B Lê Hữu Trác, Phước Mỹ, Sơn Trà, Đà Nẵng
+        {userData?.address}
       </Text>
     </View>
   );
@@ -58,7 +80,7 @@ const viewFooter = (
         <Text style={styles.titleOrder}>Tóm tắt đơn hàng</Text>
         <View style={styles.listInfo}>
           <Text>Tổng phụ</Text>
-          <Text>{price}</Text>
+          <Text>${price}</Text>
         </View>
         <View style={styles.listInfo}>
           <Text>Vận chuyển</Text>
@@ -70,7 +92,7 @@ const viewFooter = (
         </View>
         <View style={styles.listInfo}>
           <Text style={styles.total}>Tổng</Text>
-          <Text style={styles.total}>{totalPrice}</Text>
+          <Text style={styles.total}>${totalPrice}</Text>
         </View>
       </View>
       <View style={styles.viewPayment}>

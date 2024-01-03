@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#DCE8D6',
-    width: 349,
+    // width: 349,
     height: 103,
   },
   imageProduct: {
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   price: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: '600',
     color: '#000',
   },

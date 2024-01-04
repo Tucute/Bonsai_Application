@@ -4,14 +4,13 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import axios, { AxiosResponse } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 interface FormData {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
 }
 
 interface ApiResponse {
   id: string;
 }
-
 const Nutritional_Summary = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,14 +21,14 @@ const Nutritional_Summary = () => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      firstname: '',
+      lastname: '',
     },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const response: AxiosResponse<ApiResponse> = await axios.post('https://645f33db9d35038e2d1ec62a.mockapi.io/users', data);
+      const response: AxiosResponse<ApiResponse> = await axios.post('https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/products', data);
       console.log('API response:', response.data);
     } catch (error) {
       console.error('Error submitting data:', error);
@@ -67,13 +66,14 @@ const Nutritional_Summary = () => {
                   value={value}
                 />
               )}
-              name="firstName"
+              name="firstname"
             />
-            {errors.firstName && <Text>This is required.</Text>}
+            {errors.firstname && <Text style={{color:"red"}}>This is required.</Text>}
             <Controller
               control={control}
               rules={{
                 maxLength: 100,
+                required:true,
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
@@ -89,8 +89,9 @@ const Nutritional_Summary = () => {
                   value={value}
                 />
               )}
-              name="lastName"
+              name="lastname"
             />
+               {errors.lastname && <Text style={{color:"red"}}>This is required.</Text>}
             <View style={{ padding: 20 }}>
               <Button title="Submit" onPress={handleSubmit(onSubmit)} />
             </View>

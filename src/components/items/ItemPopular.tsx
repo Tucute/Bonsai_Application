@@ -18,7 +18,7 @@ interface CarouselItem {
   promotion_price: string;
 }
 const ItemPopular = () => {
-  function shuffleArray(array: any) {
+  function shuffleArray(array: any){
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -41,9 +41,7 @@ const ItemPopular = () => {
             }>
             <Image
               source={
-                typeof item.image === 'number'
-                  ? item.image
-                  : {uri: item.image as string}
+                {uri:item.image}
               }
               style={styles.droppedImg}
             />

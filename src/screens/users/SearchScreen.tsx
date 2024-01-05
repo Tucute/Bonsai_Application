@@ -9,12 +9,7 @@ import {
   Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-interface SearchBarProps {
-  searchText: string;
-}
-interface NavigationParams {
-  product: TreesData;
-}
+
 interface TreesData {
   id: string;
   name: string;
@@ -33,11 +28,9 @@ const SearchScreen = ({searchText}: any) => {
       const response = await fetch(
         'https://63a571e42a73744b008e23ee.mockapi.io/user24',
       );
-
       if (!response.ok) {
         throw new Error(`Failed to fetch data. Status: ${response.status}`);
       }
-
       const contentType = response.headers.get('Content-Type');
       if (!contentType || !contentType.includes('application/json')) {
         throw new Error('Invalid content type. Expected JSON.');

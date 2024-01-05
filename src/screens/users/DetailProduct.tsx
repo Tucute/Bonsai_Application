@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 import useAddToWishlist from '../../hooks/useAddWishlist';
 import AddToCartButton from '../../components/buttons/AddToCartButton';
@@ -22,13 +23,21 @@ interface CarouselItem {
   created_at: Date | null;
   updated_at: Date | null;
 }
+interface getProfile {
+  id: number;
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
+}
 interface WishlistItem {
-  id: number; 
-  item_id: number; 
-
+  id: number;
+  item_id: number;
 }
 const DetailProduct = ({route}: any) => {
   const {product} = route.params;
+  const [userData, setUserData] = useState<getProfile>();
+
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const addToWishlist = async (userId: number, product: CarouselItem) => {
     useAddToWishlist(userId, product, wishlist, setWishlist);
@@ -37,7 +46,7 @@ const DetailProduct = ({route}: any) => {
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(
-          'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20',
+          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
         );
 
         if (response.data.length > 0) {
@@ -51,6 +60,18 @@ const DetailProduct = ({route}: any) => {
 
     fetchWishlist();
   }, [setWishlist]);
+  const getUserData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
     <ScrollView style={styles.DetailContainer}>
       <View style={styles.InfoDetail}>
@@ -79,10 +100,20 @@ const DetailProduct = ({route}: any) => {
               <Text style={styles.numberIndoor}>5' h</Text>
             </View>
             <View>
-              <TouchableOpacity style={styles.imgHeat}  onPress={() => addToWishlist(20, product as CarouselItem)}>
-                <Image source={require('../../assets/img_recommendations/tym.png')} style={[ wishlist.some((wishlistItem: WishlistItem) => wishlistItem.item_id === product.id)
-                  ? styles.imgtymActive
-                  : null]} />
+              <TouchableOpacity
+                style={styles.imgHeat}
+                onPress={() => addToWishlist(userData?.id, product as CarouselItem)}>
+                <Image
+                  source={require('../../assets/img_recommendations/tym.png')}
+                  style={[
+                    wishlist.some(
+                      (wishlistItem: WishlistItem) =>
+                        wishlistItem.item_id === product.id,
+                    )
+                      ? styles.imgtymActive
+                      : null,
+                  ]}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -129,7 +160,7 @@ const DetailProduct = ({route}: any) => {
             justifyContent: 'center',
             marginVertical: 10,
           }}>
-          <AddToCartButton item={product}/>
+          <AddToCartButton item={product} />
         </View>
       </View>
     </ScrollView>
@@ -144,15 +175,15 @@ const styles = StyleSheet.create({
   },
   InfoDetail: {
     width: '100%',
-   
+
     backgroundColor: '#DEEAD8',
     borderBottomLeftRadius: 41,
-    flex:2
+    flex: 2,
   },
-  temperature:{
+  temperature: {
     width: '100%',
     borderBottomLeftRadius: 41,
-    flex:2
+    flex: 2,
   },
   contextDetail: {
     marginHorizontal: 20,
@@ -252,7 +283,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0D986A',
     borderRadius: 50,
     justifyContent: 'center',
-    marginTop:40
+    marginTop: 40,
   },
   addtocarts: {
     flexDirection: 'row',
@@ -276,6 +307,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   imgtymActive: {
-    tintColor: 'green', 
+    tintColor: 'green',
   },
 });

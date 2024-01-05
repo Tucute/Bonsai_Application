@@ -46,9 +46,12 @@ var useFetchInfoTrees = function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, fetch('https://63a571e42a73744b008e23ee.mockapi.io/user24')];
+                        return [4 /*yield*/, fetch('https://ddb7-14-176-231-248.ngrok-free.app/api/get-products')];
                     case 1:
                         response = _a.sent();
+                        // const response =await fetch(
+                        //   'https://63a571e42a73744b008e23ee.mockapi.io/user24'
+                        // );
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
                         }

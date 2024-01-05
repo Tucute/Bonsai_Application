@@ -8,6 +8,7 @@ import {
   TouchableOpacity,Alert
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
 import  useAddToWishlist from '../../hooks/useAddWishlist';
@@ -24,6 +25,13 @@ interface CarouselItem {
   created_at: Date | null;
   updated_at: Date | null;
 }
+interface getProfile {
+  id:number
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
+}
 interface WishlistItem {
   id: number; 
   item_id:number;
@@ -39,7 +47,7 @@ const ItemProductPopular = () => {
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(
-          'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20',
+          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
         );
 
         if (response.data.length > 0) {
@@ -52,6 +60,19 @@ const ItemProductPopular = () => {
     };
 
     fetchWishlist();
+  }, []);
+  const [userData, setUserData] = useState<getProfile>();
+  const getUserData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+  };
+  useEffect(() => {
+    getUserData();
   }, []);
   return (
     <FlatList
@@ -67,7 +88,7 @@ const ItemProductPopular = () => {
             style={styles.popularImg}>
             <TouchableOpacity
               style={styles.tym}
-              onPress={() => addToWishlist(20, item as CarouselItem)}>
+              onPress={() => addToWishlist(userData?.id, item as CarouselItem)}>
                 
               <Image
                 source={require('../../assets/img_recommendations/tym.png')}

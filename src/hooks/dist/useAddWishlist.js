@@ -51,13 +51,17 @@ var useAddToWishlist = function (userId, product, wishlist, setWishlist) { retur
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 4, , 5]);
+                if (!userId) {
+                    console.error('User ID not found');
+                    return [2 /*return*/];
+                }
                 isProductInWishlist = wishlist.some(function (wishlistItem) { return wishlistItem.item_id === product.id; });
                 if (!isProductInWishlist) return [3 /*break*/, 1];
                 react_native_1.Alert.alert('Warning', 'The product is already in your favorites list!');
                 return [3 /*break*/, 3];
             case 1:
                 newItem = {
-                    user_id: userId,
+                    user_id: Number(userId),
                     item_id: product.id,
                     name: product.name,
                     description: product.description,

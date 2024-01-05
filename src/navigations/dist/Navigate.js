@@ -24,7 +24,7 @@ function Navigate(_a) {
     return (react_1["default"].createElement(native_1.NavigationContainer, null,
         react_1["default"].createElement(react_query_1.QueryClientProvider, { client: queryClient },
             react_1["default"].createElement(Stack.Navigator, { screenOptions: { headerShown: true } },
-                react_1["default"].createElement(Stack.Screen, { name: "LandingPage", component: LandingPage_1["default"] }),
+                react_1["default"].createElement(Stack.Screen, { name: "LandingPage", component: LandingPage_1["default"], options: { headerShown: false } }),
                 react_1["default"].createElement(Stack.Screen, { name: "SignUp", component: SignUp_1["default"] }),
                 react_1["default"].createElement(Stack.Screen, { name: "SuccessSignup", component: SuccessSignup_1["default"] }),
                 react_1["default"].createElement(Stack.Screen, { name: "HomePage", component: Home_1["default"] }),

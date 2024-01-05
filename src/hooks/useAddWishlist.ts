@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
-
 interface CarouselItem {
   id: number;
   name: string;
@@ -13,21 +12,22 @@ interface CarouselItem {
   created_at: Date | null;
   updated_at: Date | null;
 }
-
 interface WishlistItem {
   id: number;
   item_id:number;
 }
-
 type SetWishlistFunction = React.Dispatch<React.SetStateAction<WishlistItem[]>>;
-
 const useAddToWishlist = async (
-  userId: number,
+  userId: number ,
   product: CarouselItem,
   wishlist: WishlistItem[],
   setWishlist: SetWishlistFunction
 ) => {
   try {
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
     const isProductInWishlist = wishlist.some(
       (wishlistItem: WishlistItem) => wishlistItem.item_id === product.id
     );
@@ -39,7 +39,7 @@ const useAddToWishlist = async (
       );
     } else {
       const newItem = {
-        user_id: userId,
+        user_id: Number(userId),
         item_id: product.id,
         name: product.name,
         description: product.description,

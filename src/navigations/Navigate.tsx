@@ -22,7 +22,7 @@ export default function Navigate({navigation}:any) {
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator screenOptions={{headerShown: true}}>
-          <Stack.Screen name="LandingPage" component={LandingPage} />
+          <Stack.Screen name="LandingPage" component={LandingPage} options={{headerShown: false}}/>
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
           <Stack.Screen name="HomePage" component={Home} />

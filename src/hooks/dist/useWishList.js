@@ -39,16 +39,38 @@ exports.__esModule = true;
 var axios_1 = require("axios");
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var async_storage_1 = require("@react-native-async-storage/async-storage");
 function useWishList() {
     var _this = this;
     var _a = react_1.useState([]), dataWishList = _a[0], setDataWishList = _a[1];
+    var _b = react_1.useState(), userData = _b[0], setUserData = _b[1];
+    var getUserData = function () { return __awaiter(_this, void 0, void 0, function () {
+        var jsonValue, value, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('user')];
+                case 1:
+                    jsonValue = _a.sent();
+                    value = jsonValue != null ? JSON.parse(jsonValue) : null;
+                    setUserData(value);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _a.sent();
+                    console.log('Error: ', e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     var fetchWishList = function () { return __awaiter(_this, void 0, void 0, function () {
         var response, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get('https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20')];
+                    return [4 /*yield*/, axios_1["default"].get('https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?${userData?.id}')];
                 case 1:
                     response = _a.sent();
                     setDataWishList(response.data || []);
@@ -61,6 +83,14 @@ function useWishList() {
             }
         });
     }); };
+    react_1.useEffect(function () {
+        getUserData();
+    }, []);
+    react_1.useEffect(function () {
+        if (userData && userData.id) {
+            fetchWishList();
+        }
+    }, [userData]);
     var removeItemFromWishList = function (_a) {
         var itemId = _a.itemId;
         return __awaiter(_this, void 0, void 0, function () {

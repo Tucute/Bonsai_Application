@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var axios_1 = require("axios");
+var async_storage_1 = require("@react-native-async-storage/async-storage");
 var react_1 = require("react");
 var useFetchInfoTrees_1 = require("../../hooks/useFetchInfoTrees");
 var useAddWishlist_1 = require("../../hooks/useAddWishlist");
@@ -59,7 +60,7 @@ var ItemProductPopular = function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1["default"].get('https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20')];
+                        return [4 /*yield*/, axios_1["default"].get("https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=" + (userData === null || userData === void 0 ? void 0 : userData.id))];
                     case 1:
                         response = _a.sent();
                         if (response.data.length > 0) {
@@ -77,11 +78,35 @@ var ItemProductPopular = function () {
         }); };
         fetchWishlist();
     }, []);
+    var _b = react_1.useState(), userData = _b[0], setUserData = _b[1];
+    var getUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var jsonValue, value, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('user')];
+                case 1:
+                    jsonValue = _a.sent();
+                    value = jsonValue != null ? JSON.parse(jsonValue) : null;
+                    setUserData(value);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _a.sent();
+                    console.log('Error: ', e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    react_1.useEffect(function () {
+        getUserData();
+    }, []);
     return (react_1["default"].createElement(react_native_1.FlatList, { data: carouselData, renderItem: function (_a) {
             var item = _a.item;
             return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.popularTree, onPress: function () { return navigation.navigate('DetailProduct', { product: item }); } },
                 react_1["default"].createElement(react_native_1.ImageBackground, { source: { uri: item.image }, style: styles.popularImg },
-                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.tym, onPress: function () { return addToWishlist(20, item); } },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.tym, onPress: function () { return addToWishlist(userData === null || userData === void 0 ? void 0 : userData.id, item); } },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/img_recommendations/tym.png'), style: [styles.imgtym, wishlist.some(function (wishlistItem) { return wishlistItem.item_id === item.id; })
                                     ? styles.imgtymActive
                                     : null,] }))),

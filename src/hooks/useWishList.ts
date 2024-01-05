@@ -1,25 +1,53 @@
 import axios from 'axios';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface CarouselItem {
   id: number;
   message: string;
 }
+interface getProfile {
+  id: number;
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
+}
 export default function useWishList() {
   const [dataWishList, setDataWishList] = useState<CarouselItem[]>([]);
+  const [userData, setUserData] = useState<getProfile>();
+  const getUserData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+  };
 
   const fetchWishList = async () => {
     try {
+      // if (!userData || !userData.id) {
+      //   console.error('User ID not found in user data');
+      //   return;
+      // }
       const response = await axios.get(
-        'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20',
+        'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?${userData?.id}'
       );
-       
       setDataWishList(response.data || []);
     } catch (error) {
       console.error(error);
     }
   };
-
+  useEffect(() => {
+    getUserData();
+  }, []);
+  useEffect(() => {
+    if (userData && userData.id) {
+      fetchWishList();
+    }
+  }, [userData]);
   const removeItemFromWishList = async ({itemId}: {itemId: number}) => {
     try {
       const response = await axios.delete(
@@ -38,7 +66,7 @@ export default function useWishList() {
           response.status,
         );
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response) {
         console.error(
           'Server responded with an error status:',

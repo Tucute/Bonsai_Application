@@ -38,13 +38,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var axios_1 = require("axios");
+var async_storage_1 = require("@react-native-async-storage/async-storage");
 var react_1 = require("react");
 var useAddWishlist_1 = require("../../hooks/useAddWishlist");
 var AddToCartButton_1 = require("../../components/buttons/AddToCartButton");
 var DetailProduct = function (_a) {
     var route = _a.route;
     var product = route.params.product;
-    var _b = react_1.useState([]), wishlist = _b[0], setWishlist = _b[1];
+    var _b = react_1.useState(), userData = _b[0], setUserData = _b[1];
+    var _c = react_1.useState([]), wishlist = _c[0], setWishlist = _c[1];
     var addToWishlist = function (userId, product) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             useAddWishlist_1["default"](userId, product, wishlist, setWishlist);
@@ -58,7 +60,7 @@ var DetailProduct = function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1["default"].get('https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20')];
+                        return [4 /*yield*/, axios_1["default"].get("https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=" + (userData === null || userData === void 0 ? void 0 : userData.id))];
                     case 1:
                         response = _a.sent();
                         if (response.data.length > 0) {
@@ -76,6 +78,29 @@ var DetailProduct = function (_a) {
         }); };
         fetchWishlist();
     }, [setWishlist]);
+    var getUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var jsonValue, value, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('user')];
+                case 1:
+                    jsonValue = _a.sent();
+                    value = jsonValue != null ? JSON.parse(jsonValue) : null;
+                    setUserData(value);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _a.sent();
+                    console.log('Error: ', e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    react_1.useEffect(function () {
+        getUserData();
+    }, []);
     return (react_1["default"].createElement(react_native_1.ScrollView, { style: styles.DetailContainer },
         react_1["default"].createElement(react_native_1.View, { style: styles.InfoDetail },
             react_1["default"].createElement(react_native_1.View, null,
@@ -95,10 +120,14 @@ var DetailProduct = function (_a) {
                         react_1["default"].createElement(react_native_1.Text, { style: styles.priceIndoor }, "SIZE"),
                         react_1["default"].createElement(react_native_1.Text, { style: styles.numberIndoor }, "5' h")),
                     react_1["default"].createElement(react_native_1.View, null,
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.imgHeat, onPress: function () { return addToWishlist(20, product); } },
-                            react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/img_recommendations/tym.png'), style: [wishlist.some(function (wishlistItem) { return wishlistItem.item_id === product.id; })
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.imgHeat, onPress: function () { return addToWishlist(userData === null || userData === void 0 ? void 0 : userData.id, product); } },
+                            react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/img_recommendations/tym.png'), style: [
+                                    wishlist.some(function (wishlistItem) {
+                                        return wishlistItem.item_id === product.id;
+                                    })
                                         ? styles.imgtymActive
-                                        : null] })))),
+                                        : null,
+                                ] })))),
                 react_1["default"].createElement(react_native_1.View, null,
                     react_1["default"].createElement(react_native_1.Image, { source: typeof product.image === 'number'
                             ? product.image

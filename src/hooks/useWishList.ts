@@ -22,27 +22,25 @@ export default function useWishList() {
       const value = jsonValue != null ? JSON.parse(jsonValue) : null;
       setUserData(value);
     } catch (e) {
-      console.log('Error: ', e);
-    }
-  };
-
-  const fetchWishList = async () => {
-    try {
-      // if (!userData || !userData.id) {
-      //   console.error('User ID not found in user data');
-      //   return;
-      // }
-      const response = await axios.get(
-        'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?${userData?.id}'
-      );
-      setDataWishList(response.data || []);
-    } catch (error) {
-      console.error(error);
+      console.log('Error:', e);
     }
   };
   useEffect(() => {
     getUserData();
   }, []);
+
+  const fetchWishList = async () => {
+    try {
+      if (userData && userData.id) {
+      const response = await axios.get(
+        `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userData?.id}`,
+      );
+      // console.log('API Response:', response);
+      setDataWishList(response.data || []);
+    }} catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     if (userData && userData.id) {
       fetchWishList();
@@ -84,5 +82,5 @@ export default function useWishList() {
   useEffect(() => {
     fetchWishList();
   }, []);
-  return {dataWishList, removeItemFromWishList};
+  return {dataWishList ,userData, removeItemFromWishList};
 }

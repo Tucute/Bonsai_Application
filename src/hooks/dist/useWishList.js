@@ -58,26 +58,7 @@ function useWishList() {
                     return [3 /*break*/, 3];
                 case 2:
                     e_1 = _a.sent();
-                    console.log('Error: ', e_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
-    var fetchWishList = function () { return __awaiter(_this, void 0, void 0, function () {
-        var response, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get('https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?${userData?.id}')];
-                case 1:
-                    response = _a.sent();
-                    setDataWishList(response.data || []);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_1 = _a.sent();
-                    console.error(error_1);
+                    console.log('Error:', e_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -86,6 +67,28 @@ function useWishList() {
     react_1.useEffect(function () {
         getUserData();
     }, []);
+    var fetchWishList = function () { return __awaiter(_this, void 0, void 0, function () {
+        var response, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    if (!(userData && userData.id)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, axios_1["default"].get("https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=" + (userData === null || userData === void 0 ? void 0 : userData.id))];
+                case 1:
+                    response = _a.sent();
+                    // console.log('API Response:', response);
+                    setDataWishList(response.data || []);
+                    _a.label = 2;
+                case 2: return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error(error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); };
     react_1.useEffect(function () {
         if (userData && userData.id) {
             fetchWishList();
@@ -133,6 +136,6 @@ function useWishList() {
     react_1.useEffect(function () {
         fetchWishList();
     }, []);
-    return { dataWishList: dataWishList, removeItemFromWishList: removeItemFromWishList };
+    return { dataWishList: dataWishList, userData: userData, removeItemFromWishList: removeItemFromWishList };
 }
 exports["default"] = useWishList;

@@ -46,7 +46,7 @@ var useFetchInfoTrees = function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, fetch('https://ddb7-14-176-231-248.ngrok-free.app/api/get-products')];
+                        return [4 /*yield*/, fetch('https://9a71-103-19-99-20.ngrok-free.app/api/get-products')];
                     case 1:
                         response = _a.sent();
                         // const response =await fetch(

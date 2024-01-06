@@ -14,7 +14,7 @@ const useFetchInfoTrees = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://ddb7-14-176-231-248.ngrok-free.app/api/get-products',
+          'https://9a71-103-19-99-20.ngrok-free.app/api/get-products',
         );
         // const response =await fetch(
         //   'https://63a571e42a73744b008e23ee.mockapi.io/user24'

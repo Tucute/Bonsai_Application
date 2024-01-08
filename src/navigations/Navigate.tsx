@@ -25,6 +25,8 @@ import WishList from '../screens/users/WishList';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import UploadImage from '../screens/users/UploadImage';
 import CartScreen from '../screens/users/Cart';
+import ManagementOrder from '../screens/sellers/ManagementOrder';
+import ManagementYourOrder from '../screens/sellers/ManagementYourOrder';
 interface OptionsScreenProps {
   drawerIcon: any;
   backgroundColor?: string;
@@ -171,7 +173,9 @@ export default function Navigate() {
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="LandingPage" component={LandingPage} />
+          {/* <Stack.Screen name="LandingPage" component={LandingPage} /> */}
+          <Stack.Screen name="ManagementOrder" component={ManagementOrder} />
+          <Stack.Screen name="ManagementYourOrder" component={ManagementYourOrder} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
           <Stack.Screen name="HomePage" component={Home} />

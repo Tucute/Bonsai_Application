@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 const BONSAI = 'https://63a571e42a73744b008e23ee.mockapi.io/user24';
+const DATA_STORE = 'https://63a571e42a73744b008e23ee.mockapi.io/users';
 import axios from 'axios';
 import {useQuery} from '@tanstack/react-query';
 
@@ -23,7 +24,7 @@ const useBonsai = () => {
   useEffect(() => {
     const fetchDataBonsai = async () => {
       try {
-        const res = await fetch(BONSAI);
+        const res = await fetch(DATA_STORE);
         const data = await res.json();
         setDataBonsai(data);
       } catch (error) {
@@ -36,7 +37,7 @@ const useBonsai = () => {
 
   const addBonsai = async (newBonsai: Omit<BonsaiType, 'id'>) => {
     try {
-      await fetch(BONSAI, {
+      await fetch(DATA_STORE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ const useBonsai = () => {
     updateBonsai: Partial<BonsaiType>,
   ) => {
     try {
-      await fetch(`${BONSAI}/${id}`, {
+      await fetch(`${DATA_STORE}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ const useBonsai = () => {
 
   const deleteBonsai = async (id: string) => {
     try {
-      await fetch(`${BONSAI}/${id}`, {
+      await fetch(`${DATA_STORE}/${id}`, {
         method: 'DELETE',
       });
       setDataBonsai(prevData => prevData.filter(bonsai => bonsai.id !== id));

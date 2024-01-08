@@ -11,14 +11,16 @@ const useLogin = ({navigation}: any) => {
     mutationFn: async (data: Account) => {
       axios
         .post(
-          'https://ec71-14-176-231-248.ngrok-free.app/api/login',
+          'https://da08-14-176-231-248.ngrok-free.app/api/login',
+          // 'https://645e542e8d08100293fcd90e.mockapi.io/webxedap',
           data,
         )
         .then(async res => {
           if (res.status === 200) {
             const token = res.data.token;
-            await AsyncStorage.setItem('token', token);
-            const user = JSON.stringify(res.data.user);
+            const userid = res.data.user.id;
+            // const userid = res.data.id;
+            const user = JSON.stringify({token, userid});
             await AsyncStorage.setItem('user', user);
             Alert.alert('Success', 'Login successfully', [
               {text: 'OK', onPress: () => navigation.navigate('Root')},

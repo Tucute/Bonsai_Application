@@ -38,9 +38,9 @@ const ItemNewPopular = () => {
             <View style={styles.imgContent}>
               <Text style={styles.content}>{item.name}</Text>
               <Text style={styles.contentdescription}>{item.description}</Text>
-              {/* <Text style={styles.content}>{item.price}</Text> */}
+              <Text style={styles.content}>{item.price}</Text>
             </View>
-          </ImageBackground>
+          </ImageBackground> 
         </View>
       )}
       ref={carouselRef}

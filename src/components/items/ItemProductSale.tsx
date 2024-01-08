@@ -6,13 +6,12 @@ import {
   ImageBackground,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
-import {create} from 'zustand';
 import React, {useState, useEffect} from 'react';
 import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
 import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 interface CarouselItem {
   id: number;
   name: string;
@@ -20,60 +19,98 @@ interface CarouselItem {
   price: string;
   image: string;
   promotion_price: string;
-  user_id:number
 }
-
+interface WishlistItem {
+  id: number;
+}
 const ItemProductPopular = () => {
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  const [wishlist, setWishlist] = useState<CarouselItem[]>([]);
-  const [heartColor, setHeartColor] = useState<string>('black');
-
-  useFetchInfoTrees(setCarouselData);
   const navigation = useNavigation();
-  const fetchData = async () => {
+  const carouselData = useFetchInfoTrees();
+  const [wishlist, setWishlist] = useState([]);
+
+  const addToWishlist = async (userId: number, product: CarouselItem) => {
     try {
-      const storedWishlist = await AsyncStorage.getItem('wishlist');
-      // console.log('Stored Wishlist:', storedWishlist);
-      if (storedWishlist) {
-        setWishlist(JSON.parse(storedWishlist));
+      const wishlistResponse = await axios.get(
+        `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userId}`,
+      );
+
+      if (wishlistResponse.data.length > 0) {
+        const wishlist = wishlistResponse.data[0];
+
+        const isProductInWishlist = wishlist.itemWishList.some(
+          (item: CarouselItem) => item.id === product.id,
+        );
+
+        if (!isProductInWishlist) {
+          wishlist.itemWishList.unshift(product);
+
+          await axios.put(
+            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist/${wishlist.id}`,
+            wishlist,
+          );
+          const response = await axios.get(
+            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userId}`,
+          );
+          if (response.data.length > 0) {
+            const userWishlist = response.data[0];
+            setWishlist(userWishlist.itemWishList);
+          }
+          Alert.alert(
+            'Success',
+            'The product has been successfully added to your favorites list!',
+            [
+              {
+                text: 'OK',
+                onPress: () => navigation.navigate('WishList'),
+              },
+            ],
+          );
+        } else {
+          Alert.alert(
+            'Warning',
+            'The product is already in your favorites list!',
+            [
+              {
+                text: 'OK',
+                onPress: () => navigation.navigate('WishList'),
+              },
+            ],
+          );
+        }
+      } else {
+        
+        const newWishlist = await axios.post(
+          'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist',
+          {
+            user_id: userId,
+            itemWishList: [product],
+          },
+        );
+
+        Alert.alert('Success', 'New wishlist added.');
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error updating wishlist:', error);
     }
   };
   useEffect(() => {
-    fetchData();
-  }, []);
-  const handleAddToWishlist = async (item: CarouselItem) => {
-    const isAlreadyInWishlist = wishlist.some(
-      wishlistItem => wishlistItem.id === item.id,
-    );
-    if (!isAlreadyInWishlist) {
-      const userWishlist = wishlist.filter(
-        wishlistItem => wishlistItem.user_id === 3,
-      );
-      if (userWishlist.some(wishlistItem => wishlistItem.id === item.id)) {
-        setHeartColor('green');
-      } else {
-        setHeartColor('black');
-      }
-      const updatedWishlist = [...wishlist, item];
+    const fetchWishlist = async () => {
       try {
-        await AsyncStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-        await axios.put(
-          'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlish/1',
-          {
-            user_id: 3,
-            itemWishList: updatedWishlist,
-            id: '1',
-          },
+        const response = await axios.get(
+          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20`,
         );
-        console.log('The data has been successfully updated to the API');
+        if (response.data.length > 0) {
+          const userWishlist = response.data[0];
+          setWishlist(userWishlist.itemWishList);
+        }
       } catch (error) {
-        console.error('Error saving data to AsyncStorage:', error);
+        console.error('Error fetching wishlist:', error);
       }
-    }
-  };
+    };
+
+    fetchWishlist();
+  }, []);
+
   return (
     <FlatList
       data={carouselData}
@@ -90,18 +127,16 @@ const ItemProductPopular = () => {
             style={styles.popularImg}>
             <TouchableOpacity
               style={styles.tym}
-              onPress={() => handleAddToWishlist(item)}>
+              onPress={() => addToWishlist(20, item)}>
               <Image
                 source={require('../../assets/img_recommendations/tym.png')}
                 style={[
                   styles.imgtym,
-                  {
-                    tintColor: wishlist.some(
-                      wishlistItem => wishlistItem.id === item.id,
-                    )
-                      ? 'green'
-                      : 'black',
-                  },
+                  wishlist.some(
+                    (wishlistItem: WishlistItem) => wishlistItem.id === item.id,
+                  )
+                    ? styles.imgtymActive
+                    : null,
                 ]}
               />
             </TouchableOpacity>
@@ -132,10 +167,11 @@ const ItemProductPopular = () => {
     />
   );
 };
-
 export default ItemProductPopular;
-
 const styles = StyleSheet.create({
+  imgtymActive: {
+    tintColor: 'green',
+  },
   popularTree: {
     width: '100%',
     height: 100,
@@ -211,6 +247,5 @@ const styles = StyleSheet.create({
   imgtym: {
     alignItems: 'center',
     justifyContent: 'center',
-    
   },
 });

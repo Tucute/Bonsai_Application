@@ -2,7 +2,7 @@ import {Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Home({navigation}: any) {
+export default function Logout({navigation}: any) {
   const handleLogout = async () => {
     console.log('Before removing token');
     await AsyncStorage.removeItem('token');

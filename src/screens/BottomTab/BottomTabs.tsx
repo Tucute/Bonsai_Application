@@ -5,7 +5,7 @@ import Home from './Home';
 import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
 import Recommendations from './Recommendations';
-import CartScreen from '../users/Cart';
+import BonsaiList from '../sellers/products';
 
 const Tab = createBottomTabNavigator();
 
@@ -111,7 +111,7 @@ const BottomTabs: () => React.JSX.Element = () => {
               style={{
                 width: 150,
                 height: 50,
-                justifyContent: 'center', // Align vertically centered
+                justifyContent: 'center',
                 marginHorizontal: 90,
                 alignItems: 'center',
               }}
@@ -186,8 +186,8 @@ const BottomTabs: () => React.JSX.Element = () => {
         }}
       />
       <Tab.Screen
-        name="Cart"
-        component={CartScreen}
+        name="BonsaiList"
+        component={BonsaiList}
         options={{
           headerTitleStyle: {
             display: 'none',

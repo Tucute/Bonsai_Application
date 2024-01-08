@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import React from 'react';
 
+import BottomTabs from '../BottomTab/BottomTabs';
+import AddToCartButton from '../../components/buttons/AddToCartButton';
 
 const DetailProduct = ({route}: any) => {
   const {product} = route.params;
@@ -81,22 +83,13 @@ const DetailProduct = ({route}: any) => {
           <Text style={styles.nameAbout}>About</Text>
           <Text style={styles.description}>{product.description}</Text>
         </View>
-        <View style={styles.containerAddtocart}>
-          <TouchableOpacity style={styles.addtocart}>
-            <View style={styles.addtocarts}>
-              <View style={styles.imgCart}>
-                <Image source={require('../../assets/img_detail/cart.png')} />
-                <Text style={styles.nameAddcart}>Add to Cart</Text>
-              </View>
-              <View>
-                <Text style={styles.priceAddcart}>
-                  {product.promotion_price !== product.price
-                    ? `$${product.promotion_price}`
-                    : `$${product.price}`}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: 10,
+          }}>
+          <AddToCartButton item={product}/>
         </View>
       </View>
     </ScrollView>

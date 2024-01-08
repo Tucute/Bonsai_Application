@@ -33,7 +33,7 @@ const BonsaiList: React.FC = ({navigation}: any) => {
             onPress={() =>
               navigation.navigate('ManagementOrder', {
                 mode: 'update',
-                bonsaiId: item.id,
+                bonsaiId: item,
               })
             }>
             <Image

@@ -1,3 +1,5 @@
+// Formik x React Native example
+import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -12,28 +14,23 @@ import {
 } from 'react-native';
 import {Formik} from 'formik';
 import {SignupSchema} from './Validation';
-import React from 'react';
-import useSigup from '../hooks/useSignup';
+import useLogin from '../hooks/useLogin';
 
-export default function SuccessSignup({navigation}: any) {
-  const {handleSignUp, signUpInfo} = useSigup({navigation});
+export const Login = ({navigation}: any) => {
+  const passwordRef: any = useRef();
+  const {handleLogin} = useLogin({navigation});
+
   return (
     <Formik
-      initialValues={{
-        email: '',
-        password: '',
-        confirmPassword: '',
-      }}
+      initialValues={{email: '', password: ''}}
       validationSchema={SignupSchema}
       onSubmit={values => {
         setTimeout(() => {
-          let data = {
-            ...signUpInfo,
+          let account = {
             email: values.email,
             password: values.password,
-            confirmPassword: values.confirmPassword,
           };
-          handleSignUp(data);
+          handleLogin(account);
         }, 100);
       }}>
       {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
@@ -53,11 +50,17 @@ export default function SuccessSignup({navigation}: any) {
                 />
                 <Text style={styles.textLogo}>BonSai Application</Text>
               </View>
+              <View>
+                <Text style={styles.textWelcome}>Welcome Back</Text>
+                <Text style={styles.textLogin}>Log in to your account</Text>
+              </View>
               <View style={styles.textInput}>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter Email"
                   placeholderTextColor={'black'}
+                  enterKeyHint={'next'}
+                  onSubmitEditing={() => passwordRef.current?.focus()}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
@@ -66,9 +69,12 @@ export default function SuccessSignup({navigation}: any) {
                   <Text style={styles.errorText}>* {errors.email}</Text>
                 ) : null}
                 <TextInput
+                  ref={passwordRef}
                   style={styles.input}
                   placeholder="Enter Password"
                   placeholderTextColor={'black'}
+                  enterKeyHint={'done'}
+                  onSubmitEditing={() => passwordRef.current?.clear()}
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
@@ -76,27 +82,19 @@ export default function SuccessSignup({navigation}: any) {
                 {errors.password && touched.password ? (
                   <Text style={styles.errorText}>* {errors.password}</Text>
                 ) : null}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Confirm Password"
-                  placeholderTextColor={'black'}
-                  value={values.confirmPassword}
-                  onChangeText={handleChange('confirmPassword')}
-                />
               </View>
+              <Text style={styles.forgetPass}>Forgot Password?</Text>
               <TouchableOpacity
                 style={styles.buttonLogin}
                 onPress={handleSubmit}>
-                <Text style={styles.textLgoin}>Sign Up</Text>
+                <Text style={styles.textLgoin}>Log In</Text>
               </TouchableOpacity>
               <View style={styles.signupNav}>
-                <Text style={styles.textAccount}>
-                  Already have you an account?
-                </Text>
+                <Text style={styles.textAccount}>Don't have an account?</Text>
                 <Text
                   style={styles.textSignup}
-                  onPress={() => navigation.navigate('Login')}>
-                  Login
+                  onPress={() => navigation.navigate('SignUp')}>
+                  Signup
                 </Text>
               </View>
             </View>
@@ -105,7 +103,7 @@ export default function SuccessSignup({navigation}: any) {
       )}
     </Formik>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -120,18 +118,19 @@ const styles = StyleSheet.create({
   },
   textLogo: {
     color: '#98C13F',
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
     marginTop: -30,
   },
   textWelcome: {
     color: '#000',
-    fontSize: 36,
+    fontSize: 34,
     fontWeight: 'bold',
   },
   textLogin: {
     color: '#000',
     fontSize: 14,
+    fontWeight: 'bold',
   },
   contentLogin: {
     paddingHorizontal: 38,
@@ -139,16 +138,18 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderRadius: 15,
-    paddingHorizontal: 10,
+    // marginTop: 10,
     borderBottomWidth: 1.221,
     borderBottomColor: '#063',
     color: '#000',
+    paddingLeft: 15,
   },
   textInput: {
-    gap: 22,
+    gap: 10,
     marginTop: 20,
   },
   forgetPass: {
+    marginTop: 5,
     color: '#0D986A',
     fontSize: 14,
   },
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0D986A',
     height: 55,
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
     borderRadius: 15,
     marginHorizontal: 30,
@@ -164,13 +166,12 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 20,
     fontWeight: '500',
-    padding: 10,
   },
   signupNav: {
     flexDirection: 'row',
     textAlign: 'center',
-    paddingLeft: 40,
-    marginTop: 10,
+    paddingLeft: 50,
+    marginTop: 5,
   },
   textAccount: {
     color: '#000',
@@ -188,8 +189,8 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     height: '80%',
-    borderBottomLeftRadius: 180,
-    borderBottomRightRadius: 180,
+    borderBottomLeftRadius: 150,
+    borderBottomRightRadius: 150,
   },
   errorText: {
     fontWeight: 'bold',

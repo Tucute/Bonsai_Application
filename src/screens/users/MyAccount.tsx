@@ -1,20 +1,50 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+interface getProfile {
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
+}
+const MyAccount = ({navigation}: any) => {
+  const [userData, setUserData] = useState<getProfile>();
+  const getUserData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
 
-const MyAccount = () => {
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    const getToken = await AsyncStorage.getItem('token');
+    if (getToken === null) {
+      navigation.navigate('LandingPage');
+    }
+  };
   return (
     <View style={styles.profileContainer}>
       <View style={styles.profile}>
         <View style={styles.img}>
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <View style={styles.bgImg}>
-              <Image source={require('../../assets/img_profile/people.png')} />
+            {userData?.avatar ? (
+                <Image style={styles.avatar} source={{uri: userData.avatar}} />
+              ):null}
             </View>
-            <Text style={styles.contentImg}>DWeber</Text>
+            <Text style={styles.contentImg}>{userData?.name}</Text>
           </View>
           <View style={{marginHorizontal: 10}}>
-            <Text style={styles.contentImg}>David Weber</Text>
-            <Text style={styles.contentImg}>3 January 1984</Text>
+            <Text style={styles.contentImg}>{userData?.email}</Text>
+            <Text style={styles.contentImg}>{userData?.phone}</Text>
             <View style={styles.preventProfile}>
               <Text style={styles.contentPrevent}>Edit Profile</Text>
             </View>
@@ -65,11 +95,11 @@ const MyAccount = () => {
           </View>
           <View style={styles.line}></View>
           <View>
-            <View style={styles.namecontain}>
+            <TouchableOpacity style={styles.namecontain} onPress={handleLogout}>
               <Image source={require('../../assets/img_profile/logout.png')} />
               <Text style={styles.name}>Log out</Text>
               <Image source={require('../../assets/img_profile/large.png')} />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -135,5 +165,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 10,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
   },
 });

@@ -1,16 +1,19 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
+import useBonsai from '../../../hooks/useBonsai';
+
 
 const URL_IMAGE = '../../../assets/images';
-interface DropdownSelectProps {
-  data: string[];
-}
 
-const DropdownSelect: React.FC<DropdownSelectProps> = ({data}) => {
+const DropdownSelect: React.FC= () => {
+  const {dataCategories} = useBonsai();
+  console.log(dataCategories);
+  
+
   return (
     <SelectDropdown
-      data={data}
+      data={dataCategories}
       onSelect={(selectedItem, index) => {
         console.log(selectedItem, index);
       }}

@@ -1,57 +1,78 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
-import useBonsai, {BonsaiType} from '../../../hooks/useBonsai';
-import {useRoute} from '@react-navigation/native';
 import DropdownSelect from './catalog';
+import {useRoute} from '@react-navigation/native';
+import useBonsai, {BonsaiType} from '../../../hooks/useBonsai';
 
+interface RouteParams {
+  mode?: string;
+  bonsaiId?: BonsaiType;
+}
 interface BonsaiFormProps {
   onSubmitProduct: (product: Partial<BonsaiType>) => void;
-  initialProduct?: BonsaiType;
 }
 
-const ManagementOrder: React.FC<BonsaiFormProps> = ({
-  onSubmitProduct,
-  initialProduct,
-}) => {
+const ManagementOrder: React.FC<BonsaiFormProps> = ({onSubmitProduct}) => {
   const {addBonsai, updateBonsai} = useBonsai();
+
   const route = useRoute();
-  const routeParams = route.params || {mode: 'add'};
-  const mode =
-    typeof routeParams === 'object' && 'mode' in routeParams
-      ? routeParams.mode
-      : 'add';
+  const routeParams: RouteParams = route.params || {
+    mode: 'add',
+    bonsaiId: null,
+  };
+  const {mode, bonsaiId} = routeParams;
   const safeMode: string = typeof mode === 'string' ? mode : 'add';
 
-  const [name, setName] = useState(initialProduct?.name || '');
-  const [image, setImage] = useState(initialProduct?.image?.toString() || '');
+  const [name, setName] = useState(bonsaiId?.name || '');
+  const [image, setImage] = useState(bonsaiId?.image?.toString() || '');
   const [description, setDescription] = useState(
-    initialProduct?.description?.toString() || '',
+    bonsaiId?.description?.toString() || '',
   );
-  const [price, setPrice] = useState(initialProduct?.price?.toString() || '');
+  const [price, setPrice] = useState(bonsaiId?.price?.toString() || '');
   const [promotionPrice, setPromotionPrice] = useState(
-    initialProduct?.promotion_price?.toString() || '',
+    bonsaiId?.promotion_price?.toString() || '',
   );
 
   useEffect(() => {
-    setName(initialProduct?.name || '');
-    setImage(initialProduct?.image?.toString() || '');
-    setDescription(initialProduct?.description?.toString() || '');
-    setPrice(initialProduct?.price?.toString() || '');
-    setPromotionPrice(initialProduct?.promotion_price?.toString() || '');
-  }, [initialProduct]);
+    setName(bonsaiId?.name || '');
+    setImage(bonsaiId?.image?.toString() || '');
+    setDescription(bonsaiId?.description?.toString() || '');
+    setPrice(bonsaiId?.price?.toString() || '');
+    setPromotionPrice(bonsaiId?.promotion_price?.toString() || '');
+  }, [bonsaiId]);
+
+  const handleChangeText = (key: keyof BonsaiType, value: string) => {
+    switch (key) {
+      case 'name':
+        setName(value);
+        break;
+      case 'image':
+        setImage(value);
+        break;
+      case 'description':
+        setDescription(value);
+        break;
+      case 'price':
+        setPrice(value);
+        break;
+      case 'promotion_price':
+        setPromotionPrice(value);
+        break;
+    }
+  };
 
   const handleSubmitProduct = async () => {
     const productData: Partial<BonsaiType> = {
-      name: name,
-      image: image,
-      description: description,
+      name,
+      image,
+      description,
       price: parseFloat(price) || 0,
       promotion_price: parseFloat(promotionPrice) || 0,
     };
 
     try {
-      if (safeMode === 'update' && initialProduct) {
-        await updateBonsai(initialProduct.id, productData);
+      if (safeMode === 'update' && bonsaiId) {
+        await updateBonsai(bonsaiId.id, productData);
       } else {
         await addBonsai(productData as Omit<BonsaiType, 'id'>);
       }
@@ -68,8 +89,6 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
     setPromotionPrice('');
   };
 
-  const data = ['app', 'orange', 'banana'];
-
   return (
     <View style={styles.formContainer}>
       <Text style={styles.label}>Name</Text>
@@ -78,7 +97,7 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
         placeholderTextColor="red"
         placeholder="Product name"
         value={name}
-        onChangeText={setName}
+        onChangeText={text => handleChangeText('name', text)}
       />
 
       <Text style={styles.label}>Image</Text>
@@ -87,7 +106,7 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
         placeholderTextColor="red"
         placeholder="URL or link image"
         value={image}
-        onChangeText={setImage}
+        onChangeText={text => handleChangeText('image', text)}
       />
 
       <Text style={styles.label}>Description</Text>
@@ -96,14 +115,14 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
         multiline
         numberOfLines={4}
         value={description}
-        onChangeText={setDescription}
+        onChangeText={text => handleChangeText('description', text)}
       />
 
       <Text style={styles.label}>Price</Text>
       <TextInput
         style={styles.input}
         value={price}
-        onChangeText={text => setPrice(text)}
+        onChangeText={text => handleChangeText('price', text)}
         keyboardType="numeric"
       />
 
@@ -111,11 +130,11 @@ const ManagementOrder: React.FC<BonsaiFormProps> = ({
       <TextInput
         style={styles.input}
         value={promotionPrice}
-        onChangeText={text => setPromotionPrice(text)}
+        onChangeText={text => handleChangeText('promotion_price', text)}
         keyboardType="numeric"
       />
       <Text style={styles.label}>Catalog</Text>
-      <DropdownSelect data={data} />
+      <DropdownSelect />
       <Pressable style={styles.addButton} onPress={handleSubmitProduct}>
         <Text style={styles.buttonText}>
           {safeMode === 'update' ? 'Update' : 'Add'} Bonsai

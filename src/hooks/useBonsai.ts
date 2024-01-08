@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react';
-const BONSAI = 'https://63a571e42a73744b008e23ee.mockapi.io/user24';
-const DATA_STORE = 'https://63a571e42a73744b008e23ee.mockapi.io/users';
+const CATALOG = 'https://63a571e42a73744b008e23ee.mockapi.io/user24';
+const DATA_STORE = 'https://85a2-103-19-99-68.ngrok-free.app/api/get-products';
 import axios from 'axios';
 import {useQuery} from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface BonsaiType {
   id: string;
@@ -17,16 +18,38 @@ export interface CategoriesType {
   name: string;
 }
 
+
 const useBonsai = () => {
   const [dataBonsai, setDataBonsai] = useState<BonsaiType[]>([]);
   const [dataCategories, setDataCategories] = useState<CategoriesType[]>([]);
+
+  const getUserID = async() => {
+    try {
+      const getUser = await AsyncStorage.getItem('user');
+      console.log("ID nguoi dung khi no dang nhap: ",getUser);
+        
+      
+      if (getUser) {
+        const user = JSON.parse(getUser);
+        const userID = user.id;
+        return userID;
+      } else {
+        console.error('User data not found in AsyncStorage');
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     const fetchDataBonsai = async () => {
       try {
         const res = await fetch(DATA_STORE);
         const data = await res.json();
-        setDataBonsai(data);
+        const supplierID = await getUserID();
+        const bonsaiData = data.filter(item => item.supplier_id === 4)
+        setDataBonsai(bonsaiData);
       } catch (error) {
         console.error(error);
       }
@@ -81,7 +104,7 @@ const useBonsai = () => {
   const { data } = useQuery({
     queryKey: ['dataCatalog'],
     queryFn: async () => {
-      const res = await axios.get(BONSAI);
+      const res = await axios.get(CATALOG);
       const catalogName = res.data.map((item: CategoriesType) => item.name);
       return catalogName;
     },

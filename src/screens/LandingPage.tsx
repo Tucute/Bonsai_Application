@@ -10,10 +10,7 @@ export default function LandingPage({navigation}: any) {
   const handleGetStart = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user');
-        const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-        const token = value.token;
-      if (token !== null) {
-        console.log(token);
+      if (jsonValue !== null) {
         navigation.navigate('Root');
       } else {
         navigation.navigate('Login');

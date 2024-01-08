@@ -77,9 +77,11 @@ const MyAccount = ({navigation}: any) => {
   });
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('token');
-    const getToken = await AsyncStorage.getItem('token');
-    if (getToken === null) {
+    // await AsyncStorage.removeItem('token');
+    // const getToken = await AsyncStorage.getItem('token');
+    await AsyncStorage.removeItem('user');
+    const jsonValue = await AsyncStorage.getItem('user');
+    if (jsonValue === null) {
       navigation.navigate('LandingPage');
     }
   };

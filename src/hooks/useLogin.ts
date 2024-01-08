@@ -17,6 +17,7 @@ const useLogin = ({navigation}: any) => {
         )
         .then(async res => {
           if (res.status === 200) {
+            console.log(res.data);
             const token = res.data.token;
             const userid = res.data.user.id;
             // const userid = res.data.id;

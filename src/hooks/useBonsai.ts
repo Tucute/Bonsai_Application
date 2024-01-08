@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react';
 const BONSAI = 'https://63a571e42a73744b008e23ee.mockapi.io/user24';
 import axios from 'axios';
 import {useQuery} from '@tanstack/react-query';
-import {any} from 'prop-types';
 
 export interface BonsaiType {
   id: string;
@@ -82,7 +81,8 @@ const useBonsai = () => {
     queryKey: ['dataCatalog'],
     queryFn: async () => {
       const res = await axios.get(BONSAI);
-      return res.data.name;
+      const catalogName = res.data.map((item: CategoriesType) => item.name);
+      return catalogName;
     },
   });
   

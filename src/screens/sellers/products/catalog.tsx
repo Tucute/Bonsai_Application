@@ -8,8 +8,6 @@ const URL_IMAGE = '../../../assets/images';
 
 const DropdownSelect: React.FC= () => {
   const {dataCategories} = useBonsai();
-  console.log(dataCategories);
-  
 
   return (
     <SelectDropdown

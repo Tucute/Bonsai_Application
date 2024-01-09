@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   slider: {
     width: '100%',
-    height: 40,
+    height: 100,
   },
   tittleInput: {
     color: '#000000',

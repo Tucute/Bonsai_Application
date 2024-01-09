@@ -15,6 +15,9 @@ import SearchScreen from '../screens/users/SearchScreen';
 import WishList from '../screens/users/WishList';
 import UploadImage from '../screens/users/UploadImage';
 import CartScreen from '../screens/users/Cart';
+import BonsaiList from '../screens/sellers/products';
+import ManagementOrder from '../screens/sellers/products/ManagementOrder';
+import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
 const queryClient = new QueryClient();
 export default function Navigate({navigation}:any) {
   const Stack = createStackNavigator();
@@ -30,6 +33,8 @@ export default function Navigate({navigation}:any) {
           <Stack.Screen name="checkout" component={Checkout} />
           <Stack.Screen name="cart" component={CartScreen} />
           <Stack.Screen name="Root"component={DrawerNavigator} options={{headerShown: false}}/>
+          <Stack.Screen name='BonsaiList' component={BonsaiList} />
+          <Stack.Screen name='ManagementOrder' component={ManagementOrder} />
           <Stack.Screen
             name="DetailProduct"
             component={DetailProduct}

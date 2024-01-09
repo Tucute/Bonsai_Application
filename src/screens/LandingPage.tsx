@@ -9,9 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function LandingPage({navigation}: any) {
   const handleGetStart = async () => {
     try {
-      const getToken = await AsyncStorage.getItem('token');
-      if (getToken !== null) {
-        console.log(getToken);
+      const jsonValue = await AsyncStorage.getItem('user');
+      if (jsonValue !== null) {
         navigation.navigate('Root');
       } else {
         navigation.navigate('Login');

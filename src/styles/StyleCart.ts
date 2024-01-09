@@ -53,6 +53,7 @@ export const styles = StyleSheet.create({
       borderBottomWidth: 1,
       paddingBottom: 0,
       fontSize: 16,
+      color: '#000',
     },
     applyDelivery: {
       marginTop: 10,
@@ -71,6 +72,7 @@ export const styles = StyleSheet.create({
       top: -18,
       fontSize: 18,
       fontWeight: 'bold',
+      color: '#000',
     },
     lastSection: {
       flex: 2,
@@ -211,5 +213,8 @@ export const styles = StyleSheet.create({
     textApply: {
       color: '#fff',
       fontWeight: 'bold',
+    },
+    textColor: {
+      color: '#000',
     },
   });

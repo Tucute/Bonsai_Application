@@ -173,7 +173,7 @@ export default function Navigate() {
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          {/* <Stack.Screen name="LandingPage" component={LandingPage} /> */}
+          <Stack.Screen name="LandingPage" component={LandingPage} />
           <Stack.Screen name="ManagementOrder" component={ManagementOrder} />
           <Stack.Screen name="ManagementYourOrder" component={ManagementYourOrder} />
           <Stack.Screen name="SignUp" component={SignUp} />
@@ -182,6 +182,7 @@ export default function Navigate() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="checkout" component={Checkout} />
           <Stack.Screen name="cart" component={CartScreen} />
+          <Stack.Screen name="order" component={ManagementOrder} />
           <Stack.Screen
             name="Root"
             component={Root}

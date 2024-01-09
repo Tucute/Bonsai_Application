@@ -1,16 +1,17 @@
 import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
+import useUser from '../../hooks/useUser';
 interface userData {
   name: string;
   phone: number;
   address: string;
 }
 export default function ManagementOrder({navigation}: any) {
-  const [userData, setUserData] = useState<userData | undefined>();
+  const {data} = useUser();
   const query = useQuery({
     queryKey: ['todo'],
     queryFn: async () => {
@@ -20,29 +21,7 @@ export default function ManagementOrder({navigation}: any) {
       return response.data;
     },
   });
-  const {data} = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('user');
-        const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-        const userid = value.userid;
-        const response = await axios.get(
-          `https://da08-14-176-231-248.ngrok-free.app/api/get-users/${userid}`,
-        );
-        return response.data;
-      } catch (error) {
-        console.log('Error fetching user data: ', error);
-        throw error; // Rethrow the error to be handled by the query error handling
-      }
-    },
-  });
 
-  useEffect(() => {
-    if (data) {
-      setUserData(data);
-    }
-  }, [data]);
   const renderItem = ({item}: any) => {
     return (
       <View>
@@ -75,20 +54,21 @@ export default function ManagementOrder({navigation}: any) {
           />
           <Text style={styles.textItemHeader}>Đã gửi đơn hàng </Text>
           <Text style={styles.textItem}>
-            Thông tin vận chuyển của bạn:{userData?.name} {userData?.phone} {userData?.address}
+            Thông tin vận chuyển của bạn:{data?.name} - (+84){data?.phone} - {data?.address}
           </Text>
           <View style={styles.buttomText}>
             <TouchableOpacity>
               <Text style={styles.bottomtextItem}>Thay đổi địa chỉ</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=> navigation.navigate('ManagementYourOrder')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ManagementYourOrder')}>
               <Text style={styles.bottomtextItem}>Xem đơn hàng</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.ContenSearch}>
           <Text style={styles.textSearch}>Tìm kiếm |</Text>
-          <Text style={styles.textSearch}>Đề xuất</Text>
+          <Text style={styles.textOffer}>Đề xuất</Text>
         </View>
       </View>
       <FlatList
@@ -106,11 +86,11 @@ export default function ManagementOrder({navigation}: any) {
 const styles = StyleSheet.create({
   listItem: {
     flex: 1,
-     backgroundColor: '#fff',
-     padding:10,
-     marginTop:10,
-     marginVertical:10,
-    },
+    backgroundColor: '#fff',
+    padding: 10,
+    marginTop: 10,
+    marginVertical: 10,
+  },
   contenText: {
     backgroundColor: '#fff',
     width: '100%',
@@ -122,6 +102,7 @@ const styles = StyleSheet.create({
   textItem: {
     color: 'black',
     paddingVertical: 10,
+    textAlign: 'center',
   },
   textItemHeader: {
     color: 'black',
@@ -139,6 +120,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     height: 40,
     padding: 10,
+    borderRadius:5,
   },
   image: {
     width: 60,
@@ -157,11 +139,17 @@ const styles = StyleSheet.create({
     color: 'black',
     padding: 10,
   },
+  textOffer: {
+    color: 'black',
+    padding: 10,
+    borderBottomWidth:2,
+    borderBottomColor:'red',
+  },
   droppedTree: {
     width: 155,
     height: 215,
     marginHorizontal: 10,
-    marginVertical:10,
+    marginVertical: 10,
     alignItems: 'center',
     borderRadius: 10,
     backgroundColor: '#ffffff',

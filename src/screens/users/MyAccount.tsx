@@ -12,6 +12,7 @@ import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useQuery, useMutation} from '@tanstack/react-query';
 import axios from 'axios';
+import useUser from '../../hooks/useUser';
 interface getProfile {
   id: number;
   email: string;
@@ -23,24 +24,7 @@ const MyAccount = ({navigation}: any) => {
   const [userData, setUserData] = useState<getProfile | undefined>();
   const [modalVisible, setModalVisible] = useState(false);
   const [newUser, setNewUser] = useState<getProfile>();
-  const {data} = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('user');
-        const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-        const userid = value.userid;
-        const response = await axios.get(
-          `https://da08-14-176-231-248.ngrok-free.app/api/get-users/${userid}`,
-        );
-        return response.data;
-      } catch (error) {
-        console.log('Error fetching user data: ', error);
-        throw error; // Rethrow the error to be handled by the query error handling
-      }
-    },
-  });
-
+  const {data} = useUser();
   useEffect(() => {
     if (data) {
       setUserData(data);
@@ -53,9 +37,8 @@ const MyAccount = ({navigation}: any) => {
         const jsonValue = await AsyncStorage.getItem('user');
         const value = jsonValue != null ? JSON.parse(jsonValue) : null;
         const token = value.token;
-        console.log(data);
         const response = await axios.post(
-          `https://da08-14-176-231-248.ngrok-free.app/api/update-user/`,
+          `https://2cf2-14-176-231-248.ngrok-free.app/api/update-user/`,
           data,
           {
             headers: {
@@ -77,12 +60,13 @@ const MyAccount = ({navigation}: any) => {
   });
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('token');
-    const getToken = await AsyncStorage.getItem('token');
-    if (getToken === null) {
+    await AsyncStorage.removeItem('user');
+    const user = await AsyncStorage.getItem('user');
+    if (user === null) {
       navigation.navigate('LandingPage');
     }
   };
+
   const handleOnChange = (key: string, value: string) => {
     setNewUser(prevUserData => ({
       ...prevUserData,

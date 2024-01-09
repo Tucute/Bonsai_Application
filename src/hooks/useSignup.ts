@@ -31,7 +31,7 @@ const useSigup = ({navigation}: any) => {
   const mutation = useMutation({
     mutationFn: async (data: InfoSignUp) => {
       axios
-        .post('https://ec71-14-176-231-248.ngrok-free.app/api/register', data)
+        .post('https://2cf2-14-176-231-248.ngrok-free.app/api/register', data)
         .then(res => {
           if (res.status === 200) {
             const jsonValue = JSON.stringify(res.data.user);

@@ -30,9 +30,7 @@ const ItemNewPopular = () => {
         <View style={styles.imgTitle}>
           <ImageBackground
             source={
-              typeof item.image === 'number'
-                ? item.image
-                : {uri: item.image as string}
+              {uri:item.image}
             }
             style={styles.img}>
             <View style={styles.imgContent}>

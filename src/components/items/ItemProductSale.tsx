@@ -5,12 +5,13 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  TouchableOpacity,
-  Alert,
+  TouchableOpacity,Alert
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
+import  useAddToWishlist from '../../hooks/useAddWishlist';
 import {useNavigation} from '@react-navigation/native';
 interface CarouselItem {
   id: number;
@@ -19,89 +20,39 @@ interface CarouselItem {
   price: string;
   image: string;
   promotion_price: string;
+  category_id: number | null;
+  supplier_id: number | null;
+  created_at: Date | null;
+  updated_at: Date | null;
+}
+interface getProfile {
+  id:number
+  email: string;
+  name: string;
+  avatar: string;
+  phone: string;
 }
 interface WishlistItem {
-  id: number;
+  id: number; 
+  item_id:number;
 }
 const ItemProductPopular = () => {
   const navigation = useNavigation();
   const carouselData = useFetchInfoTrees();
-  const [wishlist, setWishlist] = useState([]);
-
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const addToWishlist = async (userId: number, product: CarouselItem) => {
-    try {
-      const wishlistResponse = await axios.get(
-        `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userId}`,
-      );
-
-      if (wishlistResponse.data.length > 0) {
-        const wishlist = wishlistResponse.data[0];
-
-        const isProductInWishlist = wishlist.itemWishList.some(
-          (item: CarouselItem) => item.id === product.id,
-        );
-
-        if (!isProductInWishlist) {
-          wishlist.itemWishList.unshift(product);
-
-          await axios.put(
-            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist/${wishlist.id}`,
-            wishlist,
-          );
-          const response = await axios.get(
-            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userId}`,
-          );
-          if (response.data.length > 0) {
-            const userWishlist = response.data[0];
-            setWishlist(userWishlist.itemWishList);
-          }
-          Alert.alert(
-            'Success',
-            'The product has been successfully added to your favorites list!',
-            [
-              {
-                text: 'OK',
-                onPress: () => navigation.navigate('WishList'),
-              },
-            ],
-          );
-        } else {
-          Alert.alert(
-            'Warning',
-            'The product is already in your favorites list!',
-            [
-              {
-                text: 'OK',
-                onPress: () => navigation.navigate('WishList'),
-              },
-            ],
-          );
-        }
-      } else {
-        
-        const newWishlist = await axios.post(
-          'https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist',
-          {
-            user_id: userId,
-            itemWishList: [product],
-          },
-        );
-
-        Alert.alert('Success', 'New wishlist added.');
-      }
-    } catch (error) {
-      console.error('Error updating wishlist:', error);
-    }
+    useAddToWishlist(userId, product, wishlist, setWishlist);
   };
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(
-          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=20`,
+          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
         );
+
         if (response.data.length > 0) {
-          const userWishlist = response.data[0];
-          setWishlist(userWishlist.itemWishList);
+          const userWishlist = response.data;
+          setWishlist(userWishlist);
         }
       } catch (error) {
         console.error('Error fetching wishlist:', error);
@@ -110,7 +61,19 @@ const ItemProductPopular = () => {
 
     fetchWishlist();
   }, []);
-
+  const [userData, setUserData] = useState<getProfile>();
+  const getUserData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      setUserData(value);
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
     <FlatList
       data={carouselData}
@@ -120,24 +83,18 @@ const ItemProductPopular = () => {
           onPress={() => navigation.navigate('DetailProduct', {product: item})}>
           <ImageBackground
             source={
-              typeof item.image === 'number'
-                ? item.image
-                : {uri: item.image as string}
+             {uri:item.image}
             }
             style={styles.popularImg}>
             <TouchableOpacity
               style={styles.tym}
-              onPress={() => addToWishlist(20, item)}>
+              onPress={() => addToWishlist(userData?.id, item as CarouselItem)}>
+                
               <Image
                 source={require('../../assets/img_recommendations/tym.png')}
-                style={[
-                  styles.imgtym,
-                  wishlist.some(
-                    (wishlistItem: WishlistItem) => wishlistItem.id === item.id,
-                  )
-                    ? styles.imgtymActive
-                    : null,
-                ]}
+                style={[styles.imgtym , wishlist.some((wishlistItem: WishlistItem) => wishlistItem.item_id === item.id)
+                  ? styles.imgtymActive
+                  : null,]}
               />
             </TouchableOpacity>
           </ImageBackground>
@@ -170,7 +127,7 @@ const ItemProductPopular = () => {
 export default ItemProductPopular;
 const styles = StyleSheet.create({
   imgtymActive: {
-    tintColor: 'green',
+    tintColor: 'green', 
   },
   popularTree: {
     width: '100%',

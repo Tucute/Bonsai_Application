@@ -6,15 +6,8 @@ import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
 import Plant_Store from './Plant_Store';
 import Recommendations from './Recommendations';
-
-import WishList from '../users/WishList';
-
-
-import CartScreen from '../users/Cart';
-
-
+import BonsaiList from '../sellers/products';
 const Tab = createBottomTabNavigator();
-
 const generateTabBarButtonStyle = (focused: boolean) => ({
   width: '100%',
   height: '100%',
@@ -23,7 +16,6 @@ const generateTabBarButtonStyle = (focused: boolean) => ({
   backgroundColor: focused ? '#0D986A' : 'white',
   borderRadius: 15,
 });
-
 const generateTabBarIconStyle = (focused: boolean) => ({
   width: 30,
   height: 30,
@@ -67,33 +59,6 @@ const BottomTabs: () => React.JSX.Element = () => {
         name="Home"
         component={Home}
         options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center', // Align vertically centered
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -109,33 +74,6 @@ const BottomTabs: () => React.JSX.Element = () => {
         name="HealthMonitor"
         component={HealthMonitor}
         options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center', // Align vertically centered
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -150,38 +88,10 @@ const BottomTabs: () => React.JSX.Element = () => {
         name="Nutritional_Summary"
         component={Nutritional_Summary}
         options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center',
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
                 source={require('../../assets/img_bottomTab/subcription.png')}
-                // eslint-disable-next-line react-native/no-inline-styles
                 style={{
                   width: 40,
                   height: 30,
@@ -194,35 +104,8 @@ const BottomTabs: () => React.JSX.Element = () => {
       />
       <Tab.Screen
         name="Plant_Store"
-        component={Plant_Store}
+        component={BonsaiList}
         options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center', // Align vertically centered
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -237,33 +120,6 @@ const BottomTabs: () => React.JSX.Element = () => {
         name="Recommendations"
         component={Recommendations}
         options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center', // Align vertically centered
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>
               <Image
@@ -274,47 +130,7 @@ const BottomTabs: () => React.JSX.Element = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="WishList"
-        component={WishList}
-        options={{
-          headerTitleStyle: {
-            display: 'none',
-          },
-          headerTitle: props => (
-            <Image
-              source={require('../../assets/img_detail/Header.png')}
-              style={{
-                width: 150,
-                height: 50,
-                justifyContent: 'center', // Align vertically centered
-                marginHorizontal: 90,
-                alignItems: 'center',
-              }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img_detail/brings.png')}
-                style={{
-                  width: 20,
-                  height: 28,
-                  marginRight: 10,
-                }}
-              />
-            </TouchableOpacity>
-          ),
-          tabBarIcon: ({focused}) => (
-            <View style={generateTabBarButtonStyle(focused)}>
-              <Image
-                source={require('../../assets/img_bottomTab/tym.png')}
-                style={generateTabBarIconStyle(focused)}
-              />
-            </View>
-          ),
-        }}
-      /> */}
+      
     </Tab.Navigator>
   );
 };

@@ -7,5 +7,4 @@ import App from './App';
 import {name as appName} from './app.json';
 import 'react-native-gesture-handler';
 import ManagementOrder from './src/screens/sellers/ManagementOrder';
-AppRegistry.registerComponent(appName, () => 
-App);   
+AppRegistry.registerComponent(appName, () => App);

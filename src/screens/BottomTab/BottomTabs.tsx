@@ -30,7 +30,7 @@ const BottomTabs = () => {
             imageSource = require(`${URL_IMAGE}/Ecommerce.png`);
           } else if (rn === 'Recommendations') {
             imageSource = require(`${URL_IMAGE}/Recommendations.png`);
-          } 
+          }
 
           return (
             <View style={focused ? styles.focusedStyle : null}>
@@ -53,11 +53,11 @@ const BottomTabs = () => {
           height: 62,
         },
       })}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="HealthMonitor" component={HealthMonitor} />
-      <Tab.Screen name="Nutritional_Summary" component={Nutritional_Summary} />
-      <Tab.Screen name="PlantStore" component={PlantStore} />
-      <Tab.Screen name="Recommendations" component={Recommendations} />
+      <Tab.Screen name="Home" component={Home} options={{headerShown: false}}/>
+      <Tab.Screen name="HealthMonitor" component={HealthMonitor} options={{headerShown: false}}/>
+      <Tab.Screen name="Nutritional_Summary" component={Nutritional_Summary} options={{headerShown: false}}/>
+      <Tab.Screen name="PlantStore" component={PlantStore} options={{headerShown: false}}/>
+      <Tab.Screen name="Recommendations" component={Recommendations} options={{headerShown: false}}/>
     </Tab.Navigator>
   );
 };

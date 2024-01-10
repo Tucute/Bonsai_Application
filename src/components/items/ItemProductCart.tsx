@@ -17,7 +17,6 @@ const ItemProductCart = ({item}: Item) => {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const updatePlusQuantity = useCartStore((state) => state.updatePlusQuantity);
   const updateMinusQuantity = useCartStore((state) => state.updateMinusQuantity);
-
   const handleUpdatePlusQuantity = () => {
     updatePlusQuantity(item.id);
   };
@@ -27,7 +26,6 @@ const ItemProductCart = ({item}: Item) => {
   const handleRemove = () => {
     removeFromCart(item.id);
   };
-
   return (
     <View style={styles.item}>
       <Image

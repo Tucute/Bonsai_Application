@@ -36,30 +36,64 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var react_1 = require("react");
 var axios_1 = require("axios");
-var react_query_1 = require("@tanstack/react-query");
-var useFetchInfoTrees = function () {
-    var get_api = "https://e1f3-14-176-231-248.ngrok-free.app/api/get-products";
-    var _a = react_query_1.useQuery({
-        queryKey: ['products'],
-        queryFn: function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response, error_1;
+var async_storage_1 = require("@react-native-async-storage/async-storage");
+var useCheckWishlist = function (userId) {
+    var _a = react_1.useState([]), wishlist = _a[0], setWishlist = _a[1];
+    var fetchAndSetWishlist = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, userWishlist, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    if (!userId) return [3 /*break*/, 2];
+                    return [4 /*yield*/, axios_1["default"].get("https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=" + userId)];
+                case 1:
+                    response = _a.sent();
+                    if (response.data.length > 0) {
+                        userWishlist = response.data;
+                        async_storage_1["default"].setItem('wishlist', JSON.stringify(userWishlist));
+                        console.log('Setting wishlist:', userWishlist);
+                        setWishlist(userWishlist);
+                        console.log('Wishlist fetched and set successfully.', userWishlist);
+                    }
+                    _a.label = 2;
+                case 2: return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error('Error fetching and setting wishlist:', error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); };
+    react_1.useEffect(function () {
+        var getStoredWishlist = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var storedWishlist, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1["default"].get(get_api)];
+                        return [4 /*yield*/, async_storage_1["default"].getItem('wishlist')];
                     case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, response.data];
+                        storedWishlist = _a.sent();
+                        if (storedWishlist) {
+                            setWishlist(JSON.parse(storedWishlist));
+                            console.log('Wishlist fetched from storage:', JSON.parse(storedWishlist));
+                        }
+                        return [3 /*break*/, 3];
                     case 2:
-                        error_1 = _a.sent();
-                        throw new Error('Network response was not ok');
+                        error_2 = _a.sent();
+                        console.error('Error getting stored wishlist:', error_2);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
-        }); }
-    }), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
-    return { data: data, isLoading: isLoading, isError: isError };
+        }); };
+        fetchAndSetWishlist();
+        getStoredWishlist();
+    }, [userId]);
+    return { wishlist: wishlist, setWishlist: setWishlist, fetchAndSetWishlist: fetchAndSetWishlist };
 };
-exports["default"] = useFetchInfoTrees;
+exports["default"] = useCheckWishlist;

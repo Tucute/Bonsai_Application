@@ -103,8 +103,8 @@ const CartScreen = ({navigation}: any) => {
           <View style={styles.lastSC}>
             <View style={styles.viewTextCoupon}>
               <Text style={styles.titleCoupon}>Delivery</Text>
-              <Text>Order above $50 to get </Text>
-              <Text>
+              <Text style={styles.textColor}>Order above $50 to get </Text>
+              <Text style={styles.textColor}>
                 Free Delivery
                 <Text style={styles.subTextDelivery}> Shop for more $20 </Text>
               </Text>

@@ -18,16 +18,32 @@ interface CarouselItem {
   promotion_price: string;
 }
 const ItemPopular = () => {
-  function shuffleArray(array: any){
+  const {data, isLoading, isError} = useFetchInfoTrees();
+  const [shuffledData, setShuffledData] = useState<CarouselItem[]>([]);
+  const navigation = useNavigation();
+  const shuffleArray = (array: CarouselItem[]) => {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
+  };
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const shuffled = shuffleArray(data);
+      setShuffledData(shuffled);
+    }
+  }, [data, isLoading, isError]);
+  if (isLoading) {
+    return <Text>Loading...</Text>;
   }
-  const shuffledData = shuffleArray(useFetchInfoTrees());
-  const navigation = useNavigation();
+  if (isError) {
+    return <Text>Error loading data</Text>;
+  }
+  if (!shuffledData || shuffledData.length === 0) {
+    return <Text>No data available</Text>;
+  }
   return (
     <View style={styles.dropped}>
       <FlatList
@@ -39,12 +55,7 @@ const ItemPopular = () => {
             onPress={() =>
               navigation.navigate('DetailProduct', {product: item})
             }>
-            <Image
-              source={
-                {uri:item.image}
-              }
-              style={styles.droppedImg}
-            />
+            <Image source={{uri: item.image}} style={styles.droppedImg} />
             <Text style={styles.nameTree}>{item.name}</Text>
             <Text>
               {item.promotion_price === item.price ? (
@@ -64,7 +75,9 @@ const ItemPopular = () => {
     </View>
   );
 };
+
 export default ItemPopular;
+
 const styles = StyleSheet.create({
   dropped: {
     marginTop: 5,
@@ -96,7 +109,7 @@ const styles = StyleSheet.create({
 
   nameTree: {
     alignItems: 'center',
-    justifyContent: 'center',
+justifyContent: 'center',
     fontWeight: 'bold',
     color: 'black',
     fontSize: 15,

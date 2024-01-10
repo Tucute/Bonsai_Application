@@ -1,7 +1,6 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { url } from '../components/url/urlNgrok';
-
 interface CarouselItem {
   id: number;
   name: string;

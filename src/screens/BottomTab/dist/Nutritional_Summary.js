@@ -109,7 +109,13 @@ var Nutritional_Summary = function () {
             react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle }, "Show Form info user")),
         react_1["default"].createElement(react_native_1.View, { style: { marginVertical: 30 } },
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: function () { return navigation.navigate('UploadImage'); } },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle }, "Remove upload Image Screen")))));
+                react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle }, "Remove upload Image Screen"))),
+        react_1["default"].createElement(react_native_1.View, { style: { marginVertical: 30 } },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: function () { return navigation.navigate('Chat'); } },
+                react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle }, "Remove chat Screen"))),
+        react_1["default"].createElement(react_native_1.View, { style: { marginVertical: 30 } },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: function () { return navigation.navigate('MapComponent'); } },
+                react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle }, "Remove Map Screen")))));
 };
 exports["default"] = Nutritional_Summary;
 var styles = react_native_1.StyleSheet.create({

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
+import { useQueryClient } from '@tanstack/react-query';
 interface CarouselItem {
   id: number;
   name: string;

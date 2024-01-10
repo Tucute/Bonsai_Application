@@ -13,6 +13,7 @@ import React, {useState, useEffect} from 'react';
 import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
 import  useAddToWishlist from '../../hooks/useAddWishlist';
 import {useNavigation} from '@react-navigation/native';
+
 interface CarouselItem {
   id: number;
   name: string;
@@ -38,29 +39,11 @@ interface WishlistItem {
 }
 const ItemProductPopular = () => {
   const navigation = useNavigation();
-  const carouselData = useFetchInfoTrees();
+  const { data: carouselData, isLoading, isError } = useFetchInfoTrees();
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const addToWishlist = async (userId: number, product: CarouselItem) => {
     useAddToWishlist(userId, product, wishlist, setWishlist);
   };
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const response = await axios.get(
-          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
-        );
-
-        if (response.data.length > 0) {
-          const userWishlist = response.data;
-          setWishlist(userWishlist);
-        }
-      } catch (error) {
-        console.error('Error fetching wishlist:', error);
-      }
-    };
-
-    fetchWishlist();
-  }, []);
   const [userData, setUserData] = useState<getProfile>();
   const getUserData = async () => {
     try {
@@ -73,6 +56,22 @@ const ItemProductPopular = () => {
   };
   useEffect(() => {
     getUserData();
+  }, []);
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const response = await axios.get(
+          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
+        );
+        if (response.data.length > 0) {
+          const userWishlist = response.data;
+          setWishlist(userWishlist);
+        }
+      } catch (error) {
+        console.error('Error fetching wishlist:', error);
+      }
+    };
+    fetchWishlist();
   }, []);
   return (
     <FlatList

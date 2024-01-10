@@ -45,14 +45,38 @@ var useAddWishlist_1 = require("../../hooks/useAddWishlist");
 var native_1 = require("@react-navigation/native");
 var ItemProductPopular = function () {
     var navigation = native_1.useNavigation();
-    var carouselData = useFetchInfoTrees_1["default"]();
-    var _a = react_1.useState([]), wishlist = _a[0], setWishlist = _a[1];
+    var _a = useFetchInfoTrees_1["default"](), carouselData = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    var _b = react_1.useState([]), wishlist = _b[0], setWishlist = _b[1];
     var addToWishlist = function (userId, product) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             useAddWishlist_1["default"](userId, product, wishlist, setWishlist);
             return [2 /*return*/];
         });
     }); };
+    var _c = react_1.useState(), userData = _c[0], setUserData = _c[1];
+    var getUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var jsonValue, value, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('user')];
+                case 1:
+                    jsonValue = _a.sent();
+                    value = jsonValue != null ? JSON.parse(jsonValue) : null;
+                    setUserData(value);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _a.sent();
+                    console.log('Error: ', e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    react_1.useEffect(function () {
+        getUserData();
+    }, []);
     react_1.useEffect(function () {
         var fetchWishlist = function () { return __awaiter(void 0, void 0, void 0, function () {
             var response, userWishlist, error_1;
@@ -77,30 +101,6 @@ var ItemProductPopular = function () {
             });
         }); };
         fetchWishlist();
-    }, []);
-    var _b = react_1.useState(), userData = _b[0], setUserData = _b[1];
-    var getUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var jsonValue, value, e_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, async_storage_1["default"].getItem('user')];
-                case 1:
-                    jsonValue = _a.sent();
-                    value = jsonValue != null ? JSON.parse(jsonValue) : null;
-                    setUserData(value);
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_1 = _a.sent();
-                    console.log('Error: ', e_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
-    react_1.useEffect(function () {
-        getUserData();
     }, []);
     return (react_1["default"].createElement(react_native_1.FlatList, { data: carouselData, renderItem: function (_a) {
             var item = _a.item;

@@ -36,30 +36,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var axios_1 = require("axios");
-var react_query_1 = require("@tanstack/react-query");
-var useFetchInfoTrees = function () {
-    var get_api = "https://e1f3-14-176-231-248.ngrok-free.app/api/get-products";
-    var _a = react_query_1.useQuery({
-        queryKey: ['products'],
-        queryFn: function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1["default"].get(get_api)];
-                    case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, response.data];
-                    case 2:
-                        error_1 = _a.sent();
-                        throw new Error('Network response was not ok');
-                    case 3: return [2 /*return*/];
-                }
-            });
-        }); }
-    }), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
-    return { data: data, isLoading: isLoading, isError: isError };
+var async_storage_1 = require("@react-native-async-storage/async-storage");
+var useGetUser = function () {
+    var _a = useState(null), userData = _a[0], setUserData = _a[1];
+    var getUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var jsonValue, value, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('user')];
+                case 1:
+                    jsonValue = _a.sent();
+                    value = jsonValue != null ? JSON.parse(jsonValue) : null;
+                    setUserData(value);
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _a.sent();
+                    console.log('Error: ', e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    useEffect(function () {
+        getUserData();
+    }, []);
+    return userData;
 };
-exports["default"] = useFetchInfoTrees;
+exports["default"] = useGetUser;

@@ -15,8 +15,10 @@ import SearchScreen from '../screens/users/SearchScreen';
 import WishList from '../screens/users/WishList';
 import UploadImage from '../screens/users/UploadImage';
 import CartScreen from '../screens/users/Cart';
+import ManagementOrder from '../screens/sellers/ManagementOrder';
 import Chat from '../screens/users/Chat';
 import MapComponent from '../screens/users/MapComponent';
+
 const queryClient = new QueryClient();
 export default function Navigate({navigation}:any) {
   const Stack = createStackNavigator();
@@ -31,6 +33,7 @@ export default function Navigate({navigation}:any) {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="checkout" component={Checkout} />
           <Stack.Screen name="cart" component={CartScreen} />
+          <Stack.Screen name="Order" component={ManagementOrder} />
           <Stack.Screen name="Root"component={DrawerNavigator} options={{headerShown: false}}/>
           <Stack.Screen
             name="DetailProduct"

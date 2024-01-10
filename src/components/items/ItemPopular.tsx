@@ -18,8 +18,7 @@ interface CarouselItem {
   promotion_price: string;
 }
 const ItemPopular = () => {
-  const api = 'https://e1f3-14-176-231-248.ngrok-free.app/api/get-products';
-  const {data, isLoading, isError} = useFetchInfoTrees(api);
+  const {data, isLoading, isError} = useFetchInfoTrees();
   const [shuffledData, setShuffledData] = useState<CarouselItem[]>([]);
   const navigation = useNavigation();
   const shuffleArray = (array: CarouselItem[]) => {
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
 
   nameTree: {
     alignItems: 'center',
-    justifyContent: 'center',
+justifyContent: 'center',
     fontWeight: 'bold',
     color: 'black',
     fontSize: 15,

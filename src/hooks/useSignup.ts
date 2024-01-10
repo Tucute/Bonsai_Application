@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useMutation} from '@tanstack/react-query';
 import {Alert} from 'react-native';
+import { url } from '../components/url/urlNgrok';
 interface InfoSignUp {
   email: string;
   password: string;
@@ -31,7 +32,7 @@ const useSigup = ({navigation}: any) => {
   const mutation = useMutation({
     mutationFn: async (data: InfoSignUp) => {
       axios
-        .post('https://2cf2-14-176-231-248.ngrok-free.app/api/register', data)
+        .post(`${url}/api/register`, data)
         .then(res => {
           if (res.status === 200) {
             const jsonValue = JSON.stringify(res.data.user);

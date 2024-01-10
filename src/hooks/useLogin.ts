@@ -2,6 +2,7 @@ import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
+import { url } from '../components/url/urlNgrok';
 interface Account {
   email: string;
   password: string;
@@ -11,7 +12,7 @@ const useLogin = ({navigation}: any) => {
     mutationFn: async (data: Account) => {
       axios
         .post(
-          'https://2cf2-14-176-231-248.ngrok-free.app/api/login',
+          `${url}/api/login`,
           // 'https://645e542e8d08100293fcd90e.mockapi.io/webxedap',
           data,
         )

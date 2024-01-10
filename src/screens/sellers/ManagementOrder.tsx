@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
 import useUser from '../../hooks/useUser';
+import { url } from '../../components/url/urlNgrok';
 interface userData {
   name: string;
   phone: number;
@@ -16,7 +17,7 @@ export default function ManagementOrder({navigation}: any) {
     queryKey: ['todo'],
     queryFn: async () => {
       const response = await axios.get(
-        'https://85a2-103-19-99-68.ngrok-free.app/api/get-products',
+        `${url}/api/get-products`,
       );
       return response.data;
     },

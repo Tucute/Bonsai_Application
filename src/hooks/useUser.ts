@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
+import { url } from '../components/url/urlNgrok';
 export default function useUser() { 
   const {data, isFetching} = useQuery({
     queryKey: ['user'],
@@ -11,7 +11,7 @@ export default function useUser() {
         const value = jsonValue != null ? JSON.parse(jsonValue) : null;
         const userid = value.userid;
         const response = await axios.get(
-          `https://2cf2-14-176-231-248.ngrok-free.app/api/get-users/${userid}`,
+          `${url}/api/get-users/${userid}`,
         );
         return response.data;
       } catch (error) {

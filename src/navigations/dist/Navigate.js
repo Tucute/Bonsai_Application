@@ -17,6 +17,8 @@ var SearchScreen_1 = require("../screens/users/SearchScreen");
 var WishList_1 = require("../screens/users/WishList");
 var UploadImage_1 = require("../screens/users/UploadImage");
 var Cart_1 = require("../screens/users/Cart");
+var Chat_1 = require("../screens/users/Chat");
+var MapComponent_1 = require("../screens/users/MapComponent");
 var queryClient = new react_query_1.QueryClient();
 function Navigate(_a) {
     var navigation = _a.navigation;
@@ -60,6 +62,26 @@ function Navigate(_a) {
                         headerRight: function () { return react_1["default"].createElement(HeaderOptions_1["default"], { navigation: navigation }); }
                     } }),
                 react_1["default"].createElement(Stack.Screen, { name: "UploadImage", component: UploadImage_1["default"], options: {
+                        headerStyle: {
+                            backgroundColor: 'white'
+                        },
+                        headerTitleStyle: {
+                            display: 'none'
+                        },
+                        headerRight: function () { return react_1["default"].createElement(HeaderOptions_1["default"], { navigation: navigation }); }
+                    } }),
+                react_1["default"].createElement(Stack.Screen, { name: "Chat", component: Chat_1["default"], options: {
+                        headerShown: false,
+                        headerStyle: {
+                            backgroundColor: 'white'
+                        },
+                        headerTitleStyle: {
+                            display: 'none'
+                        },
+                        headerRight: function () { return react_1["default"].createElement(HeaderOptions_1["default"], { navigation: navigation }); }
+                    } }),
+                react_1["default"].createElement(Stack.Screen, { name: "MapComponent", component: MapComponent_1["default"], options: {
+                        headerShown: false,
                         headerStyle: {
                             backgroundColor: 'white'
                         },

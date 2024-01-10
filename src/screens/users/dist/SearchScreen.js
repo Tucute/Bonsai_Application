@@ -39,44 +39,15 @@ exports.__esModule = true;
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var native_1 = require("@react-navigation/native");
+var useFetchInfoTrees_1 = require("../../hooks/useFetchInfoTrees");
 var lodash_1 = require("lodash");
 var SearchScreen = function (_a) {
     var searchText = _a.searchText;
     var navigation = native_1.useNavigation();
-    var _b = react_1.useState([]), treesData = _b[0], setTreesData = _b[1];
+    var _b = useFetchInfoTrees_1["default"](), treesData = _b.data, isLoading = _b.isLoading, isError = _b.isError;
     var _c = react_1.useState([]), searchResults = _c[0], setSearchResults = _c[1];
-    var fetchTreesData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, contentType, data, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('https://63a571e42a73744b008e23ee.mockapi.io/user24')];
-                case 1:
-                    response = _a.sent();
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch data. Status: " + response.status);
-                    }
-                    contentType = response.headers.get('Content-Type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        throw new Error('Invalid content type. Expected JSON.');
-                    }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    setTreesData(data);
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error('Error fetching trees data:', error_1.message);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); };
     var searchTrees = function (text) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            // Tìm kiếm theo text ở đây
             return [2 /*return*/, treesData.filter(function (item) {
                     return item.name.toLowerCase().includes(text.toLowerCase());
                 })];
@@ -94,9 +65,6 @@ var SearchScreen = function (_a) {
             }
         });
     }); }, 300);
-    react_1.useEffect(function () {
-        fetchTreesData();
-    }, []);
     var renderItem = function (_a) {
         var item = _a.item;
         return (react_1["default"].createElement(react_native_1.View, null,

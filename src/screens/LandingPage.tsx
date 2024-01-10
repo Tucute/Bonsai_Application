@@ -10,13 +10,14 @@ export default function LandingPage({navigation}: any) {
   const handleGetStart = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user');
-      if (jsonValue !== null) {
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      if (value !== null) {
         navigation.navigate('Root');
       } else {
         navigation.navigate('Login');
       }
     } catch (error) {
-      console.log(error);
+      console.log('lỗi', error);
     }
   };
   return (

@@ -7,11 +7,20 @@ var useAutoplay_1 = require("../../hooks/useAutoplay");
 var useFetchInfoTrees_1 = require("../../hooks/useFetchInfoTrees");
 var width = react_native_1.Dimensions.get('window').width;
 var ItemNewPopular = function () {
-    var carouselData = useFetchInfoTrees_1["default"]();
+    var _a = useFetchInfoTrees_1["default"](), carouselData = _a.data, isLoading = _a.isLoading, isError = _a.isError;
     var carouselRef = react_1.useRef(null);
-    var _a = react_1.useState(0), currentIndex = _a[0], setCurrentIndex = _a[1];
-    useAutoplay_1["default"](carouselData.length, currentIndex, setCurrentIndex);
-    return (react_1["default"].createElement(react_native_snap_carousel_1["default"], { data: carouselData, renderItem: function (_a) {
+    var _b = react_1.useState(0), currentIndex = _b[0], setCurrentIndex = _b[1];
+    useAutoplay_1["default"]((carouselData === null || carouselData === void 0 ? void 0 : carouselData.length) || 0, currentIndex, setCurrentIndex);
+    if (isLoading) {
+        return react_1["default"].createElement(react_native_1.Text, { style: { marginHorizontal: 20 } }, "Loading...");
+    }
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, { style: styles.load }, "Error loading data");
+    }
+    if (!carouselData || carouselData.length === 0) {
+        return react_1["default"].createElement(react_native_1.Text, { style: styles.load }, "No data available");
+    }
+    return (react_1["default"].createElement(react_native_snap_carousel_1["default"], { data: carouselData || [], renderItem: function (_a) {
             var item = _a.item;
             return (react_1["default"].createElement(react_native_1.View, { style: styles.imgTitle },
                 react_1["default"].createElement(react_native_1.ImageBackground, { source: { uri: item.image }, style: styles.img },
@@ -58,5 +67,9 @@ var styles = react_native_1.StyleSheet.create({
     popularproduct: {
         marginTop: 5,
         marginBottom: 50
+    },
+    load: {
+        alignItems: "center",
+        justifyContent: "center"
     }
 });

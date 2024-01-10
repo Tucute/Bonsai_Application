@@ -57,6 +57,7 @@ const ItemProductPopular = () => {
   useEffect(() => {
     getUserData();
   }, []);
+
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
@@ -98,7 +99,7 @@ const ItemProductPopular = () => {
             </TouchableOpacity>
           </ImageBackground>
           <View style={styles.infotree}>
-            <View>
+<View>
               <Text style={styles.nametree}>{item.name}</Text>
               <Text style={styles.slogan}>Monstera family</Text>
             </View>

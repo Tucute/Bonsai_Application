@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 export default function PlantStore({navigation}: any) {
-
   const NavigateBonsaiTree = () => {
-    navigation.navigate('BonsaiList')
-  }
+    navigation.navigate('BonsaiList');
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.titleStore}>My Store</Text>
-      <Text style={styles.titleAdress}>The owner: A An Tu</Text>
-      <Text style={styles.titleAdress}>Address: 101B Le Huu Trac, Phuoc My, Son Tra, Da Nang</Text>
+      <View style={styles.profileSeller}>
+        <Text style={styles.titleAdress}>The owner: A An Tu</Text>
+        <View style={styles.logo}>
+          <Image
+            source={require('../../assets/images/Sark.png')}
+            style={styles.logoImage}
+          />
+        </View>
+      </View>
+      <Text style={styles.titleAdress}>
+        Address: 101B Le Huu Trac, Phuoc My, Son Tra, Da Nang
+      </Text>
       <View style={styles.listActions}>
-        <TouchableOpacity
-          style={styles.action}
-        >
+        <TouchableOpacity style={styles.action}>
           <Text style={styles.titleAction}>Status Order</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.action}
-          onPress={NavigateBonsaiTree}
-        >
+        <TouchableOpacity style={styles.action} onPress={NavigateBonsaiTree}>
           <Text style={styles.titleAction}>Bonsai tree</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.review}>
-        
-      </View>
+      <View style={styles.review}></View>
     </View>
   );
 }
@@ -36,6 +38,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+  },
+  profileSeller: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleStore: {
     paddingTop: 10,
@@ -64,7 +70,17 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 12,
   },
-  review: {
-
+  review: {},
+  logo: {
+    backgroundColor: 'tomato',
+    width: 100,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 100,
+  },
+  logoImage: {
+    width: 50,
+    height: 100,
   },
 });

@@ -7,12 +7,12 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../screens/BottomTab/Home';
 import HealthMonitor from '../screens/BottomTab/HealthMonitor';
 import Nutritional_Summary from '../screens/BottomTab/Nutritional_Summary';
-import Plant_Store from '../screens/BottomTab/Plant_Store';
 import Recommendations from '../screens/BottomTab/Recommendations';
 import MyAccount from '../screens/users/MyAccount';
 import BottomTabs from '../screens/BottomTab/BottomTabs';
 import WishList from '../screens/users/WishList';
 import HeaderOptions from './HeaderOptions';
+import PlantStore from '../screens/sellers/PlantStore';
 interface OptionsScreenProps{
   drawerIcon: any;
   backgroundColor?: string;
@@ -78,8 +78,8 @@ const DrawerNavigator = () => {
           })}
         />
         <Drawer.Screen
-          name="Plant_Store"
-          component={Plant_Store}
+          name="PlantStore"
+          component={PlantStore}
           options={optionsScreen({
             drawerIcon: require('../assets/img_bottomTab/Ecommerce.png'),
             backgroundColor: 'white',

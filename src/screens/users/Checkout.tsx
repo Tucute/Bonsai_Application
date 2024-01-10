@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useUser from '../../hooks/useUser';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { url } from '../../components/url/urlNgrok';
 interface Product {
   id: number;
   name: string;
@@ -80,7 +81,7 @@ const viewFooter = (
         const value = jsonValue != null ? JSON.parse(jsonValue) : null;
         const token = value.token;
         const response = await axios.post(
-          `https://da08-14-176-231-248.ngrok-free.app/api/order`,
+          `${url}/api/order`,
           data,
           {
             headers: {
@@ -91,7 +92,7 @@ const viewFooter = (
         );
         if (response.status === 200) {
           Alert.alert('Success', 'Checkout successfully', [
-            {text: 'OK', onPress: () => navigation.navigate('Login')},
+            {text: 'OK', onPress: () => navigation.navigate('Order')},
           ]);
         } else {
           Alert.alert('Invalid information!');

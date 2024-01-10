@@ -36,14 +36,12 @@ const useSigup = ({navigation}: any) => {
         .then(res => {
           if (res.status === 200) {
             const jsonValue = JSON.stringify(res.data.user);
-            console.log(jsonValue);
             Alert.alert('Success', 'Register successfully', [
               {text: 'OK', onPress: () => navigation.navigate('Login')},
             ]);
           } else {
             Alert.alert('Invalid information!');
           }
-          console.log('dataa--------->>>>>', res.status);
         })
         .catch(e => {
           console.log(e);

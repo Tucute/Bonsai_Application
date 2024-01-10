@@ -6,6 +6,7 @@ import HealthMonitor from './HealthMonitor';
 import Nutritional_Summary from './Nutritional_Summary';
 import Plant_Store from './Plant_Store';
 import Recommendations from './Recommendations';
+import BonsaiList from '../sellers/products';
 const Tab = createBottomTabNavigator();
 const generateTabBarButtonStyle = (focused: boolean) => ({
   width: '100%',
@@ -103,7 +104,7 @@ const BottomTabs: () => React.JSX.Element = () => {
       />
       <Tab.Screen
         name="Plant_Store"
-        component={Plant_Store}
+        component={BonsaiList}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={generateTabBarButtonStyle(focused)}>

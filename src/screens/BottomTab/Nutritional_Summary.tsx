@@ -1,119 +1,60 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, Alert, TextInput, Button } from 'react-native';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import axios, { AxiosResponse } from 'axios';
-import { useNavigation } from '@react-navigation/native';
-interface FormData {
-  firstname: string;
-  lastname: string;
-}
 
-interface ApiResponse {
-  id: string;
-}
+import React from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import Slider from '@react-native-community/slider';
+
 const Nutritional_Summary = () => {
-  const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    defaultValues: {
-      firstname: '',
-      lastname: '',
-    },
-  });
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      const response: AxiosResponse<ApiResponse> = await axios.post('https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/products', data);
-      console.log('API response:', response.data);
-    } catch (error) {
-      console.error('Error submitting data:', error);
-    }
-  };
-
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={{
-                    width: '90%',
-                    borderWidth: 1,
-                    borderColor: 'black',
-                    borderRadius: 10,
-                  }}
-                  placeholder="First name"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="firstname"
-            />
-            {errors.firstname && <Text style={{color:"red"}}>This is required.</Text>}
-            <Controller
-              control={control}
-              rules={{
-                maxLength: 100,
-                required:true,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={{
-                    width: '90%',
-                    borderWidth: 1,
-                    borderColor: 'black',
-                    borderRadius: 10,
-                  }}
-                  placeholder="Last name"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="lastname"
-            />
-               {errors.lastname && <Text style={{color:"red"}}>This is required.</Text>}
-            <View style={{ padding: 20 }}>
-              <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-            </View>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </TouchableOpacity>
-          </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>Nutritional Summary</Text>
+      <Text style={styles.text}>For 1 portion</Text>
+      <View>
+        <View style={styles.detail}>
+          <Text style={styles.tittleInput}>Protein</Text>
+          <Text style={styles.tittleInput}>gram</Text>
         </View>
-      </Modal>
-      <TouchableOpacity
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Form info user</Text>
-      </TouchableOpacity>
-      <View style={{marginVertical:30}}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() =>navigation.navigate('UploadImage')}>
-        <Text style={styles.textStyle}>Remove upload Image Screen</Text>
-      </TouchableOpacity>
+
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={10}
+          minimumTrackTintColor="#159148"
+          maximumTrackTintColor="#FFFFFF"
+        />
+      </View>
+      <View>
+        <View style={styles.detail}>
+          <Text style={styles.tittleInput}>Carbs</Text>
+          <Text style={styles.tittleInput}>gram</Text>
+        </View>
+
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={10}
+          minimumTrackTintColor="#159148"
+          maximumTrackTintColor="#FFFFFF"
+        />
+      </View>
+      <View>
+        <View style={styles.detail}>
+          <Text style={styles.tittleInput}>Fat</Text>
+          <Text style={styles.tittleInput}>gram</Text>
+        </View>
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={10}
+          minimumTrackTintColor="#159148"
+          maximumTrackTintColor="#FFFFFF"
+        />
+        <TouchableOpacity>
+          <Text>Total</Text>
+          <Text>104.6 calories</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.textButton}>Continue</Text>
+        </TouchableOpacity>
       </View>
       <View style={{marginVertical:30}}>
       <TouchableOpacity
@@ -136,46 +77,41 @@ const Nutritional_Summary = () => {
 export default Nutritional_Summary;
 
 const styles = StyleSheet.create({
-  centeredView: {
+  container: {
     flex: 1,
+    paddingHorizontal: 20,
+  },
+  title: {
+    color: '#000000',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  detail: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    color: '#000000',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
+  tittleInput: {
+    color: '#000000',
+    fontSize: 14,
+  },
+  text: {},
+  button: {
+    backgroundColor: '#0D986A',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    width: '90%',
-    margin: 20,
-    backgroundColor: 'white',
+    height: 48,
     borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
+  textButton: {
+    fontSize: 20,
+    color: '#FFF',
     fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
 });

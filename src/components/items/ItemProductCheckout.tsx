@@ -58,9 +58,9 @@ const ItemProductCheckout = ({item}: Item) => {
               uri: 'https://www.pngitem.com/pimgs/m/354-3544619_delivery-png-download-fast-delivery-icon-png-transparent.png',
             }}
           />
-          <Text>Phí vận chuyển</Text>
+          <Text style={styles.textColor}>Phí vận chuyển</Text>
         </View>
-        <Text>Free shipping</Text>
+        <Text style={styles.textColor}>Free shipping</Text>
       </View>
       <View style={styles.viewShipItem}>
         <View style={styles.viewSmallItem}>
@@ -70,9 +70,9 @@ const ItemProductCheckout = ({item}: Item) => {
               uri: 'https://static-00.iconduck.com/assets.00/clock-icon-512x512-vtrw1g4c.png',
             }}
           />
-          <Text>Ngày giao hàng dự kiến:</Text>
+          <Text style={styles.textColor}>Ngày giao hàng dự kiến:</Text>
         </View>
-        <Text>Dec 31 - Jan 4</Text>
+        <Text style={styles.textColor}>Dec 31 - Jan 4</Text>
       </View>
       <View style={styles.viewMessage}>
         <Text style={styles.titleMessage}>Tin nhắn</Text>
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
   quantity: {
     fontWeight: 'bold',
     marginHorizontal: 15,
+    color: '#000',
   },
   plus: {
     width: 20,
@@ -219,6 +220,9 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     
+  },
+  textColor: {
+    color: '#000',
   },
 });
 export default ItemProductCheckout;

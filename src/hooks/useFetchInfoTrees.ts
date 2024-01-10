@@ -1,4 +1,7 @@
-import {useState, useEffect} from 'react';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { url } from '../components/url/urlNgrok';
+
 interface CarouselItem {
   id: number;
   name: string;
@@ -7,33 +10,19 @@ interface CarouselItem {
   image: string;
   promotion_price: string;
 }
-import { url } from '../components/url/urlNgrok';
 const useFetchInfoTrees = () => {
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['getTree'],
+    queryFn: async () => {
       try {
-        const response = await fetch(
-          `${url}/api/get-products`,
-        );
-        // const response =await fetch(
-        //   'https://63a571e42a73744b008e23ee.mockapi.io/user24'
-        // );
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setCarouselData(data);
-        } else {
-          console.error('Data is not an array:', data);
-        }
+        const response = await axios.get(`${url}/api/get-products`);
+        return response.data;
       } catch (error) {
-        console.error('Error fetching data:', error);
+        throw error;
       }
-    };
-    fetchData();
-  }, []);
-  return carouselData;
+    },
+  });
+  return { data, isLoading, isError };
 };
+
 export default useFetchInfoTrees;

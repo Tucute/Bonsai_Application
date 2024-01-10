@@ -16,7 +16,7 @@ const BottomTabs = () => {
       initialRouteName="Home"
       screenOptions={({route}) => ({
         // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: ({focused}) => {
+        tabBarIcon: ({focused, size}) => {
           let rn = route.name;
           let imageSource;
 
@@ -38,8 +38,8 @@ const BottomTabs = () => {
                 source={imageSource}
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
-                  width: 32,
-                  height: 28,
+                  width: size,
+                  height: size,
                   tintColor: focused ? '#0D986A' : 'grey',
                 }}
               />

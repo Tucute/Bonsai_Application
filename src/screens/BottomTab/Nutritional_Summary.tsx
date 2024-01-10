@@ -56,6 +56,20 @@ const Nutritional_Summary = () => {
           <Text style={styles.textButton}>Continue</Text>
         </TouchableOpacity>
       </View>
+      <View style={{marginVertical:30}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>navigation.navigate('Chat')}>
+        <Text style={styles.textStyle}>Remove chat Screen</Text>
+      </TouchableOpacity>
+      </View>
+      <View style={{marginVertical:30}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>navigation.navigate('MapComponent')}>
+        <Text style={styles.textStyle}>Remove Map Screen</Text>
+      </TouchableOpacity>
+      </View>
     </View>
   );
 };

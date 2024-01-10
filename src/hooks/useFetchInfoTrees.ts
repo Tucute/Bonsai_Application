@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 interface CarouselItem {
   id: number;
   name: string;
@@ -9,16 +9,14 @@ interface CarouselItem {
 }
 import { url } from '../components/url/urlNgrok';
 const useFetchInfoTrees = () => {
-  const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
+  const { data, isLoading, isError } = useQuery<CarouselItem[]>({
+    queryKey: ['products'],
+    queryFn: async () => {
       try {
         const response = await fetch(
           `${url}/api/get-products`,
         );
-        // const response =await fetch(
-        //   'https://63a571e42a73744b008e23ee.mockapi.io/user24'
-        // );
+        return response.data;
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -29,11 +27,12 @@ const useFetchInfoTrees = () => {
           console.error('Data is not an array:', data);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        throw new Error('Network response was not ok');
       }
-    };
-    fetchData();
-  }, []);
-  return carouselData;
+    },
+  });
+
+  return { data, isLoading, isError };
 };
+
 export default useFetchInfoTrees;

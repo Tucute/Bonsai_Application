@@ -18,7 +18,7 @@ const CartScreen = ({navigation}: any) => {
   const cartItems = useCartStore(state => state.cartItems);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [voucherCode, setVoucherCode] = useState('');
-  const [discount, setDiscount] = useState<number | undefined>();
+  const [discount, setDiscount] = useState<number | undefined>(0);
   const voucher = useVoucher();
 
   const handleApplyCode = () => {

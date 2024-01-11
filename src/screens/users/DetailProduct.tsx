@@ -5,12 +5,15 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 import useAddToWishlist from '../../hooks/useAddWishlist';
 import AddToCartButton from '../../components/buttons/AddToCartButton';
+import useComment from '../../hooks/useComment';
+import ItemComment from '../../components/items/ItemComment';
 interface CarouselItem {
   id: number;
   name: string;
@@ -34,8 +37,21 @@ interface WishlistItem {
   id: number;
   item_id: number;
 }
+interface User {
+  name: string;
+  avatar: string;
+}
+interface Comment {
+  id: number;
+  comment: string;
+  rate: number;
+  user: User;
+}
 const DetailProduct = ({route}: any) => {
   const {product} = route.params;
+  const {data} = useComment(product.id);
+  console.log(data);
+  
   const [userData, setUserData] = useState<getProfile>();
 
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
@@ -72,6 +88,7 @@ const DetailProduct = ({route}: any) => {
   useEffect(() => {
     getUserData();
   }, []);
+
   return (
     <ScrollView style={styles.DetailContainer}>
       <View style={styles.InfoDetail}>
@@ -153,6 +170,11 @@ const DetailProduct = ({route}: any) => {
         <View style={styles.aboutContain}>
           <Text style={styles.nameAbout}>About</Text>
           <Text style={styles.description}>{product.description}</Text>
+        </View>
+        <View style={styles.viewComment}>
+            {data?.map((commentData: Comment) => (
+                <ItemComment data={commentData} key={commentData.id} />
+            ))}
         </View>
         <View
           style={{
@@ -308,5 +330,8 @@ const styles = StyleSheet.create({
   },
   imgtymActive: {
     tintColor: 'green',
+  },
+  viewComment: {
+    marginVertical: 10,
   },
 });

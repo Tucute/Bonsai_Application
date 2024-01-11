@@ -31,7 +31,7 @@ const BonsaiList: React.FC = ({navigation}: any) => {
           <Pressable
             style={styles.buttonAction}
             onPress={() =>
-              navigation.navigate('ManagementOrder', {
+              navigation.navigate('ManagementBonsai', {
                 mode: 'update',
                 bonsaiId: item,
               })
@@ -57,7 +57,7 @@ const BonsaiList: React.FC = ({navigation}: any) => {
       <View style={styles.button}>
         <TouchableOpacity
           style={styles.actionAdd}
-          onPress={() => navigation.navigate('ManagementOrder', {mode: 'add'})}>
+          onPress={() => navigation.navigate('ManagementBonsai', {mode: 'add'})}>
           <Image
             style={styles.imageAdd}
             source={require('../../../assets/images/add.png')}

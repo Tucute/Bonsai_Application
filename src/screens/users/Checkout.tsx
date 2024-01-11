@@ -111,34 +111,36 @@ const viewFooter = (
       totalPrice: totalPrice,
       cartItems: cartItems,
     };
+    console.log(data);
+    
     addOrderMutation.mutate(data);
   }
   return (
     <View>
       <View style={styles.sumarizeOrder}>
-        <Text style={styles.titleOrder}>Tóm tắt đơn hàng</Text>
+        <Text style={styles.titleOrder}>Order summary</Text>
         <View style={styles.listInfo}>
-          <Text style={styles.textColor}>Tổng phụ</Text>
+          <Text style={styles.textColor}>Subtotal</Text>
           <Text style={styles.textColor}>${price}</Text>
         </View>
         <View style={styles.listInfo}>
-          <Text style={styles.textColor}>Vận chuyển</Text>
+          <Text style={styles.textColor}>Transport</Text>
           <Text style={styles.textColor}>Free Shipping</Text>
         </View>
         <View style={styles.listInfo}>
-          <Text style={styles.textColor}>Shipping discount</Text>
+          <Text style={styles.textColor}>Discount</Text>
           <Text style={styles.textColor}>-{discount}%</Text>
         </View>
         <View style={styles.listInfo}>
-          <Text style={styles.total}>Tổng</Text>
+          <Text style={styles.total}>Total</Text>
           <Text style={styles.total}>${totalPrice}</Text>
         </View>
       </View>
       <View style={styles.viewPayment}>
-        <Text style={styles.titleOrder}>Phương thức thanh toán</Text>
+        <Text style={styles.titleOrder}>Payment method</Text>
         <TouchableOpacity style={styles.cash}>
           <Text style={styles.viewCOD}>COD</Text>
-          <Text style={styles.textPayment}>Thanh toán khi nhận hàng</Text>
+          <Text style={styles.textPayment}>Cash on delivery</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.viewVNpay}>
           <Image
@@ -147,17 +149,17 @@ const viewFooter = (
               uri: 'https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-VNPAY-QR-1.png',
             }}
           />
-          <Text style={styles.textVNpay}>Ví điện tử VNPAY</Text>
+          <Text style={styles.textVNpay}>VNPAY e-wallet</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.viewTotalOrder}>
         <View style={styles.totalOrder}>
-          <Text style={styles.textTotalPrice}>Tổng (1 mặt hàng)</Text>
+          <Text style={styles.textTotalPrice}>Total ({cartItems.length} item)</Text>
           <Text style={styles.textTotalPrice}>${totalPrice}</Text>
         </View>
-        <Text style={styles.textSave}>Bạn đã tiết kiệm được ${price-totalPrice}</Text>
+        <Text style={styles.textSave}>You have saved ${price-totalPrice}</Text>
         <TouchableOpacity style={styles.btnOrder} onPress={handleCheckout}>
-          <Text style={styles.textOrder}>ĐẶT HÀNG</Text>
+          <Text style={styles.textOrder}>ORDER</Text>
         </TouchableOpacity>
       </View>
     </View>

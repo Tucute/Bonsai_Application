@@ -19,6 +19,9 @@ interface Product {
     item: Product;
   }
 const ItemProductCheckout = ({item}: Item) => {
+  const currentDate = new Date();
+  const futureDate = new Date(currentDate);
+  futureDate.setDate(currentDate.getDate() + 4);
   return (
     <View style={styles.viewShowItem}>
       <View style={styles.item}>
@@ -34,7 +37,7 @@ const ItemProductCheckout = ({item}: Item) => {
             <Text style={styles.subname}>Tam đa cổ tích</Text>
           </View>
           <View style={styles.updateQuantity}>
-            <Text style={styles.quantity}>Số lượng:  {item.quantity}</Text>
+            <Text style={styles.quantity}>Quantity:  {item.quantity}</Text>
           </View>
         </View>
         <View style={styles.lastSection}>
@@ -49,7 +52,7 @@ const ItemProductCheckout = ({item}: Item) => {
           </TouchableOpacity> */}
         </View>
       </View>
-      <Text style={styles.titleShip}>Vận chuyển tiêu chuẩn trên cả nước</Text>
+      <Text style={styles.titleShip}>Standard shipping nationwide</Text>
       <View style={styles.viewShipItem}>
         <View style={styles.viewSmallItem}>
           <Image
@@ -58,7 +61,7 @@ const ItemProductCheckout = ({item}: Item) => {
               uri: 'https://www.pngitem.com/pimgs/m/354-3544619_delivery-png-download-fast-delivery-icon-png-transparent.png',
             }}
           />
-          <Text style={styles.textColor}>Phí vận chuyển</Text>
+          <Text style={styles.textColor}>Transport fee:</Text>
         </View>
         <Text style={styles.textColor}>Free shipping</Text>
       </View>
@@ -70,14 +73,14 @@ const ItemProductCheckout = ({item}: Item) => {
               uri: 'https://static-00.iconduck.com/assets.00/clock-icon-512x512-vtrw1g4c.png',
             }}
           />
-          <Text style={styles.textColor}>Ngày giao hàng dự kiến:</Text>
+          <Text style={styles.textColor}>Estimated delivery date:</Text>
         </View>
-        <Text style={styles.textColor}>Dec 31 - Jan 4</Text>
+        <Text style={styles.textColor}>{futureDate.toLocaleDateString()}</Text>
       </View>
       <View style={styles.viewMessage}>
-        <Text style={styles.titleMessage}>Tin nhắn</Text>
+        <Text style={styles.titleMessage}>Message</Text>
         <View style={styles.viewSmaillMessage}>
-          <Text>Tùy chọn</Text>
+          <Text>Option</Text>
           <Image
             style={styles.imgViewMessage}
             source={{
@@ -86,7 +89,7 @@ const ItemProductCheckout = ({item}: Item) => {
           />
         </View>
       </View>
-      <Text style={styles.totalItem}>1 mặt hàng, tổng cộng: ${item.price}</Text>
+      <Text style={styles.totalItem}>{item.quantity} item, total: ${item.price}</Text>
     </View>
   );
 };

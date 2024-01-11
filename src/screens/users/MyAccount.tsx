@@ -151,11 +151,13 @@ const MyAccount = ({navigation}: any) => {
         </View>
         <View>
           <View>
-            <View style={styles.namecontain}>
-              <Image source={require('../../assets/img_profile/balance.png')} />
-              <Text style={styles.name}>Balance</Text>
-              <Image source={require('../../assets/img_profile/large.png')} />
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Your Order')}>
+              <View style={styles.namecontain}>
+                <Image source={require('../../assets/img_profile/balance.png')} />
+                <Text style={styles.name}>Your order</Text>
+                <Image source={require('../../assets/img_profile/large.png')} />
+              </View>
+            </TouchableOpacity>
             <View style={styles.namecontain}>
               <Image source={require('../../assets/img_profile/data.png')} />
               <Text style={styles.name}>Sync</Text>

@@ -18,6 +18,7 @@ import CartScreen from '../screens/users/Cart';
 import ManagementOrder from '../screens/sellers/ManagementOrder';
 import Chat from '../screens/users/Chat';
 import MapComponent from '../screens/users/MapComponent';
+import ManagementYourOrder from '../screens/sellers/ManagementYourOrder';
 
 const queryClient = new QueryClient();
 export default function Navigate({navigation}:any) {
@@ -25,7 +26,7 @@ export default function Navigate({navigation}:any) {
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
-        <Stack.Navigator screenOptions={{headerShown: true}}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="LandingPage" component={LandingPage} options={{headerShown: false}}/>
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
@@ -34,6 +35,8 @@ export default function Navigate({navigation}:any) {
           <Stack.Screen name="checkout" component={Checkout} />
           <Stack.Screen name="cart" component={CartScreen} />
           <Stack.Screen name="Order" component={ManagementOrder} />
+          <Stack.Screen name="Your Order" component={ManagementYourOrder} />
+          <Stack.Screen name="chat" component={Chat} />
           <Stack.Screen name="Root"component={DrawerNavigator} options={{headerShown: false}}/>
           <Stack.Screen
             name="DetailProduct"

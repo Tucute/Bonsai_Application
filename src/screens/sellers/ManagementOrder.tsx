@@ -62,7 +62,7 @@ export default function ManagementOrder({navigation}: any) {
               <Text style={styles.bottomtextItem}>Thay đổi địa chỉ</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ManagementYourOrder')}>
+              onPress={() => navigation.navigate('Your Order')}>
               <Text style={styles.bottomtextItem}>Xem đơn hàng</Text>
             </TouchableOpacity>
           </View>

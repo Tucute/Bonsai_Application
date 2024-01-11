@@ -2,13 +2,14 @@ import axios from 'axios';
 import {Alert} from 'react-native';
 import {useEffect, useState} from 'react';
 import useUser from './useUser';
-import { useQuery  } from '@tanstack/react-query';
+import { useQuery, useQueryClient  } from '@tanstack/react-query';
 interface CarouselItem {
   id: number;
   message: string;
 }
 export default function useWishList() {
   
+  const queryClient = useQueryClient();
   const [dataWishList, setDataWishList] = useState<CarouselItem[]>([]);
   const { data: userData } = useUser();
   const{data, isLoading, isError}= useQuery({
@@ -43,6 +44,7 @@ export default function useWishList() {
         setDataWishList(prevData =>
           prevData.filter(item => item.id !== itemId),
         );
+        queryClient.invalidateQueries(['getWishList']);
       } else {
         console.error(
           'Error removing item from wish list. Status:',

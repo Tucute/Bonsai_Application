@@ -1,2 +1,2 @@
-export const url = 'https://b491-2402-800-fa49-3715-dcb2-d12d-aadf-192b.ngrok-free.app';
+export const url = 'https://7ea9-14-176-231-248.ngrok-free.app';
 // `${url}/api/get-comment/${id_product}`

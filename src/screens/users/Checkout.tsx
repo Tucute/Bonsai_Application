@@ -90,6 +90,7 @@ const viewFooter = (
             },
           },
         );
+        
         if (response.status === 200) {
           Alert.alert('Success', 'Checkout successfully', [
             {text: 'OK', onPress: () => navigation.navigate('Order')},

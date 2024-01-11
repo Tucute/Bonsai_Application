@@ -1,10 +1,12 @@
-import {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {url} from '../components/url/urlNgrok';
 
-const DATA_STORE = `${url}/api/get-product-admin`;
-const DATA_DEMO = 'https://63a571e42a73744b008e23ee.mockapi.io/users';
+const GET_DATA = `${url}/api/get-product-admin`;
+const ADD_DATA = `${url}/api/add-product`;
+const UPDATE_DATA = (id: string) => `${url}/api/update-product/${id}`;
+const DELETE_DATA = `${url}/api/delete-product/{id}`;
+const DATA_CATALOG = `${url}/api/get-categories`;
 
 export interface BonsaiType {
   id: string;
@@ -23,79 +25,62 @@ export interface CategoriesType {
 }
 
 const useBonsai = () => {
-  const [dataBonsai, setDataBonsai] = useState<BonsaiType[]>([]);
-  const [dataCategories, setDataCategories] = useState<CategoriesType[]>([]);
 
-  useEffect(() => {
-    const fetchDataBonsai = async () => {
-      try {
-        const res = await fetch(DATA_DEMO);
-        const data = await res.json();
-        setDataBonsai(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchDataBonsai();
-  }, []);
-
-  const addBonsai = async (newBonsai: Omit<BonsaiType, 'id'>) => {
-    try {
-      await fetch(DATA_STORE, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newBonsai),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const updateBonsai = async (
-    id: string,
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    updateBonsai: Partial<BonsaiType>,
-  ) => {
-    try {
-      await fetch(`${DATA_STORE}/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateBonsai),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const deleteBonsai = async (id: string) => {
-    try {
-      await fetch(`${DATA_STORE}/${id}`, {
-        method: 'DELETE',
-      });
-      setDataBonsai(prevData => prevData.filter(bonsai => bonsai.id !== id));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const {data} = useQuery({
-    queryKey: ['dataCatalog'],
+  const {data: dataBonsai} = useQuery<BonsaiType>({
+    queryKey: ['get_data'],
     queryFn: async () => {
-      const res = await axios.get(DATA_STORE);
+      const res = await axios.get(GET_DATA);
+      return res.data;
+    },
+    //initialData: data => data,
+  });
+  
+
+  const {data: addBonsai} = useMutation({
+    mutationKey: ['add_data'],
+    mutationFn: async (newBonsai: Omit<BonsaiType, 'id'>) => {
+      const res = await axios.post(ADD_DATA, newBonsai);
+      if (!res) {
+        console.log("Can't add data please check and try again!");
+        throw new Error("Can't add data");
+      }
       return res.data;
     },
   });
 
-  useEffect(() => {
-    if (data) {
-      setDataCategories(data);
-    }
-  }, [data]);
+  const {data: updateBonsai} = useMutation({
+    mutationKey: ['update_data'],
+    mutationFn: async (updateBonsai: Partial<BonsaiType>) => {
+      try {
+        const id = updateBonsai.id;
+
+        if (id) {
+          await axios.put(UPDATE_DATA(id), updateBonsai);
+        } else {
+          console.error('Cannot update data without a valid ID');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
+  const {data: deleteBonsai} = useMutation({
+    mutationKey: ['delete_data'],
+    mutationFn: async (id: string) => {
+      await axios.delete(`${DELETE_DATA}/${id}`);
+      return id;
+    },
+  });
+
+  const {data: dataCategories} = useQuery({
+    queryKey: ['dataCatalog'],
+    queryFn: async () => {
+      const res = await axios.get(DATA_CATALOG);
+      return res.data;
+    },
+  });
+
 
   return {dataBonsai, dataCategories, addBonsai, updateBonsai, deleteBonsai};
 };

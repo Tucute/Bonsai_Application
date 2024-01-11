@@ -21,15 +21,22 @@ import ManagementOrder from '../screens/sellers/ManagementOrder';
 import Chat from '../screens/users/Chat';
 import MapComponent from '../screens/users/MapComponent';
 import ManagementYourOrder from '../screens/sellers/ManagementYourOrder';
+import StatusOrder from '../screens/sellers/products/StatusOrder';
+import ManagementBonsai from '../screens/sellers/products/ManagementBonsai';
 
 const queryClient = new QueryClient();
-export default function Navigate({navigation}:any) {
+export default function Navigate({navigation}: any) {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="LandingPage" component={LandingPage} options={{headerShown: false}}/>
+        <Stack.Navigator >
+        
+          <Stack.Screen
+            name="LandingPage"
+            component={LandingPage}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SuccessSignup" component={SuccessSignup} />
           <Stack.Screen name="HomePage" component={Home} />
@@ -39,9 +46,16 @@ export default function Navigate({navigation}:any) {
           <Stack.Screen name="Order" component={ManagementOrder} />
           <Stack.Screen name="Your Order" component={ManagementYourOrder} />
           <Stack.Screen name="chat" component={Chat} />
-          <Stack.Screen name="Root"component={DrawerNavigator} options={{headerShown: false}}/>
-          <Stack.Screen name='BonsaiList' component={BonsaiList} />
-          <Stack.Screen name='ManagementOrder' component={ManagementOrder} />
+          <Stack.Screen
+            name="Root"
+            component={DrawerNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen name="ManagementBonsai" component={ManagementBonsai} />
+          <Stack.Screen name="BonsaiList" component={BonsaiList} />
+          <Stack.Screen name="ManagementOrder" component={ManagementOrder} />
+          <Stack.Screen name="StatusOrder" component={StatusOrder} />
+
           <Stack.Screen
             name="DetailProduct"
             component={DetailProduct}
@@ -50,9 +64,9 @@ export default function Navigate({navigation}:any) {
                 backgroundColor: 'white',
               },
               headerTitleStyle: {
-                display: 'none', 
+                display: 'none',
               },
-              headerRight: () => <HeaderOptions navigation={navigation} />
+              headerRight: () => <HeaderOptions navigation={navigation} />,
             }}
           />
           <Stack.Screen
@@ -63,9 +77,9 @@ export default function Navigate({navigation}:any) {
                 backgroundColor: 'white',
               },
               headerTitleStyle: {
-                display: 'none', 
+                display: 'none',
               },
-              headerRight: () => <HeaderOptions navigation={navigation} />
+              headerRight: () => <HeaderOptions navigation={navigation} />,
             }}
           />
           <Stack.Screen
@@ -76,9 +90,9 @@ export default function Navigate({navigation}:any) {
                 backgroundColor: 'white',
               },
               headerTitleStyle: {
-                display: 'none', 
+                display: 'none',
               },
-              headerRight: () => <HeaderOptions navigation={navigation} />
+              headerRight: () => <HeaderOptions navigation={navigation} />,
             }}
           />
           <Stack.Screen
@@ -89,9 +103,9 @@ export default function Navigate({navigation}:any) {
                 backgroundColor: 'white',
               },
               headerTitleStyle: {
-                display: 'none', 
+                display: 'none',
               },
-              headerRight: () => <HeaderOptions navigation={navigation} />
+              headerRight: () => <HeaderOptions navigation={navigation} />,
             }}
           />
           <Stack.Screen
@@ -103,9 +117,9 @@ export default function Navigate({navigation}:any) {
                 backgroundColor: 'white',
               },
               headerTitleStyle: {
-                display: 'none', 
+                display: 'none',
               },
-              headerRight: () => <HeaderOptions navigation={navigation} />
+              headerRight: () => <HeaderOptions navigation={navigation} />,
             }}
           />
           <Stack.Screen
@@ -117,9 +131,9 @@ export default function Navigate({navigation}:any) {
                 backgroundColor: 'white',
               },
               headerTitleStyle: {
-                display: 'none', 
+                display: 'none',
               },
-              headerRight: () => <HeaderOptions navigation={navigation} />
+              headerRight: () => <HeaderOptions navigation={navigation} />,
             }}
           />
         </Stack.Navigator>

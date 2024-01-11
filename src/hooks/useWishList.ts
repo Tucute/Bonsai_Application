@@ -1,51 +1,37 @@
 import axios from 'axios';
 import {Alert} from 'react-native';
 import {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import useUser from './useUser';
+import { useQuery, useQueryClient  } from '@tanstack/react-query';
 interface CarouselItem {
   id: number;
   message: string;
 }
-interface getProfile {
-  id: number;
-  email: string;
-  name: string;
-  avatar: string;
-  phone: string;
-}
 export default function useWishList() {
+  
+  const queryClient = useQueryClient();
   const [dataWishList, setDataWishList] = useState<CarouselItem[]>([]);
-  const [userData, setUserData] = useState<getProfile>();
-  const getUserData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('user');
-      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-      setUserData(value);
-    } catch (e) {
-      console.log('Error:', e);
-    }
-  };
-  useEffect(() => {
-    getUserData();
-  }, []);
+  const { data: userData } = useUser();
+  const{data, isLoading, isError}= useQuery({
+    queryKey: ['getWishList'],
+    queryFn: async()=>{
+      try{
+        if (userData && userData.id) {
+          const response = await axios.get(
+            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userData?.id}`,
+          );
+          return response.data;
+        }
+      }catch(error){
+        throw error;
+      }
+    },
+  })
 
-  const fetchWishList = async () => {
-    try {
-      if (userData && userData.id) {
-      const response = await axios.get(
-        `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userData?.id}`,
-      );
-      // console.log('API Response:', response);
-      setDataWishList(response.data || []);
-    }} catch (error) {
-      console.error(error);
-    }
-  };
   useEffect(() => {
-    if (userData && userData.id) {
-      fetchWishList();
-    }
-  }, [userData]);
+
+  }, [])
+
   const removeItemFromWishList = async ({itemId}: {itemId: number}) => {
     try {
       const response = await axios.delete(
@@ -58,6 +44,7 @@ export default function useWishList() {
         setDataWishList(prevData =>
           prevData.filter(item => item.id !== itemId),
         );
+        queryClient.invalidateQueries(['getWishList']);
       } else {
         console.error(
           'Error removing item from wish list. Status:',
@@ -78,9 +65,6 @@ export default function useWishList() {
       }
     }
   };
-
-  useEffect(() => {
-    fetchWishList();
-  }, []);
-  return {dataWishList ,userData, removeItemFromWishList};
+ 
+  return {data, isLoading, isError ,userData, removeItemFromWishList};
 }

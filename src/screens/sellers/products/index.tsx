@@ -21,17 +21,17 @@ const BonsaiList: React.FC = ({navigation}: any) => {
       <View style={styles.item}>
         <Image style={styles.itemImage} source={{uri: item.image}} />
         <View style={styles.detailItem}>
-          <Text style={styles.itemName}>{item.name}</Text>
-          <Text style={styles.itemPrice}>Price: {item.price}</Text>
-          <Text style={styles.itemPromotionPrice}>
-            Promotion price: {item.promotion_price}
+          <Text style={styles.titleText}>{item.name}</Text>
+          <Text style={styles.titleText}>Price: {item.price}</Text>
+          <Text style={styles.titleText}>
+            Sale: {item.promotion_price}
           </Text>
         </View>
         <View style={styles.listAction}>
           <Pressable
             style={styles.buttonAction}
             onPress={() =>
-              navigation.navigate('ManagementOrder', {
+              navigation.navigate('ManagementBonsai', {
                 mode: 'update',
                 bonsaiId: item,
               })
@@ -57,7 +57,7 @@ const BonsaiList: React.FC = ({navigation}: any) => {
       <View style={styles.button}>
         <TouchableOpacity
           style={styles.actionAdd}
-          onPress={() => navigation.navigate('ManagementOrder', {mode: 'add'})}>
+          onPress={() => navigation.navigate('ManagementBonsai', {mode: 'add'})}>
           <Image
             style={styles.imageAdd}
             source={require('../../../assets/images/add.png')}
@@ -78,21 +78,22 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     padding: 10,
-    backgroundColor: '#0D986A',
-    marginBottom: 20,
+    backgroundColor: '#FFF',
+    marginTop: 10,
+    marginHorizontal: 20,
+    borderRadius: 10,
   },
   itemImage: {
-    width: 100,
-    height: 100,
+    width: 65,
+    height: 75,
+    borderRadius: 5,
   },
   detailItem: {
-    marginHorizontal: 10,
-    width: 180,
+    marginHorizontal: 20,
+    width: 160,
+    justifyContent: 'space-between',
   },
-  itemName: {},
-  itemDescription: {},
-  itemPrice: {},
-  itemPromotionPrice: {},
+  titleText: {color: 'grey'},
   buttonAction: {
     width: 50,
     height: 20,
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
   imageAdd: {
     width: 30,
     height: 30,
-    tintColor: 'tomato',
+    tintColor: '#98C13F',
   },
   imageDelete: {
     width: 25,
@@ -122,21 +123,24 @@ const styles = StyleSheet.create({
   },
   actionAdd: {
     flexDirection: 'row',
-    gap: 10,
-    width: 150,
-    height: 45,
+    gap: 6,
+    width: 125,
+    height: 40,
     backgroundColor: 'green',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   textAdd: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   button: {
     alignItems: 'flex-end',
-    padding: 20,
+    position: 'absolute',
+    zIndex: 100,
+    top: '-7%',
+    marginLeft: 212,
   },
 });
 

@@ -1,38 +1,57 @@
-import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import useBonsai from '../../../hooks/useBonsai';
-
+import useBonsai, { CategoriesType } from '../../../hooks/useBonsai';
 
 const URL_IMAGE = '../../../assets/images';
 
-const DropdownSelect: React.FC= () => {
-  const {dataCategories} = useBonsai();
+interface DropdownSelectProps {
+  onCatalogChange: (categoryID: string) => void;
+  propsCatalog?: string;
+}
+
+const DropdownSelect: React.FC<DropdownSelectProps> = ({
+  onCatalogChange,
+  propsCatalog,
+}: DropdownSelectProps) => {
+  const { dataCategories } = useBonsai();
+  const [defaultValue, setDefaultValue] = useState<string>('Select catalog');
+
+  useEffect(() => {
+    if (propsCatalog) {
+      const catalogProps = dataCategories.find(
+        (category: CategoriesType) => category.id.toString() === propsCatalog,
+      );
+      
+      if (catalogProps) {
+        setDefaultValue(catalogProps.name);
+      }
+    }
+  }, [propsCatalog, dataCategories]);
 
   return (
     <SelectDropdown
       data={dataCategories}
       onSelect={(selectedItem, index) => {
+        onCatalogChange(selectedItem.id.toString());
         console.log(selectedItem, index);
       }}
-      defaultButtonText="Select catalog"
-      buttonTextAfterSelection={selectedItem => selectedItem}
+      defaultButtonText={defaultValue}
+      buttonTextAfterSelection={(selectedItem) => selectedItem.name}
       buttonStyle={styles.buttonDropdown}
       buttonTextStyle={styles.buttonTextDropdown}
-      renderDropdownIcon={isOpened => {
-        return (
-          <Image
-            style={styles.iconSelect}
-            source={
-              isOpened
-                ? require(`${URL_IMAGE}/up.png`)
-                : require(`${URL_IMAGE}/down.png`)
-            }
-          />
-        );
-      }}
+      renderDropdownIcon={(isOpened) => (
+        <Image
+          style={styles.iconSelect}
+          source={
+            isOpened
+              ? require(`${URL_IMAGE}/up.png`)
+              : require(`${URL_IMAGE}/down.png`)
+          }
+        />
+      )}
       dropdownIconPosition="right"
-      rowTextForSelection={item => item}
+      rowTextForSelection={(item) => item.name}
       rowStyle={styles.rowDropdown}
       rowTextStyle={styles.rowTextDropdown}
     />

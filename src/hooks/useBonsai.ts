@@ -1,10 +1,8 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useQuery} from '@tanstack/react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from '../components/url/urlNgrok';
 
-const CATALOG = 'https://63a571e42a73744b008e23ee.mockapi.io/user24';
 const DATA_STORE = `${url}/api/get-product-admin`;
 const DATA_DEMO = 'https://63a571e42a73744b008e23ee.mockapi.io/users';
 
@@ -16,6 +14,7 @@ export interface BonsaiType {
   price: number | string;
   promotion_price: number | string;
   category_id: number | string;
+  supplier_id: number | string;
 }
 
 export interface CategoriesType {
@@ -87,7 +86,7 @@ const useBonsai = () => {
   const {data} = useQuery({
     queryKey: ['dataCatalog'],
     queryFn: async () => {
-      const res = await axios.get(CATALOG);
+      const res = await axios.get(DATA_STORE);
       return res.data;
     },
   });

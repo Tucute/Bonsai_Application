@@ -1,28 +1,37 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import useGetUser from '../../hooks/useGetUser';
 
 export default function PlantStore({navigation}: any) {
+  const {profileData} = useGetUser();
+  const data = JSON.stringify(profileData);
+  const personnalData = JSON.parse(data);
+
   const NavigateBonsaiTree = () => {
     navigation.navigate('BonsaiList');
+  };
+
+  const NavigateOrder = () => {
+    navigation.navigate('StatusOrder');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.titleStore}>My Store</Text>
       <View style={styles.profileSeller}>
-        <Text style={styles.titleAdress}>The owner: A An Tu</Text>
+        <Text style={styles.titleAdress}>The owner: {personnalData[0].name}</Text>
         <View style={styles.logo}>
           <Image
-            source={require('../../assets/images/Sark.png')}
+            source={{uri: personnalData[0].avatar}}
             style={styles.logoImage}
           />
         </View>
       </View>
       <Text style={styles.titleAdress}>
-        Address: 101B Le Huu Trac, Phuoc My, Son Tra, Da Nang
+        Address: {personnalData[0].address}
       </Text>
       <View style={styles.listActions}>
-        <TouchableOpacity style={styles.action}>
+        <TouchableOpacity onPress={NavigateOrder} style={styles.action}>
           <Text style={styles.titleAction}>Status Order</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.action} onPress={NavigateBonsaiTree}>

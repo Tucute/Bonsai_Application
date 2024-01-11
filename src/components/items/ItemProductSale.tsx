@@ -5,14 +5,17 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  TouchableOpacity,Alert
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
-import  useAddToWishlist from '../../hooks/useAddWishlist';
+import useAddToWishlist from '../../hooks/useAddWishlist';
 import {useNavigation} from '@react-navigation/native';
+import useUser from '../../hooks/useUser';
+import {useQuery, QueryClient} from '@tanstack/react-query';
+
 interface CarouselItem {
   id: number;
   name: string;
@@ -26,54 +29,53 @@ interface CarouselItem {
   updated_at: Date | null;
 }
 interface getProfile {
-  id:number
+  id: number;
   email: string;
   name: string;
   avatar: string;
   phone: string;
 }
 interface WishlistItem {
-  id: number; 
-  item_id:number;
+  id: number;
+  item_id: number;
 }
 const ItemProductPopular = () => {
   const navigation = useNavigation();
-  const carouselData = useFetchInfoTrees();
+  const {data: userData} = useUser();
+  const {data: carouselData, isLoading, isError} = useFetchInfoTrees();
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
-  const addToWishlist = async (userId: number, product: CarouselItem) => {
-    useAddToWishlist(userId, product, wishlist, setWishlist);
-  };
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const response = await axios.get(
-          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
-        );
-
-        if (response.data.length > 0) {
-          const userWishlist = response.data;
-          setWishlist(userWishlist);
-        }
-      } catch (error) {
-        console.error('Error fetching wishlist:', error);
-      }
-    };
-
-    fetchWishlist();
-  }, []);
-  const [userData, setUserData] = useState<getProfile>();
-  const getUserData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('user');
-      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-      setUserData(value);
-    } catch (e) {
-      console.log('Error: ', e);
+  const addToWishlist = async (user_id: number, product: CarouselItem) => {
+    if (wishlist !== undefined) {
+      useAddToWishlist(user_id, product, wishlist, setWishlist);
     }
   };
+  const {data: wishlistData, error: wishlistError} = useQuery({
+    queryKey: ['wishlist', userData?.id],
+    queryFn: async () => {
+      try {
+        if ((userData && userData.id) || 'default') {
+          const response = await axios.get(
+            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userData?.id}`,
+          );
+          if (response.data.length > 0) {
+            const wishlistData = response.data;
+            setWishlist(wishlistData);
+            return response.data || [];
+          }
+        } else {
+          return [];
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+  });
   useEffect(() => {
-    getUserData();
-  }, []);
+    if (wishlistData !== undefined && wishlistData.length > 0) {
+      setWishlist(wishlistData);
+    }
+  }, [userData, wishlistData]);
+
   return (
     <FlatList
       data={carouselData}
@@ -81,20 +83,21 @@ const ItemProductPopular = () => {
         <TouchableOpacity
           style={styles.popularTree}
           onPress={() => navigation.navigate('DetailProduct', {product: item})}>
-          <ImageBackground
-            source={
-             {uri:item.image}
-            }
-            style={styles.popularImg}>
+          <ImageBackground source={{uri: item.image}} style={styles.popularImg}>
             <TouchableOpacity
               style={styles.tym}
               onPress={() => addToWishlist(userData?.id, item as CarouselItem)}>
-                
               <Image
                 source={require('../../assets/img_recommendations/tym.png')}
-                style={[styles.imgtym , wishlist.some((wishlistItem: WishlistItem) => wishlistItem.item_id === item.id)
-                  ? styles.imgtymActive
-                  : null,]}
+                style={[
+                  styles.imgtym,
+                  wishlist.some(
+                    (wishlistItem: WishlistItem) =>
+                      wishlistItem.item_id === item.id,
+                  )
+                    ? styles.imgtymActive
+                    : null,
+                ]}
               />
             </TouchableOpacity>
           </ImageBackground>
@@ -127,7 +130,12 @@ const ItemProductPopular = () => {
 export default ItemProductPopular;
 const styles = StyleSheet.create({
   imgtymActive: {
-    tintColor: 'green', 
+    tintColor: 'red',
+  },
+  imgtym: {
+    tintColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   popularTree: {
     width: '100%',
@@ -200,9 +208,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: '70%',
     marginTop: '70%',
-  },
-  imgtym: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

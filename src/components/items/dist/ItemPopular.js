@@ -12,7 +12,11 @@ var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
 var useFetchInfoTrees_1 = require("../../hooks/useFetchInfoTrees");
 var ItemPopular = function () {
-    function shuffleArray(array) {
+    var api = 'https://e1f3-14-176-231-248.ngrok-free.app/api/get-products';
+    var _a = useFetchInfoTrees_1["default"](api), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    var _b = react_1.useState([]), shuffledData = _b[0], setShuffledData = _b[1];
+    var navigation = native_1.useNavigation();
+    var shuffleArray = function (array) {
         var _a;
         var newArray = __spreadArrays(array);
         for (var i = newArray.length - 1; i > 0; i--) {
@@ -20,9 +24,22 @@ var ItemPopular = function () {
             _a = [newArray[j], newArray[i]], newArray[i] = _a[0], newArray[j] = _a[1];
         }
         return newArray;
+    };
+    react_1.useEffect(function () {
+        if (data && data.length > 0) {
+            var shuffled = shuffleArray(data);
+            setShuffledData(shuffled);
+        }
+    }, [data, isLoading, isError]);
+    if (isLoading) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
     }
-    var shuffledData = shuffleArray(useFetchInfoTrees_1["default"]());
-    var navigation = native_1.useNavigation();
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Error loading data");
+    }
+    if (!shuffledData || shuffledData.length === 0) {
+        return react_1["default"].createElement(react_native_1.Text, null, "No data available");
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.dropped },
         react_1["default"].createElement(react_native_1.FlatList, { data: shuffledData.slice(0, 3), keyExtractor: function (item) { return item.id.toString(); }, renderItem: function (_a) {
                 var item = _a.item;

@@ -11,6 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect} from 'react';
 import useAddToWishlist from '../../hooks/useAddWishlist';
 import AddToCartButton from '../../components/buttons/AddToCartButton';
+import {useQuery, QueryClient} from '@tanstack/react-query';
+import useUser from '../../hooks/useUser';
 interface CarouselItem {
   id: number;
   name: string;
@@ -36,42 +38,39 @@ interface WishlistItem {
 }
 const DetailProduct = ({route}: any) => {
   const {product} = route.params;
-  const [userData, setUserData] = useState<getProfile>();
+  const {data: userData} = useUser();
 
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const addToWishlist = async (userId: number, product: CarouselItem) => {
     useAddToWishlist(userId, product, wishlist, setWishlist);
   };
-  useEffect(() => {
-    const fetchWishlist = async () => {
+  const {data: wishlistData, error: wishlistError} = useQuery({
+    queryKey: ['wishlist', userData?.id],
+    queryFn: async () => {
       try {
-        const response = await axios.get(
-          `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?userId=${userData?.id}`,
-        );
-
-        if (response.data.length > 0) {
-          const userWishlist = response.data;
-          setWishlist(userWishlist);
+        if ((userData && userData.id) || 'default') {
+          const response = await axios.get(
+            `https://645f33db9d35038e2d1ec62a.mockapi.io/wishlist?user_id=${userData?.id}`,
+          );
+          if (response.data.length > 0) {
+            const wishlistData = response.data;
+            setWishlist(wishlistData);
+            return response.data || [];
+          }
+        } else {
+          return [];
         }
       } catch (error) {
-        console.error('Error fetching wishlist:', error);
+        throw error;
       }
-    };
-
-    fetchWishlist();
-  }, [setWishlist]);
-  const getUserData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('user');
-      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-      setUserData(value);
-    } catch (e) {
-      console.log('Error: ', e);
-    }
-  };
+    },
+  });
   useEffect(() => {
-    getUserData();
-  }, []);
+    if (wishlistData !== undefined && wishlistData.length > 0) {
+      setWishlist(wishlistData);
+    }
+  }, [userData, wishlistData]);
+
   return (
     <ScrollView style={styles.DetailContainer}>
       <View style={styles.InfoDetail}>
@@ -102,10 +101,13 @@ const DetailProduct = ({route}: any) => {
             <View>
               <TouchableOpacity
                 style={styles.imgHeat}
-                onPress={() => addToWishlist(userData?.id, product as CarouselItem)}>
+                onPress={() =>
+                  addToWishlist(userData?.id, product as CarouselItem)
+                }>
                 <Image
                   source={require('../../assets/img_recommendations/tym.png')}
                   style={[
+                    styles.imgtym,
                     wishlist.some(
                       (wishlistItem: WishlistItem) =>
                         wishlistItem.item_id === product.id,
@@ -305,6 +307,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: 'white',
+  },
+  imgtym: {
+    tintColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imgtymActive: {
     tintColor: 'green',

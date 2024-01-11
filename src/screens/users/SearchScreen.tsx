@@ -9,7 +9,9 @@ import {
   Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
+import useFetchInfoTrees from '../../hooks/useFetchInfoTrees';
+import {useQuery} from '@tanstack/react-query';
+import {debounce} from 'lodash';
 interface TreesData {
   id: string;
   name: string;
@@ -18,48 +20,19 @@ interface TreesData {
   image: number | string;
   promotion_price: string;
 }
-import { debounce } from 'lodash';
 const SearchScreen = ({searchText}: any) => {
   const navigation = useNavigation();
-  const [treesData, setTreesData] = useState<TreesData[]>([]);
+  const {data: treesData, isLoading, isError} = useFetchInfoTrees();
   const [searchResults, setSearchResults] = useState<TreesData[]>([]);
-  const fetchTreesData = async () => {
-    try {
-      const response = await fetch(
-        'https://63a571e42a73744b008e23ee.mockapi.io/user24',
-      );
-      if (!response.ok) {
-        throw new Error(`Failed to fetch data. Status: ${response.status}`);
-      }
-      const contentType = response.headers.get('Content-Type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Invalid content type. Expected JSON.');
-      }
-
-      const data = await response.json();
-      setTreesData(data);
-    } catch (error: any) {
-      console.error('Error fetching trees data:', error.message);
-    }
-  };
-
   const searchTrees = async (text: string) => {
-    // Tìm kiếm theo text ở đây
     return treesData.filter(item =>
       item.name.toLowerCase().includes(text.toLowerCase()),
     );
   };
-
   const handleSearchChange = debounce(async (text: string) => {
     const filteredResults = await searchTrees(text);
     setSearchResults(filteredResults);
   }, 300);
-
-  useEffect(() => {
-    fetchTreesData();
-  }, []);
-
-
   const renderItem = ({item}: any) => {
     return (
       <View>
@@ -100,7 +73,6 @@ const SearchScreen = ({searchText}: any) => {
       </View>
     );
   };
-
   return (
     <View style={styles.SearchBarContainer}>
       <View style={styles.SearchInput}>
@@ -119,7 +91,6 @@ const SearchScreen = ({searchText}: any) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   SearchBarContainer: {
     flex: 1,

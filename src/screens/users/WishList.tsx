@@ -5,7 +5,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const WishList = () => {
-  const { dataWishList, removeItemFromWishList } = useWishList();
+  const { data:dataWishList, isLoading, isError, removeItemFromWishList } = useWishList();
   
   const renderItem = ({ item }: any) => {
     return (

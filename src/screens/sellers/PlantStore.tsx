@@ -40,6 +40,10 @@ export default function PlantStore({navigation}: any) {
     navigation.navigate('BonsaiList');
   };
 
+  const NavigateOrder = () => {
+    navigation.navigate('StatusOrder');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titleStore}>My Store</Text>

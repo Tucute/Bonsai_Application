@@ -7,11 +7,16 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 import {styles} from '../../styles/styleCheckout';
 import {useState, useEffect} from 'react';
 import ItemProductCheckout from '../../components/items/ItemProductCheckout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useUser from '../../hooks/useUser';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { url } from '../../components/url/urlNgrok';
 interface Product {
   id: number;
   name: string;
@@ -22,6 +27,11 @@ interface Product {
   promotion_price: number;
 }
 
+interface Data {
+  status: boolean;
+  cartItems: Product[],
+  totalPrice: number,
+}
 interface getProfile {
   email: string;
   name: string;
@@ -30,31 +40,20 @@ interface getProfile {
   address: string;
 }
 const viewHeader = () => {
-  const [userData, setUserData] = useState<getProfile>();
-  const getUserData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('user');
-      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-      setUserData(value);
-    } catch (e) {
-      console.log('Error: ', e);
-    }
-  };
-  useEffect(() => {
-    getUserData();
-  }, []);
+  const {data} = useUser()
   return (
     <View style={styles.viewAddress}>
-      <Text style={styles.nameUser}>{userData?.name}</Text>
-      <Text style={styles.phoneUser}>(+84) {userData?.phone}</Text>
+      <Text style={styles.nameUser}>{data?.name}</Text>
+      <Text style={styles.phoneUser}>(+84) {data?.phone}</Text>
       <Text style={styles.AddressUser}>
-        {userData?.address}
+        {data?.address}
       </Text>
     </View>
   );
 };
 
 const viewFooter = (
+  {navigation}: any,
   cartItems: Product[],
   totalPrice: number,
   discount: number,
@@ -74,21 +73,61 @@ const viewFooter = (
     };
     handleTotalPrice();
   }, [cartItems, discount]);
+
+  const addOrderMutation = useMutation({
+    mutationFn: async (data: Data) => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('user');
+        const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+        const token = value.token;
+        const response = await axios.post(
+          `${url}/api/order`,
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        
+        if (response.status === 200) {
+          Alert.alert('Success', 'Checkout successfully', [
+            {text: 'OK', onPress: () => navigation.navigate('Order')},
+          ]);
+        } else {
+          Alert.alert('Invalid information!');
+        }
+        return response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  });
+
+  const handleCheckout = () => {
+    const data: Data = {
+      status: false,
+      totalPrice: totalPrice,
+      cartItems: cartItems,
+    };
+    addOrderMutation.mutate(data);
+  }
   return (
     <View>
       <View style={styles.sumarizeOrder}>
         <Text style={styles.titleOrder}>Tóm tắt đơn hàng</Text>
         <View style={styles.listInfo}>
-          <Text>Tổng phụ</Text>
-          <Text>${price}</Text>
+          <Text style={styles.textColor}>Tổng phụ</Text>
+          <Text style={styles.textColor}>${price}</Text>
         </View>
         <View style={styles.listInfo}>
-          <Text>Vận chuyển</Text>
-          <Text>Free Shipping</Text>
+          <Text style={styles.textColor}>Vận chuyển</Text>
+          <Text style={styles.textColor}>Free Shipping</Text>
         </View>
         <View style={styles.listInfo}>
-          <Text>Shipping discount</Text>
-          <Text>-{discount}%</Text>
+          <Text style={styles.textColor}>Shipping discount</Text>
+          <Text style={styles.textColor}>-{discount}%</Text>
         </View>
         <View style={styles.listInfo}>
           <Text style={styles.total}>Tổng</Text>
@@ -117,16 +156,15 @@ const viewFooter = (
           <Text style={styles.textTotalPrice}>${totalPrice}</Text>
         </View>
         <Text style={styles.textSave}>Bạn đã tiết kiệm được ${price-totalPrice}</Text>
-        <TouchableOpacity style={styles.btnOrder}>
+        <TouchableOpacity style={styles.btnOrder} onPress={handleCheckout}>
           <Text style={styles.textOrder}>ĐẶT HÀNG</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-const Checkout = ({route}: any) => {
+const Checkout = ({navigation, route}: any) => {
   const {cartItems, totalPrice, discount} = route.params;
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -134,7 +172,7 @@ const Checkout = ({route}: any) => {
         keyExtractor={index => index.id.toString()}
         renderItem={({item}) => <ItemProductCheckout item={item} />}
         ListHeaderComponent={viewHeader}
-        ListFooterComponent={viewFooter(cartItems, totalPrice, discount)}
+        ListFooterComponent={viewFooter({navigation},cartItems, totalPrice, discount)}
       />
     </View>
   );

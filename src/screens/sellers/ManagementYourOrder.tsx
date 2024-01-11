@@ -21,7 +21,7 @@ interface Product {
   image: string;
   promotion_price: number;
 }
-export default function ManagementYourOrder() {
+export default function ManagementYourOrder({navigation}: any) {
   const {data} = useUser();
   let dataItem: Product = {
     id: 2,
@@ -50,7 +50,7 @@ export default function ManagementYourOrder() {
         <Image
               style={styles.imgViewMessage}
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/6399/6399624.png',
+                uri:'https://o.remove.bg/uploads/71ea3135-7480-432a-bb1c-c586eadbdee4/png-transparent-gps-navigation-systems-computer-icons-global-positioning-system-gps-location-location-gps-navigation-systems-black-and-white.png',
               }}
             />
            {data?.name} (+84){data?.phone}
@@ -76,7 +76,7 @@ export default function ManagementYourOrder() {
           </Text>
         </View>
         <View>
-          <TouchableOpacity style={styles.contact}>
+          <TouchableOpacity style={styles.contact} onPress={()=>navigation.navigate('Chat')}>
             <Text style={styles.textcontact}>Liên hệ với Bonsai </Text>
             <Image
               style={styles.imgViewMessage}

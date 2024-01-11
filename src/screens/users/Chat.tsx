@@ -5,7 +5,7 @@ import { WebView } from 'react-native-webview';
 const Chat = () => {
   return (
     <View style={{ flex: 1 }}>
-      <WebView source={{uri: "https://tawk.to/chat/6598c7cd8d261e1b5f502a49/1hjecov43" }} style={{flex: 1}} />
+      <WebView source={{uri: "https://tawk.to/chat/659f97508d261e1b5f51cd37/1hjrme5dc" }} style={{flex: 1}} />
     </View>
   )
 }

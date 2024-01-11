@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { url } from '../components/url/urlNgrok';
 
-const API_USERS = 'https://63a571e42a73744b008e23ee.mockapi.io/users';
+const API_USERS = `${url}/api/get-users`;
 
 interface UsersType {
   id: number;
@@ -29,15 +30,11 @@ export default function useGetUser() {
     queryFn: getUser,
   });
 
-  const { data: profileData } = useQuery<UsersType[]>({
-    queryKey: ['getProfile'],
+  const { data: profileData } = useQuery<UsersType>({
+    queryKey: ['getProfile', userID],
     queryFn: async () => {
-      const res = await axios.get(API_USERS);
-      return res.data;
-    },
-    select: (data) => {
-      const user = data.find((user) => user.id === userID);
-      return user ? [user] : [];
+      const response = await axios.get(`${API_USERS}/${userID}`);
+      return response.data;
     },
   });
 

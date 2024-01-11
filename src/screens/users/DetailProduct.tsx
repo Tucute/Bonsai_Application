@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,6 +14,8 @@ import useAddToWishlist from '../../hooks/useAddWishlist';
 import AddToCartButton from '../../components/buttons/AddToCartButton';
 import {useQuery, QueryClient} from '@tanstack/react-query';
 import useUser from '../../hooks/useUser';
+import useComment from '../../hooks/useComment';
+import ItemComment from '../../components/items/ItemComment';
 interface CarouselItem {
   id: number;
   name: string;
@@ -36,9 +39,20 @@ interface WishlistItem {
   id: number;
   item_id: number;
 }
+interface User {
+  name: string;
+  avatar: string;
+}
+interface Comment {
+  id: number;
+  comment: string;
+  rate: number;
+  user: User;
+}
 const DetailProduct = ({route}: any) => {
   const {product} = route.params;
   const {data: userData} = useUser();
+  const {data} = useComment(product.id);
 
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const addToWishlist = async (userId: number, product: CarouselItem) => {
@@ -65,12 +79,7 @@ const DetailProduct = ({route}: any) => {
       }
     },
   });
-  useEffect(() => {
-    if (wishlistData !== undefined && wishlistData.length > 0) {
-      setWishlist(wishlistData);
-    }
-  }, [userData, wishlistData]);
-
+  
   return (
     <ScrollView style={styles.DetailContainer}>
       <View style={styles.InfoDetail}>
@@ -155,6 +164,11 @@ const DetailProduct = ({route}: any) => {
         <View style={styles.aboutContain}>
           <Text style={styles.nameAbout}>About</Text>
           <Text style={styles.description}>{product.description}</Text>
+        </View>
+        <View style={styles.viewComment}>
+            {data?.map((commentData: Comment) => (
+                <ItemComment data={commentData} key={commentData.id} />
+            ))}
         </View>
         <View
           style={{
@@ -315,5 +329,8 @@ const styles = StyleSheet.create({
   },
   imgtymActive: {
     tintColor: 'green',
+  },
+  viewComment: {
+    marginVertical: 10,
   },
 });
